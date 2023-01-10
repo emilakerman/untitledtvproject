@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Show {
+struct Show : Identifiable {
+    let id = UUID()
+    
     let title : String
     var rating : Int //user sets this (should translate to stars out of 5)
     let image : Int
@@ -25,7 +27,7 @@ struct Show {
     func move() { //remove from current array and add to other array. eg, from "Want to watch" to -> "Watching"
         
     }
-    func rate() {
+    func rate() { //user rates the tv show after it has been added to "Completed"
         
     }
 }
