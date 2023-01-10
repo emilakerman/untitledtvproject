@@ -13,64 +13,40 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Want to watch")
-                .font(.system(size: 22))
-            NavigationView {
-                List() {
+        NavigationView {
+            Form {
+                Section(header: Text("Want to watch")) {
                     ForEach(showList.wantToWatch) { show in
                         NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
                             RowView(show: show)
                         }
                     }
                 }
-            }
-            Text("Watching")
-                .font(.system(size: 22))
-            NavigationView {
-                List() {
+                Section(header: Text("Watching")) {
                     ForEach(showList.watching) { show in
                         NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
                             RowView(show: show)
                         }
                     }
                 }
-            }
-            Text("Completed")
-                .font(.system(size: 22))
-            NavigationView {
-                List() {
+            Section(header: Text("Completed")) {
                     ForEach(showList.completed) { show in
                         NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
                             RowView(show: show)
                         }
                     }
                 }
-            }
-            Text("Dropped")
-                .font(.system(size: 22))
-            NavigationView {
-                List() {
-                    ForEach(showList.dropped) { show in
-                        NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
-                            RowView(show: show)
+            Section(header: Text("Dropped")) {
+                        ForEach(showList.dropped) { show in
+                            NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
+                                RowView(show: show)
+                            }
+                        }
+                        .onDelete() { indexSet in
+                            delete(indexSet: indexSet)
                         }
                     }
-                    .onDelete() { indexSet in
-                        delete(indexSet: indexSet)
-                    }
                 }
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    ///
-                }) { Image(systemName: "info.circle") }
-            }
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    //some other page
-                }) { Image(systemName: "chart.line.uptrend.xyaxis") }
             }
         }
     }

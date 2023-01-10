@@ -26,6 +26,10 @@ class ShowList : ObservableObject {
         
         shows.append(ShowEntry(title: "Game of Thrones", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
         watching.append(ShowEntry(title: "Game of Thrones", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
+        shows.append(ShowEntry(title: "Family Guy", rating: 0, image: 0, description: "", seasons: 1, episodes: 67))
+        watching.append(ShowEntry(title: "Family Guy", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
+        shows.append(ShowEntry(title: "South Park", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
+        watching.append(ShowEntry(title: "South Park", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
         
         shows.append(ShowEntry(title: "Archer", rating: 5, image: 0, description: "", seasons: 9, episodes: 672))
         completed.append(ShowEntry(title: "Archer", rating: 5, image: 0, description: "", seasons: 9, episodes: 672))
