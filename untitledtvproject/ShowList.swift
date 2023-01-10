@@ -14,7 +14,8 @@ class ShowList : ObservableObject {
     @Published var watching = [ShowEntry]()
     @Published var completed = [ShowEntry]()
     @Published var dropped = [ShowEntry]()
-    @Published var recentlyDeleted = [ShowEntry]()
+    @Published var recentlyDeleted = [ShowEntry]() //should maybe only keep deleted shows for 10 days
+        
     
     init() {
         addMockData()
