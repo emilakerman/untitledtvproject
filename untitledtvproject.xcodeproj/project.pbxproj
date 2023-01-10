@@ -14,7 +14,9 @@
 		2002C56E296D863500A01C88 /* untitledtvprojectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C56D296D863500A01C88 /* untitledtvprojectTests.swift */; };
 		2002C578296D863500A01C88 /* untitledtvprojectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C577296D863500A01C88 /* untitledtvprojectUITests.swift */; };
 		2002C57A296D863500A01C88 /* untitledtvprojectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C579296D863500A01C88 /* untitledtvprojectUITestsLaunchTests.swift */; };
-		2002C587296D874C00A01C88 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C586296D874C00A01C88 /* Show.swift */; };
+		2002C589296D8E3A00A01C88 /* ShowEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C588296D8E3A00A01C88 /* ShowEntry.swift */; };
+		2002C58B296D8E5800A01C88 /* ShowEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C58A296D8E5800A01C88 /* ShowEntryView.swift */; };
+		2002C58D296D8F5500A01C88 /* ShowList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C58C296D8F5400A01C88 /* ShowList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +47,9 @@
 		2002C573296D863500A01C88 /* untitledtvprojectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = untitledtvprojectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2002C577296D863500A01C88 /* untitledtvprojectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = untitledtvprojectUITests.swift; sourceTree = "<group>"; };
 		2002C579296D863500A01C88 /* untitledtvprojectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = untitledtvprojectUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		2002C586296D874C00A01C88 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
+		2002C588296D8E3A00A01C88 /* ShowEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowEntry.swift; sourceTree = "<group>"; };
+		2002C58A296D8E5800A01C88 /* ShowEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowEntryView.swift; sourceTree = "<group>"; };
+		2002C58C296D8F5400A01C88 /* ShowList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +104,9 @@
 				2002C55E296D863000A01C88 /* ContentView.swift */,
 				2002C560296D863400A01C88 /* Assets.xcassets */,
 				2002C562296D863400A01C88 /* Preview Content */,
-				2002C586296D874C00A01C88 /* Show.swift */,
+				2002C588296D8E3A00A01C88 /* ShowEntry.swift */,
+				2002C58A296D8E5800A01C88 /* ShowEntryView.swift */,
+				2002C58C296D8F5400A01C88 /* ShowList.swift */,
 			);
 			path = untitledtvproject;
 			sourceTree = "<group>";
@@ -260,8 +266,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2002C587296D874C00A01C88 /* Show.swift in Sources */,
+				2002C58B296D8E5800A01C88 /* ShowEntryView.swift in Sources */,
+				2002C589296D8E3A00A01C88 /* ShowEntry.swift in Sources */,
 				2002C55F296D863000A01C88 /* ContentView.swift in Sources */,
+				2002C58D296D8F5500A01C88 /* ShowList.swift in Sources */,
 				2002C55D296D863000A01C88 /* untitledtvprojectApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

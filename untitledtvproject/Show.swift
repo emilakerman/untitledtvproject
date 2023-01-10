@@ -8,26 +8,5 @@
 import Foundation
 
 struct Show : Identifiable {
-    let id = UUID()
-    
-    let title : String
-    var rating : Int //user sets this (should translate to stars out of 5)
-    let image : Int
-    let description : String
-    var seasons : Int
-    var episodes : Int
-    
-    
-    func add() { //add to an array - "Want to watch/Watching/Completed"
-        
-    }
-    func delete() { //remove from the array
-        
-    }
-    func move() { //remove from current array and add to other array. eg, from "Want to watch" to -> "Watching"
-        
-    }
-    func rate() { //user rates the tv show after it has been added to "Completed"
-        
-    }
+
 }
