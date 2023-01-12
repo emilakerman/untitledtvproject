@@ -8,6 +8,7 @@
 import Foundation
 
 struct ShowEntry : Identifiable, Equatable {
+    
     let id = UUID()
     
     let title : String
@@ -17,18 +18,10 @@ struct ShowEntry : Identifiable, Equatable {
     var seasons : Int
     var episodes : Int
     
-    enum status {
-        case wantToWatch
-        case watching
-        case completed
-        case dropped
-    }
+   
     
     
     func add() { //add to an array - "Want to watch/Watching/Completed"
-        
-    }
-    func delete(indexSet: IndexSet) { //remove from the array - move to here. but maybe also add the show to a new "recently deleted" list? so you can undo deleted items
         
     }
     func move() { //remove from current array and add to other array. eg, from "Want to watch" to -> "Watching"
