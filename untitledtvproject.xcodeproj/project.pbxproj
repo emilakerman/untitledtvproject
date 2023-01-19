@@ -21,6 +21,7 @@
 		2002C6082970530000A01C88 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2002C6072970530000A01C88 /* FirebaseAuth */; };
 		2002C60A2970530000A01C88 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2002C6092970530000A01C88 /* FirebaseFirestore */; };
 		2002C60C2970530000A01C88 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2002C60B2970530000A01C88 /* FirebaseFirestoreSwift */; };
+		2002C6482976ED6100A01C88 /* ApiShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C6472976ED6100A01C88 /* ApiShows.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		2002C58C296D8F5400A01C88 /* ShowList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowList.swift; sourceTree = "<group>"; };
 		2002C60129704F7A00A01C88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2002C605297050E900A01C88 /* firestore2shoppinglist2 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = firestore2shoppinglist2; path = ../firestore2shoppinglist2; sourceTree = "<group>"; };
+		2002C6472976ED6100A01C88 /* ApiShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShows.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				2002C58A296D8E5800A01C88 /* ShowEntryView.swift */,
 				2002C58C296D8F5400A01C88 /* ShowList.swift */,
 				2002C60129704F7A00A01C88 /* GoogleService-Info.plist */,
+				2002C6472976ED6100A01C88 /* ApiShows.swift */,
 			);
 			path = untitledtvproject;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				2002C58B296D8E5800A01C88 /* ShowEntryView.swift in Sources */,
 				2002C589296D8E3A00A01C88 /* ShowEntry.swift in Sources */,
 				2002C55F296D863000A01C88 /* ContentView.swift in Sources */,
+				2002C6482976ED6100A01C88 /* ApiShows.swift in Sources */,
 				2002C58D296D8F5500A01C88 /* ShowList.swift in Sources */,
 				2002C55D296D863000A01C88 /* untitledtvprojectApp.swift in Sources */,
 			);

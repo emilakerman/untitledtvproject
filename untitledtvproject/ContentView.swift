@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var showList = ShowList()
+    @StateObject var apiShows = ApiShows()
     
     var body: some View {
         VStack {
@@ -54,6 +55,14 @@ struct ContentView: View {
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .dropped)
                         }
+                    }
+                    Section(header: Text("API FETCH")) {
+                        ForEach(apiShows.newList, id: \.self) { show in
+                            Text(show)
+                        }
+                    }
+                    .onAppear() {
+                        apiShows.getData {}
                     }
                     Section(header: Text("Recently deleted")) {
                         ForEach(showList.lists[.recentlyDeleted]!) { show in
