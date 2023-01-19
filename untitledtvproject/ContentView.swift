@@ -13,10 +13,11 @@ struct ContentView: View {
     @StateObject var apiShows = ApiShows()
     
     @State var searchText : String
+    @State var emptyList = [String]()
     
     var searchResults: [String] {
         if searchText.isEmpty {
-            return apiShows.newList
+            return emptyList
         } else {
             return apiShows.newList.filter { $0.localizedCaseInsensitiveContains(searchText) }
         }
@@ -25,19 +26,18 @@ struct ContentView: View {
     var body: some View {
         VStack {
             NavigationView {
-                List {
-                    ForEach(searchResults, id: \.self) { name in
-                        NavigationLink { //fixa så man kan välja vilken lista man ska lägga till serien i
-                            Text(name)
-                        } label: {
-                            Text(name)
+                Form {
+                    Section {
+                        ForEach(searchResults, id: \.self) { show in
+                            NavigationLink {
+                                Text(show)
+                            } label: {
+                                //RowTest(showTest: show)
+                                Text(show)
+                            }
                         }
                     }
-                }
-            }
-            .searchable(text: $searchText)
-            NavigationView {
-                Form {
+                    .searchable(text: $searchText)
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!) { show in
                             NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
@@ -95,6 +95,15 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+    }
+}
+struct RowTest : View {
+    var showTest : ApiShows.Show
+    
+    var body: some View {
+        HStack {
+            Text(showTest.name)
         }
     }
 }

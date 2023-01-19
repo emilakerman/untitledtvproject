@@ -53,6 +53,7 @@ class ApiShows : ObservableObject {
                 //the returned data is added to showArray
                 self.showArray = try JSONDecoder().decode([Returned].self, from: data!)
                 //adds the name of the downloaded object to a new list
+                self.newList.removeAll()
                 for item in self.showArray {
                     self.newList.append(item.show.name)
                 }
