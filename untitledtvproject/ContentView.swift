@@ -12,8 +12,30 @@ struct ContentView: View {
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
     
+    @State var searchText : String
+    
+    var searchResults: [String] {
+        if searchText.isEmpty {
+            return apiShows.newList
+        } else {
+            return apiShows.newList.filter { $0.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
     var body: some View {
         VStack {
+            NavigationView {
+                List {
+                    ForEach(searchResults, id: \.self) { name in
+                        NavigationLink { //fixa så man kan välja vilken lista man ska lägga till serien i
+                            Text(name)
+                        } label: {
+                            Text(name)
+                        }
+                    }
+                }
+            }
+            .searchable(text: $searchText)
             NavigationView {
                 Form {
                     Section(header: Text("Want to watch")) {
@@ -85,8 +107,10 @@ struct RowView : View {
         }
     }
 }
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+/*
+ struct ContentView_Previews: PreviewProvider {
+ static var previews: some View {
+ ContentView()
+ }
+ }
+ */

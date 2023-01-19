@@ -8,7 +8,8 @@
 import Foundation
 
 class ApiShows : ObservableObject {
-    //this variable should be the input of the user during search, or the last part of it at least
+    
+    //var searchName : String = "alien"
     var urlString = "https://api.tvmaze.com/search/shows?q=alien"
     
     //create empty array for the data

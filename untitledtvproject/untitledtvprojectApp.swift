@@ -11,7 +11,7 @@ import SwiftUI
 struct untitledtvprojectApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(searchText: "")
         }
     }
 }
