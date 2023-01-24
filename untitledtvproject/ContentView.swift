@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State var searchName = "alien"
+    
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
     
@@ -26,21 +28,32 @@ struct ContentView: View {
     var body: some View {
         VStack {
             NavigationView {
-                Form {
-                    Section {
+                Form {/*
+                    Section(header: Text("Search")) {
                         ForEach(searchResults, id: \.self) { show in
-                            NavigationLink {
-                                Text(show)
-                            } label: {
-                                //RowTest(showTest: show)
-                                Text(show)
+                            NavigationLink(show) {
+                                ApiShowEntryView(show: show.name)
                             }
                         }
                     }
-                    .searchable(text: $searchText)
+                    .searchable(text: $searchText)*/
+                    Section(header: Text("apitest")) {
+                        ForEach(apiShows.newList, id: \.self) { show in
+                            NavigationLink(destination: ShowEntryView(name: show)) {
+                                Text(show)
+                            }
+                        }
+                    }/*
+                    Section(header: Text("showArrayAPI")) {
+                        ForEach(apiShows.showArray, id: \.self) { show in
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
+                                Text(show)
+                            }
+                        }
+                    }*/
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!) { show in
-                            NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
                                 RowView(show: show)
                             }
                         }
@@ -50,7 +63,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Watching")) {
                         ForEach(showList.lists[.watching]!) { show in
-                            NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
                                 RowView(show: show)
                             }
                         }
@@ -60,7 +73,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Completed")) {
                         ForEach(showList.lists[.completed]!) { show in
-                            NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
                                 RowView(show: show)
                             }
                         }
@@ -70,7 +83,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Dropped")) {
                         ForEach(showList.lists[.dropped]!) { show in
-                            NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
                                 RowView(show: show)
                             }
                         }
@@ -88,7 +101,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Recently deleted")) {
                         ForEach(showList.lists[.recentlyDeleted]!) { show in
-                            NavigationLink(destination: ShowEntryView(show: show, title: show.title, seasons: show.seasons, episodes: show.episodes)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
                                 RowView(show: show)
                             }
                         }
@@ -112,7 +125,7 @@ struct RowView : View {
     
     var body: some View {
         HStack {
-            Text(show.title)
+            Text(show.name)
         }
     }
 }

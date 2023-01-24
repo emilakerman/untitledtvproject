@@ -7,20 +7,28 @@
 
 import Foundation
 
-struct ShowEntry : Identifiable, Equatable {
+struct ShowEntry: Identifiable, Equatable, Codable {
     
-    let id = UUID()
+    var id = UUID()
     
-    let title : String
+    
+    //var urlString = "https://api.tvmaze.com/search/shows?q=alien"
+
+    var name: String
+    var language: String
+    
+    
+    
+    /*
     var rating : Int //user sets this (should translate to stars out of 5)
     let image : Int
     let description : String
     var seasons : Int
     var episodes : Int
-    
+    */
    
     
-    
+    /*
     func add() { //add to an array - "Want to watch/Watching/Completed"
         
     }
@@ -29,5 +37,5 @@ struct ShowEntry : Identifiable, Equatable {
     }
     func rate() { //user rates the tv show after it has been added to "Completed"
         
-    }
+    }*/
 }

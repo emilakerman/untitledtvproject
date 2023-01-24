@@ -8,18 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct ShowEntryView : View {
+struct ApiShowEntryView : View {
     
-    //var show : ApiShows.Show? = nil
-    var show : ShowEntry? = nil
+    var show : ApiShows.Show? = nil
+    //var show : ShowEntry? = nil
     @State var name : String = ""
     @State var language : String = ""
-    
-    /*
-    @State var seasons : Int
-    @State var episodes : Int
-     */
-
     
     var body: some View {
         VStack {

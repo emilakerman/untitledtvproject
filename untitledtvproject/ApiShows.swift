@@ -8,8 +8,7 @@
 import Foundation
 
 class ApiShows : ObservableObject {
-    
-    //var searchName : String = "alien"
+        
     var urlString = "https://api.tvmaze.com/search/shows?q=alien"
     
     //create empty array for the data
@@ -17,14 +16,18 @@ class ApiShows : ObservableObject {
     
     //new list to add names
     @Published var newList = [String]()
+    //one more list with object? name+language
+    @Published var newList2 = []
     
     struct Returned: Codable, Identifiable {
         //var score: Double
         var id : UUID?
         var show: Show
     }
-    struct Show: Codable {
+    //denna måste se ut exakt som json, inga egna variabler
+    struct Show: Codable, Equatable { //kanske ta bort och byta med ShowEntry, eller tvärt emot
         var name: String
+        var language: String
         //var language: String
         //var genres: String
         //var premiered: String
@@ -33,6 +36,7 @@ class ApiShows : ObservableObject {
     }
     
     func getData(completed: @escaping ()->()) {
+        
         print("trying to access the url \(urlString)")
         
         //Create url
@@ -56,9 +60,13 @@ class ApiShows : ObservableObject {
                 self.newList.removeAll()
                 for item in self.showArray {
                     self.newList.append(item.show.name)
+                    self.newList2.append(item.show)
                 }
+                //print(self.newList2.count)
+                //print(self.newList2[1])
+                
             } catch {
-                print("json error \(error.localizedDescription)")
+                print("catch: json error \(error.localizedDescription)")
             }
             completed()
         }

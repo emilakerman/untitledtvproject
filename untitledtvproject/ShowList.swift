@@ -30,23 +30,23 @@ class ShowList : ObservableObject {
         addMockData()
     }
     func addMockData() {
-         lists[.shows]?.append(ShowEntry(title: "Farmen", rating: 0, image: 0, description: "", seasons: 2, episodes: 12))
-         lists[.wantToWatch]?.append(ShowEntry(title: "Farmen", rating: 0, image: 0, description: "", seasons: 2, episodes: 12))
+         lists[.shows]?.append(ShowEntry(name: "Farmen", language: "Swedish"))
+         lists[.wantToWatch]?.append(ShowEntry(name: "Farmen", language: "Swedish"))
         
-         lists[.shows]?.append(ShowEntry(title: "Game of Thrones", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
-         lists[.watching]?.append(ShowEntry(title: "Game of Thrones", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
+         lists[.shows]?.append(ShowEntry(name: "Game of Thrones", language: "English"))
+         lists[.watching]?.append(ShowEntry(name: "Game of Thrones", language: "English"))
         
-         lists[.shows]?.append(ShowEntry(title: "Family Guy", rating: 0, image: 0, description: "", seasons: 1, episodes: 67))
-         lists[.watching]?.append(ShowEntry(title: "Family Guy", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
+         lists[.shows]?.append(ShowEntry(name: "Family Guy", language: "English"))
+         lists[.watching]?.append(ShowEntry(name: "Family Guy", language: "English"))
          
-         lists[.shows]?.append(ShowEntry(title: "South Park", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
-         lists[.watching]?.append(ShowEntry(title: "South Park", rating: 0, image: 0, description: "", seasons: 5, episodes: 67))
+         lists[.shows]?.append(ShowEntry(name: "South Park", language: "English"))
+         lists[.watching]?.append(ShowEntry(name: "South Park", language: "English"))
          
-         lists[.shows]?.append(ShowEntry(title: "Archer", rating: 5, image: 0, description: "", seasons: 9, episodes: 672))
-         lists[.completed]?.append(ShowEntry(title: "Archer", rating: 5, image: 0, description: "", seasons: 9, episodes: 672))
+         lists[.shows]?.append(ShowEntry(name: "Archer", language: "English"))
+         lists[.completed]?.append(ShowEntry(name: "Archer", language: "English"))
          
-         lists[.shows]?.append(ShowEntry(title: "Chuck", rating: 0, image: 0, description: "", seasons: 6, episodes: 88))
-         lists[.dropped]?.append(ShowEntry(title: "Chuck", rating: 0, image: 0, description: "", seasons: 6, episodes: 88))
+         lists[.shows]?.append(ShowEntry(name: "Chuck", language: "English"))
+         lists[.dropped]?.append(ShowEntry(name: "Chuck", language: "English"))
     }
     
     func delete(indexSet: IndexSet, status: Status) {

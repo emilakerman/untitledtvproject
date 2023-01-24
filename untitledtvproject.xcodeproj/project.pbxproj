@@ -22,6 +22,7 @@
 		2002C60A2970530000A01C88 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2002C6092970530000A01C88 /* FirebaseFirestore */; };
 		2002C60C2970530000A01C88 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2002C60B2970530000A01C88 /* FirebaseFirestoreSwift */; };
 		2002C6482976ED6100A01C88 /* ApiShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2002C6472976ED6100A01C88 /* ApiShows.swift */; };
+		20D4AF8C2980027100620EB8 /* ApiShowEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		2002C60129704F7A00A01C88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2002C605297050E900A01C88 /* firestore2shoppinglist2 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = firestore2shoppinglist2; path = ../firestore2shoppinglist2; sourceTree = "<group>"; };
 		2002C6472976ED6100A01C88 /* ApiShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShows.swift; sourceTree = "<group>"; };
+		20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShowEntryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				2002C58C296D8F5400A01C88 /* ShowList.swift */,
 				2002C60129704F7A00A01C88 /* GoogleService-Info.plist */,
 				2002C6472976ED6100A01C88 /* ApiShows.swift */,
+				20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */,
 			);
 			path = untitledtvproject;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20D4AF8C2980027100620EB8 /* ApiShowEntryView.swift in Sources */,
 				2002C58B296D8E5800A01C88 /* ShowEntryView.swift in Sources */,
 				2002C589296D8E3A00A01C88 /* ShowEntry.swift in Sources */,
 				2002C55F296D863000A01C88 /* ContentView.swift in Sources */,
