@@ -9,35 +9,39 @@ import Foundation
 
 class ApiShows : ObservableObject {
         
-    var urlString = "https://api.tvmaze.com/search/shows?q=alien"
+    var urlString = "https://api.tvmaze.com/search/shows?q=resident+alien"
     
     //create empty array for the data
     @Published var showArray: [Returned] = []
     
-    //new list to add names
+    //new list to add names (test)
     @Published var newList = [String]()
-    //one more list with object? name+language
-    //@Published var newList2 : Array = []
-    @Published var newList2: [Returned] = []
-    
-    struct Returned: Codable, Identifiable {
+        
+    struct Returned: Codable, Equatable, Identifiable {
         //var score: Double
         var id : UUID?
         var show: Show
     }
-
-    //denna måste se ut exakt som json, inga egna variabler
-    struct Show: Codable, Equatable {
-        //kanske ta bort och byta med ShowEntry, eller tvärt emot
+    struct Show: Codable, Equatable, Identifiable {
+        var id : String = UUID().uuidString
+        //var id = UUID()
         var name: String
         var language: String
-        //var language: String
-        //var genres: String
-        //var premiered: String
-        //var runtime: Int
-        //var status: String
+        /*
+        var summary: String?
+        var genres: [String]?
+        var image: Image?
+         */
+        private enum CodingKeys: String, CodingKey {
+            case name
+            case language
+        }
     }
-    
+    /*
+    struct Image: Codable {
+        var original: String?
+    }
+     */
     func getData(completed: @escaping ()->()) {
         
         print("trying to access the url \(urlString)")
@@ -58,21 +62,25 @@ class ApiShows : ObservableObject {
             //deal with the data
             do {
                 //the returned data is added to showArray
+                //self.showArray.removeAll()
                 self.showArray = try JSONDecoder().decode([Returned].self, from: data!)
+                
                 //adds the name of the downloaded object to a new list
+                /*
                 self.newList.removeAll()
-                self.newList2.removeAll()
                 for item in self.showArray {
                     self.newList.append(item.show.name) //for names only
-                    self.newList2.append(item)
                 }
+                 */
                 //let i = self.newList2[1].show.language ///goood !!!
                 //print(i)
                 //print(self.newList2[1].show.name) ///yepppp
                 //print(self.showArray[1].show.name)
+                /*
                 for item in self.showArray {
                     print(item.show.name)
-                }
+                }*/
+                print(self.showArray.count)
                 
             } catch {
                 print("catch: json error \(error.localizedDescription)")

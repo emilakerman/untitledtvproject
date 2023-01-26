@@ -17,38 +17,40 @@ struct ContentView: View {
     @State var searchText : String
     @State var emptyList = [String]()
     
-    /*
+    
     var searchResults: [String] {
         if searchText.isEmpty {
             return emptyList
         } else {
             return apiShows.newList.filter { $0.localizedCaseInsensitiveContains(searchText) }
+            //return apiShows.showArray.name.filter { $0.localizedCaseInsensitiveContains(searchText) }
         }
-    }*/
+    }
     
     var body: some View {
         VStack {
             NavigationView {
-                Form {
-                   /* Section(header: Text("Search")) {
+                Form {/*
+                    Section { //WRONG!!!!!!!!!!!
                         ForEach(searchResults, id: \.self) { show in
-                            NavigationLink(show) {
-                                ApiShowEntryView(show: show.name)
-                            }
-                        }
-                    }
-                    .searchable(text: $searchText)*/
-                    Section(header: Text("apitest")) {
-                        ForEach(apiShows.newList, id: \.self) { show in
-                            NavigationLink(destination: ShowEntryView(name: show)) {
+                            NavigationLink {
+                                ShowEntryView(name: show)
+                            } label: {
                                 Text(show)
                             }
                         }
+                        .searchable(text: $searchText)
+                    }*/
+                    List(apiShows.showArray) { returned in
+                        NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language)) {
+                            RowTest(showTest: returned)
+                        }
                     }
-                    Section(header: Text("showArrayAPI")) {
+                    Section(header: Text("showArrayAPI")) { /// duplicate results???
                         ForEach(apiShows.showArray) { returned in
                             NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language)) {
                                 Text(returned.show.name)
+                                //RowTest(showTest: returned)
                             }
                         }
                     }
@@ -92,16 +94,8 @@ struct ContentView: View {
                             showList.delete(indexSet: indexSet, status: .dropped)
                         }
                     }
-                    Section(header: Text("API FETCH")) {
-                        ForEach(apiShows.newList, id: \.self) { show in
-                            Text(show)
-                        }
-                    }
                     .onAppear() {
                         apiShows.getData {}
-                        print("showarray count: \(apiShows.showArray.count)")
-                        print("newList2 count: \(apiShows.newList2.count)")
-                        print("newList count: \(apiShows.newList.count)")
                     }
                     Section(header: Text("Recently deleted")) {
                         ForEach(showList.lists[.recentlyDeleted]!) { show in
@@ -117,11 +111,11 @@ struct ContentView: View {
     }
 }
 struct RowTest : View {
-    var showTest : ApiShows.Show
+    var showTest : ApiShows.Returned
     
     var body: some View {
         HStack {
-            Text(showTest.name)
+            Text(showTest.show.name)
         }
     }
 }

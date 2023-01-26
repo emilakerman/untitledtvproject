@@ -57,4 +57,14 @@ class ShowList : ObservableObject {
             }
         }
     }
+    /*
+    func unDelete(indexSet: IndexSet, status: Status) {
+        for index in indexSet {
+            if let item = lists[status]?[index] {
+                lists[status]?.remove(atOffsets: indexSet)
+                lists[.recentlyDeleted]?.append(item)
+            }
+        }
+    }
+    */
 }

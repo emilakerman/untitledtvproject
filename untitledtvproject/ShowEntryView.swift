@@ -14,6 +14,12 @@ struct ShowEntryView : View {
     var show : ShowEntry? = nil
     @State var name : String = ""
     @State var language : String = ""
+    /*
+    @State var summary: String?
+    @State var genres: [String]?
+    @State var image: Image?
+     */
+    
     
     /*
     @State var seasons : Int
@@ -36,6 +42,14 @@ struct ShowEntryView : View {
         if let show = show {
             name = show.name
             language = show.language
+            /*
+            summary = show.summary
+            genres = show.genres
+            image = show.image
+             */
+            
+            
+            
             //seasons = show.seasons
             //episodes = show.episodes
         }

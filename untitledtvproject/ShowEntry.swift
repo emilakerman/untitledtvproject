@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct ShowEntry: Identifiable, Equatable, Codable {
     
@@ -16,7 +17,11 @@ struct ShowEntry: Identifiable, Equatable, Codable {
 
     var name: String
     var language: String
-    
+    /*
+    var summary: String?
+    var genres: [String]?
+    var image: Image?
+     */
     
     
     /*
