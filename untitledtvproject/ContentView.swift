@@ -13,6 +13,7 @@ enum SearchScope: String, CaseIterable {
 
 struct ContentView: View {
     
+    
     @State var searchScope = SearchScope.name
     
     //@State var searchName = "alien"
@@ -22,6 +23,8 @@ struct ContentView: View {
     
     @State var searchText = ""
     @State var emptyList = [String]()
+    
+
     /*
     @State var searchResults: [ApiShows.Returned] {
         if searchText.isEmpty {
@@ -47,7 +50,7 @@ struct ContentView: View {
                 Form {
                     Section { //search works with api
                         ForEach(filteredMessages) { returned in
-                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language, summary: returned.show.summary)) {
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 //Text(returned.show.name)
                                 RowTest(showTest: returned)
                             }
@@ -79,7 +82,7 @@ struct ContentView: View {
                                 RowTest(showTest: returned)
                             }
                         }
-                    }*/
+                    }*/ /*
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!) { show in
                             NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
@@ -129,7 +132,7 @@ struct ContentView: View {
                                 RowView(show: show)
                             }
                         }
-                    }
+                    }*/
                     
                 }
             }
@@ -137,9 +140,9 @@ struct ContentView: View {
     }
     var filteredMessages: [ApiShows.Returned] {
         if searchText.isEmpty {
-            return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains("") } //so its empty at start
+            return apiShows.orderedNoDuplicates.filter { $0.show.name.localizedCaseInsensitiveContains("") } //so its empty at start
         } else {
-            return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
+            return apiShows.orderedNoDuplicates.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
     func runSearch() {
@@ -148,6 +151,7 @@ struct ContentView: View {
             
             let (data, _) = try await URLSession.shared.data(from: url)
             apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data)
+            apiShows.orderedNoDuplicates = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
         }
     }
 }

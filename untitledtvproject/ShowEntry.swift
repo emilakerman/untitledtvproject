@@ -18,7 +18,8 @@ struct ShowEntry: Identifiable, Codable {
     var name: String
     var language: String
     var summary: String
-    //var image: Image?
+    var image: URL?
+    //var image: String
     /*
     var genres: [String]?
     var image: Image?

@@ -19,16 +19,16 @@ class ApiShows : ObservableObject {
         
     //new search thing
     @Published var searchArray = [Returned]()
+    
+    @Published var orderedNoDuplicates : [Returned] = []
             
     struct Returned: Codable, Identifiable {
-        //var score: Double
-        var id : UUID?
-        //var id = UUID()
+        var id : UUID? //needs to be UUID? but many shows gets the ID = nil which is an issue
         var show: Show
     }
     struct Show: Codable, Identifiable {
-        //var id : String = UUID().uuidString
-        var id = UUID()
+        var id : String = UUID().uuidString
+        //var id = UUID()
         var name: String
         var language: String
         var summary: String
@@ -38,6 +38,7 @@ class ApiShows : ObservableObject {
         var genres: [String]?
         var image: Image?
          */
+        
         private enum CodingKeys: String, CodingKey {
             case name
             case language
@@ -46,7 +47,7 @@ class ApiShows : ObservableObject {
         }
     }
     struct Image: Codable {
-        var original: String?
+        var medium: String?
     }
     //???hmmmm från david
     /*
@@ -61,6 +62,7 @@ class ApiShows : ObservableObject {
         }
     }
      */
+    /*
     func getData(completed: @escaping ()->()) {
         
         print("trying to access the url \(urlString)")
@@ -85,11 +87,11 @@ class ApiShows : ObservableObject {
                 self.showArray = try JSONDecoder().decode([Returned].self, from: data!)
                 
                 //adds the name of the downloaded object to a new list
-                
+                /*
                 self.newList.removeAll()
                 for item in self.showArray {
                     self.newList.append(item.show.name) //for names only
-                }
+                }*/
                  
                 //let i = self.newList2[1].show.language ///goood !!!
                 //print(i)
@@ -99,7 +101,7 @@ class ApiShows : ObservableObject {
                 for item in self.showArray {
                     print(item.show.name)
                 }*/
-                print(self.showArray.count)
+                //print(self.showArray.count)
                 
             } catch {
                 print("catch: json error \(error.localizedDescription)")
@@ -108,4 +110,5 @@ class ApiShows : ObservableObject {
         }
         task.resume()
     }
+     */
 }
