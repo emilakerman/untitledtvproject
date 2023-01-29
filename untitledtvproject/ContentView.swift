@@ -59,10 +59,9 @@ struct ContentView: View {
                            Text(scope.rawValue.capitalized)
                        }
                    }
-                   .onAppear(perform: runSearch)
                    .onSubmit(of: .search, runSearch)
                    .onChange(of: searchScope) { _ in runSearch() }
-                   .textInputAutocapitalization(.never)
+                   .disableAutocorrection(true)
                     /*
                     Section { /// searchable version
                         ForEach(apiShows.showArray) { returned in
@@ -145,7 +144,7 @@ struct ContentView: View {
     }
     func runSearch() {
         Task {
-            guard let url = URL(string: "https://api.tvmaze.com/search/shows?q=\(searchScope.rawValue)") else { return }
+            guard let url = URL(string: "https://api.tvmaze.com/search/shows?q=\(searchText)") else { return }
             
             let (data, _) = try await URLSession.shared.data(from: url)
             apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data)

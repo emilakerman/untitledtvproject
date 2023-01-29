@@ -45,8 +45,15 @@ struct ShowEntryView : View {
         .onAppear() {
             setContent()
         }
+        
     }
     func setContent() {
+        summary = summary.replacingOccurrences(of: "<p>", with: "")
+        summary = summary.replacingOccurrences(of: "</p>", with: "")
+        summary = summary.replacingOccurrences(of: "<b>", with: "")
+        summary = summary.replacingOccurrences(of: "</b>", with: "")
+
+
         if let show = show {
             name = show.name
             language = show.language

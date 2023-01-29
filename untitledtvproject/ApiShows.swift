@@ -23,11 +23,12 @@ class ApiShows : ObservableObject {
     struct Returned: Codable, Identifiable {
         //var score: Double
         var id : UUID?
+        //var id = UUID()
         var show: Show
     }
     struct Show: Codable, Identifiable {
-        var id : String = UUID().uuidString
-        //var id = UUID()
+        //var id : String = UUID().uuidString
+        var id = UUID()
         var name: String
         var language: String
         var summary: String
