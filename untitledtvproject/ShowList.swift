@@ -30,23 +30,23 @@ class ShowList : ObservableObject {
         addMockData()
     }
     func addMockData() {
-         lists[.shows]?.append(ShowEntry(name: "Farmen", language: "Swedish"))
-         lists[.wantToWatch]?.append(ShowEntry(name: "Farmen", language: "Swedish"))
+         lists[.shows]?.append(ShowEntry(name: "Farmen", language: "Swedish", summary: ""))
+         lists[.wantToWatch]?.append(ShowEntry(name: "Farmen", language: "Swedish", summary: ""))
         
-         lists[.shows]?.append(ShowEntry(name: "Game of Thrones", language: "English"))
-         lists[.watching]?.append(ShowEntry(name: "Game of Thrones", language: "English"))
+         lists[.shows]?.append(ShowEntry(name: "Game of Thrones", language: "English",  summary: ""))
+         lists[.watching]?.append(ShowEntry(name: "Game of Thrones", language: "English", summary: ""))
         
-         lists[.shows]?.append(ShowEntry(name: "Family Guy", language: "English"))
-         lists[.watching]?.append(ShowEntry(name: "Family Guy", language: "English"))
+         lists[.shows]?.append(ShowEntry(name: "Family Guy", language: "English", summary: ""))
+         lists[.watching]?.append(ShowEntry(name: "Family Guy", language: "English", summary: ""))
          
-         lists[.shows]?.append(ShowEntry(name: "South Park", language: "English"))
-         lists[.watching]?.append(ShowEntry(name: "South Park", language: "English"))
+         lists[.shows]?.append(ShowEntry(name: "South Park", language: "English", summary: ""))
+         lists[.watching]?.append(ShowEntry(name: "South Park", language: "English", summary: ""))
          
-         lists[.shows]?.append(ShowEntry(name: "Archer", language: "English"))
-         lists[.completed]?.append(ShowEntry(name: "Archer", language: "English"))
+         lists[.shows]?.append(ShowEntry(name: "Archer", language: "English", summary: ""))
+         lists[.completed]?.append(ShowEntry(name: "Archer", language: "English", summary: ""))
          
-         lists[.shows]?.append(ShowEntry(name: "Chuck", language: "English"))
-         lists[.dropped]?.append(ShowEntry(name: "Chuck", language: "English"))
+         lists[.shows]?.append(ShowEntry(name: "Chuck", language: "English", summary: ""))
+         lists[.dropped]?.append(ShowEntry(name: "Chuck", language: "English", summary: ""))
     }
     
     func delete(indexSet: IndexSet, status: Status) {

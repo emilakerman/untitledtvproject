@@ -17,29 +17,47 @@ class ApiShows : ObservableObject {
     //new list to add names (test)
     @Published var newList = [String]()
         
-    struct Returned: Codable, Equatable, Identifiable {
+    //new search thing
+    @Published var searchArray = [Returned]()
+            
+    struct Returned: Codable, Identifiable {
         //var score: Double
         var id : UUID?
         var show: Show
     }
-    struct Show: Codable, Equatable, Identifiable {
+    struct Show: Codable, Identifiable {
         var id : String = UUID().uuidString
         //var id = UUID()
         var name: String
         var language: String
+        var summary: String
+        var image: Image?
+
         /*
-        var summary: String?
         var genres: [String]?
         var image: Image?
          */
         private enum CodingKeys: String, CodingKey {
             case name
             case language
+            case summary
+            case image
         }
     }
-    /*
     struct Image: Codable {
         var original: String?
+    }
+    //???hmmmm från david
+    /*
+    func trytry() {
+        var result : [Returned] = []
+        
+        for stuff in showArray {
+            if stuff.show.name == searchGlobal {
+                result.append(stuff)
+            }
+            print("result list: \(result.count)")
+        }
     }
      */
     func getData(completed: @escaping ()->()) {
@@ -66,12 +84,12 @@ class ApiShows : ObservableObject {
                 self.showArray = try JSONDecoder().decode([Returned].self, from: data!)
                 
                 //adds the name of the downloaded object to a new list
-                /*
+                
                 self.newList.removeAll()
                 for item in self.showArray {
                     self.newList.append(item.show.name) //for names only
                 }
-                 */
+                 
                 //let i = self.newList2[1].show.language ///goood !!!
                 //print(i)
                 //print(self.newList2[1].show.name) ///yepppp

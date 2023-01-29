@@ -7,56 +7,83 @@
 
 import SwiftUI
 
+enum SearchScope: String, CaseIterable {
+    case name
+}
+
 struct ContentView: View {
+    
+    @State var searchScope = SearchScope.name
     
     //@State var searchName = "alien"
     
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
-        
-    @State var searchText : String
+    
+    @State var searchText = ""
     @State var emptyList = [String]()
-    
-    
-    var searchResults: [String] {
+    /*
+    @State var searchResults: [ApiShows.Returned] {
         if searchText.isEmpty {
-            return emptyList
+            return apiShows.showArray
         } else {
-            return apiShows.newList.filter { $0.localizedCaseInsensitiveContains(searchText) }
-            //return apiShows.showArray.name.filter { $0.localizedCaseInsensitiveContains(searchText) }
+            var result : [ApiShows.Returned] = []
+            
+            for stuff in apiShows.showArray {
+                if stuff.show.name == searchText {
+                    result.append(stuff)
+                }
+                
+                
+                //return result.Returned.show.name.filter { $0.localizedCaseInsensitiveContains(apiShows.searchGlobal) }
+                //return apiShows.showArray.name.filter { $0.name.contains(searchText) }
+            }
         }
-    }
+    }*/
     
     var body: some View {
         VStack {
             NavigationView {
-                Form {/*
-                    Section { //WRONG!!!!!!!!!!!
-                        ForEach(searchResults, id: \.self) { show in
-                            NavigationLink {
-                                ShowEntryView(name: show)
-                            } label: {
-                                Text(show)
+                Form {
+                    Section { //search works with api
+                        ForEach(filteredMessages) { returned in
+                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language, summary: returned.show.summary)) {
+                                //Text(returned.show.name)
+                                RowTest(showTest: returned)
                             }
                         }
-                        .searchable(text: $searchText)
-                    }*/
-                    List(apiShows.showArray) { returned in
-                        NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language)) {
-                            RowTest(showTest: returned)
-                        }
                     }
-                    Section(header: Text("showArrayAPI")) { /// duplicate results???
+                   .searchable(text: $searchText)
+                   .searchScopes($searchScope) {
+                       ForEach(SearchScope.allCases, id: \.self) { scope in
+                           Text(scope.rawValue.capitalized)
+                       }
+                   }
+                   .onAppear(perform: runSearch)
+                   .onSubmit(of: .search, runSearch)
+                   .onChange(of: searchScope) { _ in runSearch() }
+                   .textInputAutocapitalization(.never)
+                    /*
+                    Section { /// searchable version
                         ForEach(apiShows.showArray) { returned in
-                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language)) {
-                                Text(returned.show.name)
-                                //RowTest(showTest: returned)
+                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language, summary: returned.show.summary)) {
+                                //Text(returned.show.name)
+                                RowTest(showTest: returned)
                             }
                         }
                     }
+                    //.searchable(text: $searchText)
+                    Section(header: Text("api section")) { /// duplicate results???
+                        ForEach(apiShows.showArray) { returned in
+                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language, summary: returned.show.summary)) {
+                                //Text(returned.show.name)
+                                RowTest(showTest: returned)
+                            }
+                        }
+                    }*/
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
                                 RowView(show: show)
                             }
                         }
@@ -66,7 +93,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Watching")) {
                         ForEach(showList.lists[.watching]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
                                 RowView(show: show)
                             }
                         }
@@ -76,7 +103,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Completed")) {
                         ForEach(showList.lists[.completed]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
                                 RowView(show: show)
                             }
                         }
@@ -86,7 +113,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Dropped")) {
                         ForEach(showList.lists[.dropped]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
                                 RowView(show: show)
                             }
                         }
@@ -99,7 +126,7 @@ struct ContentView: View {
                     }
                     Section(header: Text("Recently deleted")) {
                         ForEach(showList.lists[.recentlyDeleted]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language)) {
+                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
                                 RowView(show: show)
                             }
                         }
@@ -107,6 +134,21 @@ struct ContentView: View {
                     
                 }
             }
+        }
+    }
+    var filteredMessages: [ApiShows.Returned] {
+        if searchText.isEmpty {
+            return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains("") } //so its empty at start
+        } else {
+            return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    func runSearch() {
+        Task {
+            guard let url = URL(string: "https://api.tvmaze.com/search/shows?q=\(searchScope.rawValue)") else { return }
+            
+            let (data, _) = try await URLSession.shared.data(from: url)
+            apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data)
         }
     }
 }
