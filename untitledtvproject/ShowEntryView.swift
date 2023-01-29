@@ -33,14 +33,7 @@ struct ShowEntryView : View {
     
     var body: some View {
         VStack {
-            //URL(string: show2?.image?.original ?? "")
-            //Image(image?.original ?? "")
             AsyncImage(url: URL(string: image?.medium ?? ""))
-                //.frame(maxWidth: 100, maxHeight: 300)
-            //AsyncImage(url: URL(string: "https://static.tvmaze.com/uploads/images/original_untouched/4/11403.jpg"))
-            //Image("\(image?.original)")
-            //Image(systemName: "person.fill")
-            //    .data(url: URL(string: image?.original ?? "") ?? "")
             Text("Title: \(name)")
             Text("Language: \(language)")
                 .padding()
@@ -59,19 +52,15 @@ struct ShowEntryView : View {
         summary = summary.replacingOccurrences(of: "</p>", with: "")
         summary = summary.replacingOccurrences(of: "<b>", with: "")
         summary = summary.replacingOccurrences(of: "</b>", with: "")
-        
+        summary = summary.replacingOccurrences(of: "<i>", with: "")
+        summary = summary.replacingOccurrences(of: "</i>", with: "")
+
+
         guard let url1 = URL(string: show2.show.image?.medium ?? "") else { print("error url not correct emil"); return }
         print("this urL: \(url1)")
-        //image?.original = url1.absoluteString
         do {
-            let data = try Data(contentsOf: url1)
-            //image = Image(url: URL(string: "\(data)"))
-            //image = Image("\(data)")
-            //print("this url: \(data)")
-            //image = url1
+            //let data = try Data(contentsOf: url1)
             image?.medium = url1.absoluteString
-            print("the data variable: \(data)")
-            print("the image::::: \(image?.medium)")
         } catch {
             print("error, no img from url \(url1)")
         }
@@ -88,15 +77,5 @@ struct ShowEntryView : View {
             //seasons = show.seasons
             //episodes = show.episodes
         }
-    }
-}
-extension Image {
-    func data(url:URL) -> Self {
-        if let data = try? Data(contentsOf: url) {
-            return Image(uiImage: UIImage(data: data)!)
-                .resizable()
-        }
-        return self
-            .resizable()
     }
 }
