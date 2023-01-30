@@ -12,9 +12,6 @@ struct ShowEntry: Identifiable, Codable {
     
     var id = UUID()
     
-    
-    //var urlString = "https://api.tvmaze.com/search/shows?q=alien"
-
     var name: String
     var language: String
     var summary: String

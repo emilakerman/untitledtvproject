@@ -18,12 +18,6 @@ struct ShowEntryView : View {
     @State var summary: String = ""
     
     @State var image: ApiShows.Image?
-    //@State var image: String = ""
-    /*
-    @State var genres: [String]?
-    @State var image: Image?
-     */
-    
     
     /*
     @State var seasons : Int
@@ -34,15 +28,20 @@ struct ShowEntryView : View {
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
+                .padding()
             Text("Title: \(name)")
             Text("Language: \(language)")
                 .padding()
             Text("Summary: \(summary)")
                 .padding(10)
             Button("Add to list") {
-
+                //add a show to a list
             }
-        }
+        }/*
+        .background(
+            LinearGradient(colors: [.black, .purple],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing))*/
         .onAppear() {
             setContent()
         }
@@ -57,7 +56,6 @@ struct ShowEntryView : View {
 
 
         guard let url1 = URL(string: show2.show.image?.medium ?? "") else { print("error url not correct emil"); return }
-        print("this urL: \(url1)")
         do {
             //let data = try Data(contentsOf: url1)
             image?.medium = url1.absoluteString

@@ -133,7 +133,34 @@ struct ContentView: View {
                             }
                         }
                     }*/
-                    
+                   .toolbar {
+                       ToolbarItemGroup(placement: .bottomBar) {
+                           TabView {
+                               Text("")
+                                   .tabItem {
+                                       Label("Home", systemImage: "house.fill")
+                               }
+                               Text("")
+                                   .tabItem {
+                                       Label("Stats", systemImage: "point.topleft.down.curvedto.point.filled.bottomright.up")
+                               }
+                               Text("")
+                                   .tabItem {
+                                       Label("Add", systemImage: "plus.app.fill")
+                               }
+                               Text("")
+                                   .tabItem {
+                                       Label("Other", systemImage: "square.and.pencil.circle.fill")
+                               }
+                               ProfileView()
+                                   .tabItem {
+                                       Label("Profile", systemImage: "person.crop.circle.fill")
+                                       Text("Profile")
+                               }
+                           }
+                           .tint(.red)
+                       }
+                   }
                 }
             }
         }
