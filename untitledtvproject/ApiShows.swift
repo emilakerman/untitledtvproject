@@ -13,9 +13,6 @@ class ApiShows : ObservableObject {
     
     //create empty array for the data
     @Published var showArray: [Returned] = []
-    
-    //new list to add names (test)
-    @Published var newList = [String]()
         
     //new search thing
     @Published var searchArray = [Returned]()
@@ -28,7 +25,6 @@ class ApiShows : ObservableObject {
     }
     struct Show: Codable, Identifiable {
         var id : String = UUID().uuidString
-        //var id = UUID()
         var name: String
         var language: String
         var summary: String
@@ -77,26 +73,7 @@ class ApiShows : ObservableObject {
             }
             //deal with the data
             do {
-                //the returned data is added to showArray
-                //self.showArray.removeAll()
                 self.showArray = try JSONDecoder().decode([Returned].self, from: data!)
-                
-                //adds the name of the downloaded object to a new list
-                /*
-                self.newList.removeAll()
-                for item in self.showArray {
-                    self.newList.append(item.show.name) //for names only
-                }*/
-                 
-                //let i = self.newList2[1].show.language ///goood !!!
-                //print(i)
-                //print(self.newList2[1].show.name) ///yepppp
-                //print(self.showArray[1].show.name)
-                /*
-                for item in self.showArray {
-                    print(item.show.name)
-                }*/
-                //print(self.showArray.count)
                 
             } catch {
                 print("catch: json error \(error.localizedDescription)")
@@ -104,6 +81,5 @@ class ApiShows : ObservableObject {
             completed()
         }
         task.resume()
-    }
-     */
+    }*/
 }

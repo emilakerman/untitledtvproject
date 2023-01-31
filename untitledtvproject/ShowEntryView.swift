@@ -17,29 +17,71 @@ struct ShowEntryView : View {
     @State var summary: String = ""
     
     @State var image: ApiShows.Image?
+        
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
-                .padding()
             Text("Title: \(name)")
             Text("Language: \(language)")
                 .padding()
             Text("Summary: \(summary)")
                 .padding(10)
-            Button("Add to list") {
-                //add a show to a list
+            Spacer()
+            NavigationView {
+                Text("")
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button(action: {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Image("house.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button(action: {
+
+                        }) {
+                            Image("redstats")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button(action: {
+
+                        }) {
+                            Image("plus.app.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button(action: {
+
+                        }) {
+                            Image("square.and.pencil.circle.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button(action: {
+
+                        }) {
+                            Image("person.crop.circle.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                    }
+                }
             }
-        }/*
-        .background(
-            LinearGradient(colors: [.black, .purple],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing))*/
+            .navigationBarBackButtonHidden(true)
+        }
         .onAppear() {
             setContent()
         }
     }
     func setContent() {
+        
         summary = summary.replacingOccurrences(of: "<p>", with: "")
         summary = summary.replacingOccurrences(of: "</p>", with: "")
         summary = summary.replacingOccurrences(of: "<b>", with: "")
@@ -47,20 +89,19 @@ struct ShowEntryView : View {
         summary = summary.replacingOccurrences(of: "<i>", with: "")
         summary = summary.replacingOccurrences(of: "</i>", with: "")
 
-
+/*
         guard let url1 = URL(string: show2.show.image?.medium ?? "") else { print("error url not correct emil"); return }
         do {
             //let data = try Data(contentsOf: url1)
             image?.medium = url1.absoluteString
         } catch {
             print("error, no img from url \(url1)")
-        }
-
+        }*/
+/*
         if let show = show {
             name = show.name
             language = show.language
             summary = show.summary
-            image?.medium = url1.absoluteString
-        }
+        }*/
     }
 }

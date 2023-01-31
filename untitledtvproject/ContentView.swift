@@ -14,17 +14,15 @@ enum SearchScope: String, CaseIterable {
 struct ContentView: View {
     
     
+    
     @State var searchScope = SearchScope.name
-    
-    //@State var searchName = "alien"
-    
+        
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
     
     @State var searchText = ""
     @State var emptyList = [String]()
     
-
     /*
     @State var searchResults: [ApiShows.Returned] {
         if searchText.isEmpty {
@@ -43,7 +41,6 @@ struct ContentView: View {
             }
         }
     }*/
-    
     var body: some View {
         VStack {
             NavigationView {
@@ -51,7 +48,6 @@ struct ContentView: View {
                     Section { //search works with api
                         ForEach(filteredMessages) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                //Text(returned.show.name)
                                 RowTest(showTest: returned)
                             }
                         }
@@ -133,36 +129,51 @@ struct ContentView: View {
                             }
                         }
                     }*/
-                   .toolbar {
-                       ToolbarItemGroup(placement: .bottomBar) {
-                           TabView {
-                               Text("")
-                                   .tabItem {
-                                       Label("Home", systemImage: "house.fill")
-                               }
-                               Text("")
-                                   .tabItem {
-                                       Label("Stats", systemImage: "point.topleft.down.curvedto.point.filled.bottomright.up")
-                               }
-                               Text("")
-                                   .tabItem {
-                                       Label("Add", systemImage: "plus.app.fill")
-                               }
-                               Text("")
-                                   .tabItem {
-                                       Label("Other", systemImage: "square.and.pencil.circle.fill")
-                               }
-                               ProfileView()
-                                   .tabItem {
-                                       Label("Profile", systemImage: "person.crop.circle.fill")
-                                       Text("Profile")
-                               }
-                           }
-                           .tint(.red)
-                       }
-                   }
+                    .toolbar {
+                        ToolbarItem(placement: .bottomBar) {
+                            Button(action: {
+                                //do nothing
+                            }) {
+                                Image("house.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                        }
+                        ToolbarItem(placement: .bottomBar) {
+                            Button(action: {
+                                
+                            }) {
+                                Image("redstats")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                        }
+                        ToolbarItem(placement: .bottomBar) {
+                            Button(action: {
+                                
+                            }) {
+                                Image("plus.app.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                        }
+                        ToolbarItem(placement: .bottomBar) {
+                            Button(action: {
+                                
+                            }) {
+                                Image("square.and.pencil.circle.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                        }
+                        ToolbarItem(placement: .bottomBar) {
+                            Button(action: {
+                                
+                            }) {
+                                Image("person.crop.circle.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                        }
+                    }
                 }
             }
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     var filteredMessages: [ApiShows.Returned] {
