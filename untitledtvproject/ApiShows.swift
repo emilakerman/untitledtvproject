@@ -23,8 +23,8 @@ class ApiShows : ObservableObject {
         var id : UUID? //needs to be UUID? but many shows gets the ID = nil which is an issue
         var show: Show
     }
-    struct Show: Codable, Identifiable {
-        var id : String = UUID().uuidString
+    struct Show: Codable /*, Identifiable*/ {
+        //var id : String = UUID().uuidString
         var name: String
         var language: String
         var summary: String
