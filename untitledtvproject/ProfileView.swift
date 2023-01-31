@@ -8,10 +8,57 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
-        Text("Profile View")
-            .font(.title)
-            .foregroundColor(.blue)
+        VStack {
+            HStack {
+                Image(systemName: "person.crop.circle")
+                Text("Name:")
+            }
+            Text("Other information")
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                NavigationLink(destination: ContentView()) {
+                    Image("house.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                }
+            }
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {
+                    
+                }) {
+                    Image("redstats")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                }
+            }
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {
+                    
+                }) {
+                    Image("plus.app.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                }
+            }
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {
+                    
+                }) {
+                    Image("square.and.pencil.circle.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                }
+            }
+            ToolbarItem(placement: .bottomBar) {
+                Button(action: {
+                    
+                }) {
+                    Image("person.crop.circle.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

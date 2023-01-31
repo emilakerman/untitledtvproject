@@ -163,9 +163,7 @@ struct ContentView: View {
                             }
                         }
                         ToolbarItem(placement: .bottomBar) {
-                            Button(action: {
-                                
-                            }) {
+                            NavigationLink(destination: ProfileView()) {
                                 Image("person.crop.circle.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
@@ -173,6 +171,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
         }
     }

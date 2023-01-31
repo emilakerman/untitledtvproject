@@ -29,48 +29,43 @@ struct ShowEntryView : View {
             Text("Summary: \(summary)")
                 .padding(10)
             Spacer()
-            NavigationView {
-                Text("")
-                .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Image("house.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                        }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image("house.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: {
 
-                        }) {
-                            Image("redstats")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                        }
+                    }) {
+                        Image("redstats")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: {
 
-                        }) {
-                            Image("plus.app.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                        }
+                    }) {
+                        Image("plus.app.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: {
 
-                        }) {
-                            Image("square.and.pencil.circle.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                        }
+                    }) {
+                        Image("square.and.pencil.circle.fill")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button(action: {
-
-                        }) {
-                            Image("person.crop.circle.fill")
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    NavigationLink(destination: ProfileView()) {
+                        Image("person.crop.circle.fill")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                        }
                     }
                 }
             }
