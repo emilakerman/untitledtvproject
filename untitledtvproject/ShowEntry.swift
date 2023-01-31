@@ -16,21 +16,7 @@ struct ShowEntry: Identifiable, Codable {
     var language: String
     var summary: String
     var image: URL?
-    //var image: String
-    /*
-    var genres: [String]?
-    var image: Image?
-     */
-    
-    
-    /*
-    var rating : Int //user sets this (should translate to stars out of 5)
-    let image : Int
-    let description : String
-    var seasons : Int
-    var episodes : Int
-    */
-   
+
     
     /*
     func add() { //add to an array - "Want to watch/Watching/Completed"

@@ -33,11 +33,6 @@ class ApiShows : ObservableObject {
         var language: String
         var summary: String
         var image: Image?
-
-        /*
-        var genres: [String]?
-        var image: Image?
-         */
         
         private enum CodingKeys: String, CodingKey {
             case name

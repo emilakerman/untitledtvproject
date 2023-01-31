@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ShowEntryView : View {
     
-    
     var show2 : ApiShows.Returned
     var show : ShowEntry? = nil
     @State var name : String = ""
@@ -18,12 +17,6 @@ struct ShowEntryView : View {
     @State var summary: String = ""
     
     @State var image: ApiShows.Image?
-    
-    /*
-    @State var seasons : Int
-    @State var episodes : Int
-     */
-
     
     var body: some View {
         VStack {
@@ -68,12 +61,6 @@ struct ShowEntryView : View {
             language = show.language
             summary = show.summary
             image?.medium = url1.absoluteString
-            /*
-            genres = show.genres
-            image = show.image
-             */
-            //seasons = show.seasons
-            //episodes = show.episodes
         }
     }
 }
