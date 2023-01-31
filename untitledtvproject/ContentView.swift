@@ -42,23 +42,6 @@ struct ContentView: View {
                    .onChange(of: searchScope) { _ in runSearch() }
                    .disableAutocorrection(true)
                     /*
-                    Section { /// searchable version
-                        ForEach(apiShows.showArray) { returned in
-                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language, summary: returned.show.summary)) {
-                                //Text(returned.show.name)
-                                RowTest(showTest: returned)
-                            }
-                        }
-                    }
-                    //.searchable(text: $searchText)
-                    Section(header: Text("api section")) { /// duplicate results???
-                        ForEach(apiShows.showArray) { returned in
-                            NavigationLink(destination: ShowEntryView(name: returned.show.name, language: returned.show.language, summary: returned.show.summary)) {
-                                //Text(returned.show.name)
-                                RowTest(showTest: returned)
-                            }
-                        }
-                    }*/ /*
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!) { show in
                             NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {

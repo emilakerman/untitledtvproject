@@ -18,7 +18,7 @@ struct ShowEntryView : View {
     
     @State var image: ApiShows.Image?
         
-    @Environment(\.presentationMode) var presentationMode
+    //@Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
@@ -32,9 +32,7 @@ struct ShowEntryView : View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     HStack {
-                        Button(action: {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }) {
+                        NavigationLink(destination: ContentView()) {
                             Image("house.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
