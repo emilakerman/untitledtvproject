@@ -19,42 +19,40 @@ struct ProfileView: View {
             Text("Other information")
         }
         .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                NavigationLink(destination: ContentView()) {
-                    Image("house.fill")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                }
-            }
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    
-                }) {
-                    Image("redstats")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                }
-            }
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    
-                }) {
-                    Image("plus.app")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                }
-            }
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    
-                }) {
-                    Image("square.and.pencil.circle.fill")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                }
-            }
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    
-                }) {
-                    Image("person.crop.circle.fill")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+            ToolbarItemGroup(placement: .bottomBar) {
+                HStack {
+                    NavigationLink(destination: ContentView()) {
+                        Image("house.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    }
+                    Spacer()
+                    Button(action: {
+                        
+                    }) {
+                        Image("redstats")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    }
+                    Spacer()
+                    Button(action: {
+                        
+                    }) {
+                        Image("plus.app")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    }
+                    Spacer()
+                    Button(action: {
+                        
+                    }) {
+                        Image("square.and.pencil.circle.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    }
+                    Spacer()
+                    Button(action: {
+                        
+                    }) {
+                        Image("person.crop.circle.fill")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    }
                 }
             }
         }

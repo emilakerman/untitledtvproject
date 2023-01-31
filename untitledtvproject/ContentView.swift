@@ -13,8 +13,6 @@ enum SearchScope: String, CaseIterable {
 
 struct ContentView: View {
     
-    
-    
     @State var searchScope = SearchScope.name
         
     @StateObject var showList = ShowList()
@@ -112,42 +110,40 @@ struct ContentView: View {
                         }
                     }*/
                     .toolbar {
-                        ToolbarItem(placement: .bottomBar) {
-                            Button(action: {
-                                //do nothing
-                            }) {
-                                Image("house.fill")
-                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            }
-                        }
-                        ToolbarItem(placement: .bottomBar) {
-                            Button(action: {
-                                
-                            }) {
-                                Image("redstats")
-                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            }
-                        }
-                        ToolbarItem(placement: .bottomBar) {
-                            Button(action: {
-                                
-                            }) {
-                                Image("plus.app")
-                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            }
-                        }
-                        ToolbarItem(placement: .bottomBar) {
-                            Button(action: {
-                                
-                            }) {
-                                Image("square.and.pencil.circle.fill")
-                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                            }
-                        }
-                        ToolbarItem(placement: .bottomBar) {
-                            NavigationLink(destination: ProfileView()) {
-                                Image("person.crop.circle.fill")
-                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            HStack {
+                                Button(action: {
+                                    //do nothing
+                                }) {
+                                    Image("house.fill")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                Button(action: {
+                                    
+                                }) {
+                                    Image("redstats")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                Button(action: {
+                                    
+                                }) {
+                                    Image("plus.app")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                Button(action: {
+                                    
+                                }) {
+                                    Image("square.and.pencil.circle.fill")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                NavigationLink(destination: ProfileView()) {
+                                    Image("person.crop.circle.fill")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
                             }
                         }
                     }

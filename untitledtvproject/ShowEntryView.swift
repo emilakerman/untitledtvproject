@@ -30,42 +30,40 @@ struct ShowEntryView : View {
                 .padding(10)
             Spacer()
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image("house.fill")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: {
-
-                    }) {
-                        Image("redstats")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: {
-
-                    }) {
-                        Image("plus.app.fill")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: {
-
-                    }) {
-                        Image("square.and.pencil.circle.fill")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    NavigationLink(destination: ProfileView()) {
-                        Image("person.crop.circle.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                ToolbarItemGroup(placement: .bottomBar) {
+                    HStack {
+                        Button(action: {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Image("house.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("redstats")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("plus.app.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("square.and.pencil.circle.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        NavigationLink(destination: ProfileView()) {
+                            Image("person.crop.circle.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
                     }
                 }
             }
