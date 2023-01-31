@@ -22,25 +22,7 @@ struct ContentView: View {
     
     @State var searchText = ""
     @State var emptyList = [String]()
-    
-    /*
-    @State var searchResults: [ApiShows.Returned] {
-        if searchText.isEmpty {
-            return apiShows.showArray
-        } else {
-            var result : [ApiShows.Returned] = []
-            
-            for stuff in apiShows.showArray {
-                if stuff.show.name == searchText {
-                    result.append(stuff)
-                }
-                
-                
-                //return result.Returned.show.name.filter { $0.localizedCaseInsensitiveContains(apiShows.searchGlobal) }
-                //return apiShows.showArray.name.filter { $0.name.contains(searchText) }
-            }
-        }
-    }*/
+
     var body: some View {
         VStack {
             NavigationView {
@@ -52,7 +34,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                   .searchable(text: $searchText)
+                   .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                    .searchScopes($searchScope) {
                        ForEach(SearchScope.allCases, id: \.self) { scope in
                            Text(scope.rawValue.capitalized)
