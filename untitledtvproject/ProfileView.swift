@@ -37,7 +37,7 @@ struct ProfileView: View {
                 Button(action: {
                     
                 }) {
-                    Image("plus.app.fill")
+                    Image("plus.app")
                         .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                 }
             }
