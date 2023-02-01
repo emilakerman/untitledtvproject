@@ -16,12 +16,13 @@ class ApiShows : ObservableObject {
         
     //new search thing
     @Published var searchArray = [Returned]()
-    
-    @Published var orderedNoDuplicates : [Returned] = []
-            
+                
     struct Returned: Codable, Identifiable {
         var id : UUID? //needs to be UUID? but many shows gets the ID = nil which is an issue
         var show: Show
+    }
+    enum SearchScope: String, CaseIterable {
+        case name
     }
     struct Show: Codable /*, Identifiable*/ {
         //var id : String = UUID().uuidString
@@ -30,7 +31,7 @@ class ApiShows : ObservableObject {
         var summary: String
         var image: Image?
         
-        private enum CodingKeys: String, CodingKey {
+        enum CodingKeys: String, CodingKey {
             case name
             case language
             case summary

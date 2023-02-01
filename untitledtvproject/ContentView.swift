@@ -7,13 +7,9 @@
 
 import SwiftUI
 
-enum SearchScope: String, CaseIterable {
-    case name
-}
-
 struct ContentView: View {
     
-    @State var searchScope = SearchScope.name
+    @State var searchScope = ApiShows.SearchScope.name
         
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
@@ -35,14 +31,16 @@ struct ContentView: View {
                             }
                         }
                     }
+                    //         searchText = searchText.replacingOccurrences(of: " ", with: "%20")
+
                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                    .searchScopes($searchScope) {
-                       ForEach(SearchScope.allCases, id: \.self) { scope in
+                       ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in
                            Text(scope.rawValue.capitalized)
                        }
                    }
-                   .onSubmit(of: .search, runSearch)
-                   .onChange(of: searchScope) { _ in runSearch() }
+                   .onSubmit(of: .search, getData)
+                   .onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
                     /*
                     Section(header: Text("Want to watch")) {
@@ -141,24 +139,44 @@ struct ContentView: View {
     }
     var filteredMessages: [ApiShows.Returned] {
         if searchText.isEmpty {
-            return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains("") } //so its empty at start
+            return singleItemList
         } else {
             return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
-    func runSearch() {
-        Task {
-            
-            //searchText = searchText.replacingOccurrences(of: " ", with: "%20")
-            
-            guard let url = URL(string: "https://api.tvmaze.com/search/shows?q=\(searchText)") else { return }
-
-            let (data, _) = try await URLSession.shared.data(from: url)
-            apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data)
-            orderedNoDuplicates1 = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
-            singleItemList.removeAll()
-            singleItemList.append(orderedNoDuplicates1[0])
+    func getData() {
+        
+        searchText = searchText.replacingOccurrences(of: " ", with: "+")
+        let urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
+        
+        print("trying to access the url \(urlString)")
+        
+        //Create url
+        guard let url = URL(string: urlString) else {
+            print("Error could not create url from \(urlString)")
+            return
         }
+        searchText = searchText.replacingOccurrences(of: "+", with: " ")
+        
+        //create urlsession
+        let session = URLSession.shared
+        //get data with .dataTask method
+        let task = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("error \(error.localizedDescription)")
+            }
+            //deal with the data
+            do {
+                apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
+                orderedNoDuplicates1 = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
+                singleItemList.removeAll()
+                singleItemList.append(orderedNoDuplicates1[0])
+                
+            } catch {
+                print("catch: json error \(error.localizedDescription)")
+            }
+        }
+        task.resume()
     }
 }
 struct RowTest : View {
