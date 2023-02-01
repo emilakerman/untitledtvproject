@@ -24,7 +24,7 @@ struct ContentView: View {
         VStack {
             NavigationView {
                 Form {
-                    Section { //search works with api
+                    Section {
                         ForEach(filteredMessages) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
@@ -139,6 +139,9 @@ struct ContentView: View {
         if searchText.isEmpty {
             return singleItemList
         } else {
+            if singleItemList.isEmpty {
+                return singleItemList
+            }
             return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
