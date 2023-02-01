@@ -16,7 +16,7 @@ struct ContentView: View {
     
     @State var searchText = ""
     
-    @State var orderedNoDuplicates1 : [ApiShows.Returned] = []
+    @State var orderedNoDuplicates : [ApiShows.Returned] = []
     
     @State var singleItemList : [ApiShows.Returned] = []
 
@@ -31,8 +31,6 @@ struct ContentView: View {
                             }
                         }
                     }
-                    //         searchText = searchText.replacingOccurrences(of: " ", with: "%20")
-
                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                    .searchScopes($searchScope) {
                        ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in
@@ -168,9 +166,9 @@ struct ContentView: View {
             //deal with the data
             do {
                 apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
-                orderedNoDuplicates1 = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
+                orderedNoDuplicates = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
                 singleItemList.removeAll()
-                singleItemList.append(orderedNoDuplicates1[0])
+                singleItemList.append(orderedNoDuplicates[0])
                 
             } catch {
                 print("catch: json error \(error.localizedDescription)")
