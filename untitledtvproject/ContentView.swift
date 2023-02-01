@@ -19,7 +19,10 @@ struct ContentView: View {
     @StateObject var apiShows = ApiShows()
     
     @State var searchText = ""
-    @State var emptyList = [String]()
+    
+    @State var orderedNoDuplicates1 : [ApiShows.Returned] = []
+    
+    @State var singleItemList : [ApiShows.Returned] = []
 
     var body: some View {
         VStack {
@@ -138,18 +141,23 @@ struct ContentView: View {
     }
     var filteredMessages: [ApiShows.Returned] {
         if searchText.isEmpty {
-            return apiShows.orderedNoDuplicates.filter { $0.show.name.localizedCaseInsensitiveContains("") } //so its empty at start
+            return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains("") } //so its empty at start
         } else {
-            return apiShows.orderedNoDuplicates.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
+            return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
     func runSearch() {
         Task {
-            guard let url = URL(string: "https://api.tvmaze.com/search/shows?q=\(searchText)") else { return }
             
+            //searchText = searchText.replacingOccurrences(of: " ", with: "%20")
+            
+            guard let url = URL(string: "https://api.tvmaze.com/search/shows?q=\(searchText)") else { return }
+
             let (data, _) = try await URLSession.shared.data(from: url)
             apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data)
-            apiShows.orderedNoDuplicates = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
+            orderedNoDuplicates1 = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
+            singleItemList.removeAll()
+            singleItemList.append(orderedNoDuplicates1[0])
         }
     }
 }
