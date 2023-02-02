@@ -14,10 +14,18 @@ struct ContentView: View {
     
     @State var signedIn = false
     
+    @State var wantToSignUp = false
+    
+    @State var createdAccount = false
+    
     var body: some View {
-        if !signedIn {
-            LoginView(signedIn: $signedIn)
-        } else   {
+        if !wantToSignUp && !createdAccount {
+            LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp)
+        }
+        if wantToSignUp {
+            SignUpView(wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)
+        }
+        if createdAccount || signedIn {
             OverView()
         }
     }
@@ -25,20 +33,16 @@ struct ContentView: View {
 struct LoginView: View {
     
     @Binding var signedIn : Bool
-
+    @Binding var wantToSignUp : Bool
+    
     @State var userInput : String = ""
     @State var pwInput : String = ""
-
+    
     var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
     
     var body: some View {
-        /*
-        if !signedIn {
-            LoginView(signedIn: signedIn)
-        } else {
-            ContentView()
-        }*/
         VStack {
+            Text("Sign in")
             TextField("Username", text: $userInput)
                 .padding()
                 .background(newColor)
@@ -51,21 +55,16 @@ struct LoginView: View {
                 .padding(.bottom, 20)
             Button(action: { signIn() }) {
                 Text("Sign in")}
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding()
-                .frame(width: 220, height: 60)
-                .background(Color.green)
-                .cornerRadius(15.0)
+            .font(.headline)
+            .foregroundColor(.white)
+            .padding()
+            .frame(width: 220, height: 60)
+            .background(Color.green)
+            .cornerRadius(15.0)
+            Button(action: { wantToSignUp = true }) {
+                Text("No account? Create account here")}
         }
     }
-    /*
-     if !signedIn {
-         LoginView(signedIn: signedIn)
-     } else {
-         ContentView()
-     }
-     */
     func signIn() {
         Auth.auth().signIn(withEmail: userInput, password: pwInput) { (result, error) in
             if error != nil {
@@ -75,11 +74,52 @@ struct LoginView: View {
                 print("success")
             }
         }
-        /*
+    }
+}
+struct SignUpView: View {
+    
+    @Binding var wantToSignUp : Bool
+    
+    @Binding var createdAccount : Bool
+    
+    @State var userInput : String = ""
+    @State var pwInput : String = ""
+    
+    var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
+    
+    var body: some View {
+        VStack {
+            Text("Create account")
+            TextField("Username", text: $userInput)
+                .padding()
+                .background(newColor)
+                .cornerRadius(5.0)
+                .padding(.bottom, 20)
+            SecureField("Password", text: $pwInput)
+                .padding()
+                .background(newColor)
+                .cornerRadius(5.0)
+                .padding(.bottom, 20)
+            Button(action: { signUp() }) {
+                Text("Create account")}
+            .font(.headline)
+            .foregroundColor(.white)
+            .padding()
+            .frame(width: 220, height: 60)
+            .background(Color.green)
+            .cornerRadius(15.0)
+            Button(action: { wantToSignUp = false }) {
+                Text("Already got an account? Log in here!")}
+        }
+    }
     func signUp() {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-          // ...
-        }*/
+        Auth.auth().createUser(withEmail: userInput, password: pwInput) { result, error in
+            if let error = error {
+                print("an error occured: \(error.localizedDescription)")
+                return
+            }
+            if (result?.user.uid != nil) { createdAccount = true ; wantToSignUp = false }
+        }
     }
 }
 struct OverView : View {

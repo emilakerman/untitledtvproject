@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
+import Firebase
 
 struct ProfileView: View {
     
@@ -56,7 +59,7 @@ struct ProfileView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 HStack {
-                    NavigationLink(destination: ContentView()) {
+                    NavigationLink(destination: OverView()) {
                         Image("house.fill")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
@@ -92,6 +95,13 @@ struct ProfileView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+    }
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
     }
 }
 

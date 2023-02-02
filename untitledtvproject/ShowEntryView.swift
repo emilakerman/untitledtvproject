@@ -30,7 +30,7 @@ struct ShowEntryView : View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     HStack {
-                        NavigationLink(destination: ContentView()) {
+                        NavigationLink(destination: OverView()) {
                             Image("house.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
