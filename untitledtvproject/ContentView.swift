@@ -19,13 +19,16 @@ struct ContentView: View {
     @State var createdAccount = false
     
     var body: some View {
-        if !wantToSignUp && !createdAccount {
+        if !wantToSignUp && !createdAccount && !signedIn {
             LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp)
         }
         if wantToSignUp {
             SignUpView(wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)
         }
-        if createdAccount || signedIn {
+        if signedIn {
+            OverView()
+        }
+        if createdAccount {
             OverView()
         }
     }
@@ -71,7 +74,6 @@ struct LoginView: View {
                 print(error?.localizedDescription ?? "")
             } else {
                 signedIn = true
-                print("success")
             }
         }
     }

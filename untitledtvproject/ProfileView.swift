@@ -16,11 +16,26 @@ struct ProfileView: View {
     
     var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
     
+    let user = Auth.auth().currentUser
+    
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "person.crop.circle")
-                Text("Name:")
+                Image("defaultprofilepic") //will be user image + (if no profile pic, then use this default one) --- >>>user.photoURL<<<
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .padding(10)
+                    .padding(.top, 10)
+                Text(user?.email ?? "") //maybe change to username
+                Spacer()
+                Button(action: {
+                    
+                }) {
+                    Image("info.circle")
+                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                }
+                .padding(10)
+                .padding(.top, 10)
             }
             Spacer()
             Text("Other information")
@@ -102,7 +117,24 @@ struct ProfileView: View {
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
-    }
+    }/*
+    func getUserData() {
+        let user = Auth.auth().currentUser
+        if let user = user {
+          // The user's ID, unique to the Firebase project.
+          // Do NOT use this value to authenticate with your backend server,
+          // if you have one. Use getTokenWithCompletion:completion: instead.
+          let uid = user.uid
+          let email = user.email
+          let photoURL = user.photoURL
+          var multiFactorString = "MultiFactor: "
+          for info in user.multiFactor.enrolledFactors {
+            multiFactorString += info.displayName ?? "[DispayName]"
+            multiFactorString += " "
+          }
+          // ...
+        }
+    }*/
 }
 
 struct ProfileView_Previews: PreviewProvider {
