@@ -6,8 +6,83 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
+import Firebase
 
 struct ContentView: View {
+    
+    @State var signedIn = false
+    
+    var body: some View {
+        if !signedIn {
+            LoginView(signedIn: $signedIn)
+        } else   {
+            OverView()
+        }
+    }
+}
+struct LoginView: View {
+    
+    @Binding var signedIn : Bool
+
+    @State var userInput : String = ""
+    @State var pwInput : String = ""
+
+    var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
+    
+    var body: some View {
+        /*
+        if !signedIn {
+            LoginView(signedIn: signedIn)
+        } else {
+            ContentView()
+        }*/
+        VStack {
+            TextField("Username", text: $userInput)
+                .padding()
+                .background(newColor)
+                .cornerRadius(5.0)
+                .padding(.bottom, 20)
+            SecureField("Password", text: $pwInput)
+                .padding()
+                .background(newColor)
+                .cornerRadius(5.0)
+                .padding(.bottom, 20)
+            Button(action: { signIn() }) {
+                Text("Sign in")}
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .frame(width: 220, height: 60)
+                .background(Color.green)
+                .cornerRadius(15.0)
+        }
+    }
+    /*
+     if !signedIn {
+         LoginView(signedIn: signedIn)
+     } else {
+         ContentView()
+     }
+     */
+    func signIn() {
+        Auth.auth().signIn(withEmail: userInput, password: pwInput) { (result, error) in
+            if error != nil {
+                print(error?.localizedDescription ?? "")
+            } else {
+                signedIn = true
+                print("success")
+            }
+        }
+        /*
+    func signUp() {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+          // ...
+        }*/
+    }
+}
+struct OverView : View {
     
     @State var searchScope = ApiShows.SearchScope.name
         
@@ -15,9 +90,7 @@ struct ContentView: View {
     @StateObject var apiShows = ApiShows()
     
     @State var searchText = ""
-    
-    @State var orderedNoDuplicates : [ApiShows.Returned] = []
-    
+        
     @State var singleItemList : [ApiShows.Returned] = []
 
     var body: some View {
@@ -147,7 +220,7 @@ struct ContentView: View {
     }
     func getData() {
         
-        searchText = searchText.replacingOccurrences(of: " ", with: "+")
+        searchText = searchText.replacingOccurrences(of: " ", with: "%20")
         let urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
         
         print("trying to access the url \(urlString)")
@@ -157,7 +230,7 @@ struct ContentView: View {
             print("Error could not create url from \(urlString)")
             return
         }
-        searchText = searchText.replacingOccurrences(of: "+", with: " ")
+        searchText = searchText.replacingOccurrences(of: "%20", with: " ") //problem med house of the dragon "-" "-" something
         
         //create urlsession
         let session = URLSession.shared
@@ -169,12 +242,11 @@ struct ContentView: View {
             //deal with the data
             do {
                 apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
-                orderedNoDuplicates = NSOrderedSet(array: apiShows.searchArray).map({ $0 as! ApiShows.Returned })
                 singleItemList.removeAll()
-                singleItemList.append(orderedNoDuplicates[0])
+                singleItemList.append(apiShows.searchArray[0])
                 
             } catch {
-                print("catch: json error \(error.localizedDescription)")
+                print("catch: json error: \(error.localizedDescription)")
             }
         }
         task.resume()

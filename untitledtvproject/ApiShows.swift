@@ -8,13 +8,11 @@
 import Foundation
 
 class ApiShows : ObservableObject {
-        
-    var urlString = "https://api.tvmaze.com/search/shows?q=resident+alien"
-    
+            
     //create empty array for the data
     @Published var showArray: [Returned] = []
         
-    //new search thing
+    //search array for api
     @Published var searchArray = [Returned]()
                 
     struct Returned: Codable, Identifiable {

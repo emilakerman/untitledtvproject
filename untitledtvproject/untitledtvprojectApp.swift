@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import Firebase
 
 @main
 struct untitledtvprojectApp: App {
+    
+    init() {
+        FirebaseApp.configure()
+    }
     var body: some Scene {
         WindowGroup {
-            ContentView(searchText: "")
+            ContentView()
+            //LoginView(signedIn: false)
         }
     }
 }

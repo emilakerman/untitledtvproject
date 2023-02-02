@@ -17,9 +17,7 @@ struct ShowEntryView : View {
     @State var summary: String = ""
     
     @State var image: ApiShows.Image?
-        
-    //@Environment(\.presentationMode) var presentationMode
-    
+            
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))

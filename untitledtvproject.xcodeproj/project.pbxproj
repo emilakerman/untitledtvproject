@@ -58,7 +58,6 @@
 		2002C58A296D8E5800A01C88 /* ShowEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowEntryView.swift; sourceTree = "<group>"; };
 		2002C58C296D8F5400A01C88 /* ShowList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowList.swift; sourceTree = "<group>"; };
 		2002C60129704F7A00A01C88 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		2002C605297050E900A01C88 /* firestore2shoppinglist2 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = firestore2shoppinglist2; path = ../firestore2shoppinglist2; sourceTree = "<group>"; };
 		2002C6472976ED6100A01C88 /* ApiShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShows.swift; sourceTree = "<group>"; };
 		20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShowEntryView.swift; sourceTree = "<group>"; };
 		20FD49DB2988284700208727 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -159,7 +158,6 @@
 		2002C604297050E700A01C88 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2002C605297050E900A01C88 /* firestore2shoppinglist2 */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

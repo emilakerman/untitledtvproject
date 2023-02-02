@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ProfileView: View {
+    
     @Environment(\.presentationMode) var presentationMode
+    
+    var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
     
     var body: some View {
         VStack {
@@ -16,7 +19,39 @@ struct ProfileView: View {
                 Image(systemName: "person.crop.circle")
                 Text("Name:")
             }
+            Spacer()
             Text("Other information")
+            Spacer()
+            HStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(newColor)
+                    .aspectRatio(1.0, contentMode: .fit)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(newColor)
+                    .aspectRatio(1.0, contentMode: .fit)
+            }
+            .padding(10)
+            .padding(.bottom, -20)
+            HStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(newColor)
+                    .aspectRatio(1.0, contentMode: .fit)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(newColor)
+                    .aspectRatio(1.0, contentMode: .fit)
+            }
+            .padding(10)
+            .padding(.bottom, -20)
+            HStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(newColor)
+                    .aspectRatio(1.0, contentMode: .fit)
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(newColor)
+                    .aspectRatio(1.0, contentMode: .fit)
+            }
+            .padding(10)
+            Spacer()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
