@@ -17,7 +17,7 @@ struct ProfileView: View {
     var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
     
     let user = Auth.auth().currentUser
-    
+        
     var body: some View {
         VStack {
             HStack {
@@ -38,7 +38,7 @@ struct ProfileView: View {
                 .padding(.top, 10)
             }
             Spacer()
-            Text("Other information")
+            Text("Another way of seeing your data")
             Spacer()
             HStack {
                 RoundedRectangle(cornerRadius: 20)
@@ -111,7 +111,7 @@ struct ProfileView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
-    func signOut() {
+    func signOut() { //not done yet
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {

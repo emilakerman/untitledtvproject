@@ -17,6 +17,8 @@ struct ShowEntryView : View {
     @State var summary: String = ""
     
     @State var image: ApiShows.Image?
+    
+    @State var scale = 0.5
             
     var body: some View {
         VStack {
@@ -47,6 +49,7 @@ struct ShowEntryView : View {
                         }) {
                             Image("plus.app.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                .scaleEffect(scale)
                         }
                         Spacer()
                         Button(action: {
@@ -67,6 +70,12 @@ struct ShowEntryView : View {
         }
         .onAppear() {
             setContent()
+            let baseAnimation = Animation.easeInOut(duration: 1)
+            let repeated = baseAnimation.repeatForever(autoreverses: true)
+
+            withAnimation {
+                scale = 1
+            }
         }
     }
     func setContent() {
