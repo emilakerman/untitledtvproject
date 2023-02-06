@@ -22,18 +22,32 @@ class ApiShows : ObservableObject {
     enum SearchScope: String, CaseIterable {
         case name
     }
-    struct Show: Codable{
+    struct Show: Codable {
         var name: String
         var language: String
         var summary: String
         var image: Image?
+        // new info below
+        var type: String
+        //var genres: [String]?
+        var network: Network?
+        var status: String
+        var premiered: String
         
         enum CodingKeys: String, CodingKey {
             case name
             case language
             case summary
             case image
+            case type
+            //case genres
+            case network
+            case status
+            case premiered
         }
+    }
+    struct Network: Codable {
+        var name: String?
     }
     struct Image: Codable {
         var medium: String?

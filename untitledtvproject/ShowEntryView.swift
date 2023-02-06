@@ -18,16 +18,22 @@ struct ShowEntryView : View {
     
     @State var image: ApiShows.Image?
     
-    @State var scale = 0.5
+    @State var scale = 0.1
             
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
+                .padding()
             Text("Title: \(name)")
             Text("Language: \(language)")
                 .padding()
             Text("Summary: \(summary)")
                 .padding(10)
+                NavigationLink {
+                    ShowEntryMoreView(show2: show2, name: show2.show.name, language: show2.show.language, summary: show2.show.summary, image: show2.show.image, type: show2.show.type, network: show2.show.network, status: show2.show.status, premiered: show2.show.premiered)
+                } label: {
+                    Text("Show more information")
+                }
             Spacer()
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -70,8 +76,7 @@ struct ShowEntryView : View {
         }
         .onAppear() {
             setContent()
-            let baseAnimation = Animation.easeInOut(duration: 1)
-            let repeated = baseAnimation.repeatForever(autoreverses: true)
+            _ = Animation.easeInOut(duration: 1)
 
             withAnimation {
                 scale = 1
