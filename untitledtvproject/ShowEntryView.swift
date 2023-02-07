@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Firebase
 
 struct ShowEntryView : View {
     
@@ -21,6 +22,8 @@ struct ShowEntryView : View {
     @State var scale = 0.1
             
     var body: some View {
+        let db = Firestore.firestore()
+        
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
                 .padding()

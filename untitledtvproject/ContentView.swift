@@ -19,17 +19,14 @@ struct ContentView: View {
     @State var createdAccount = false
     
     var body: some View {
-        if !wantToSignUp && !createdAccount && !signedIn {
-            LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp)
-        }
-        if wantToSignUp {
-            SignUpView(wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)
-        }
-        if signedIn {
+        if Auth.auth().currentUser != nil || signedIn {
             OverView()
         }
-        if createdAccount {
-            OverView()
+        if Auth.auth().currentUser == nil && !wantToSignUp {
+            LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)
+        }
+        if Auth.auth().currentUser == nil && wantToSignUp {
+            SignUpView(wantToSignUp: $wantToSignUp, createdAccount: $createdAccount, signedIn: $signedIn)
         }
     }
 }
@@ -37,6 +34,7 @@ struct LoginView: View {
     
     @Binding var signedIn : Bool
     @Binding var wantToSignUp : Bool
+    @Binding var createdAccount : Bool
     
     @State var userInput : String = ""
     @State var pwInput : String = ""
@@ -64,9 +62,11 @@ struct LoginView: View {
             .frame(width: 220, height: 60)
             .background(Color.green)
             .cornerRadius(15.0)
-            Button(action: { wantToSignUp = true }) {
-                Text("No account? Create account here")}
+            NavigationLink(destination: SignUpView(wantToSignUp: $wantToSignUp, createdAccount: $createdAccount, signedIn: $signedIn)) {
+                Text("No account? Create account here")
+            }
         }
+        .navigationBarBackButtonHidden(true)
     }
     func signIn() {
         Auth.auth().signIn(withEmail: userInput, password: pwInput) { (result, error) in
@@ -81,8 +81,8 @@ struct LoginView: View {
 struct SignUpView: View {
     
     @Binding var wantToSignUp : Bool
-    
     @Binding var createdAccount : Bool
+    @Binding var signedIn : Bool
     
     @State var userInput : String = ""
     @State var pwInput : String = ""
@@ -110,9 +110,11 @@ struct SignUpView: View {
             .frame(width: 220, height: 60)
             .background(Color.green)
             .cornerRadius(15.0)
-            Button(action: { wantToSignUp = false }) {
-                Text("Already got an account? Log in here!")}
+            NavigationLink(destination: LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)) {
+                Text("Already got an account? Login here")
+            }
         }
+        .navigationBarBackButtonHidden(true)
     }
     func signUp() {
         Auth.auth().createUser(withEmail: userInput, password: pwInput) { result, error in
@@ -120,7 +122,7 @@ struct SignUpView: View {
                 print("an error occured: \(error.localizedDescription)")
                 return
             }
-            if (result?.user.uid != nil) { createdAccount = true ; wantToSignUp = false }
+            if (result?.user.uid != nil) { createdAccount = true ; wantToSignUp = false ; signedIn = true }
         }
     }
 }

@@ -11,109 +11,117 @@ import FirebaseAuth
 import Firebase
 
 struct ProfileView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
-    
+        
     var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
     
-    let user = Auth.auth().currentUser
+    var user = Auth.auth().currentUser
+    
+    @State var signedIn = true
+    @State var wantToSignUp = false
+    @State var createdAccount = false
         
     var body: some View {
-        VStack {
-            HStack {
-                Image("defaultprofilepic") //will be user image + (if no profile pic, then use this default one) --- >>>user.photoURL<<<
-                    .resizable()
-                    .frame(width: 50, height: 50)
+        if !signedIn {
+            LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)
+        } else {
+            VStack {
+                HStack {
+                    Image("defaultprofilepic") //will be user image + (if no profile pic, then use this default one) --- >>>user.photoURL<<<
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .padding(10)
+                        .padding(.top, 10)
+                    Text(user?.email ?? "") //maybe change to username
+                    Spacer()
+                    Button(action: {
+                        logOut()
+                    }) {
+                        Image("info.circle")
+                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    }
                     .padding(10)
                     .padding(.top, 10)
-                Text(user?.email ?? "") //maybe change to username
+                }
                 Spacer()
-                Button(action: {
-                    
-                }) {
-                    Image("info.circle")
-                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                Text("Another way of seeing your data")
+                Spacer()
+                HStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(newColor)
+                        .aspectRatio(1.0, contentMode: .fit)
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(newColor)
+                        .aspectRatio(1.0, contentMode: .fit)
                 }
                 .padding(10)
-                .padding(.top, 10)
-            }
-            Spacer()
-            Text("Another way of seeing your data")
-            Spacer()
-            HStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(newColor)
-                    .aspectRatio(1.0, contentMode: .fit)
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(newColor)
-                    .aspectRatio(1.0, contentMode: .fit)
-            }
-            .padding(10)
-            .padding(.bottom, -20)
-            HStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(newColor)
-                    .aspectRatio(1.0, contentMode: .fit)
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(newColor)
-                    .aspectRatio(1.0, contentMode: .fit)
-            }
-            .padding(10)
-            .padding(.bottom, -20)
-            HStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(newColor)
-                    .aspectRatio(1.0, contentMode: .fit)
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(newColor)
-                    .aspectRatio(1.0, contentMode: .fit)
-            }
-            .padding(10)
-            Spacer()
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
+                .padding(.bottom, -20)
                 HStack {
-                    NavigationLink(destination: OverView()) {
-                        Image("house.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                    Spacer()
-                    Button(action: {
-                        
-                    }) {
-                        Image("redstats")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                    Spacer()
-                    Button(action: {
-                        
-                    }) {
-                        Image("plus.app")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                    Spacer()
-                    Button(action: {
-                        
-                    }) {
-                        Image("square.and.pencil.circle.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                    }
-                    Spacer()
-                    Button(action: {
-                        
-                    }) {
-                        Image("person.crop.circle.fill")
-                            .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(newColor)
+                        .aspectRatio(1.0, contentMode: .fit)
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(newColor)
+                        .aspectRatio(1.0, contentMode: .fit)
+                }
+                .padding(10)
+                .padding(.bottom, -20)
+                HStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(newColor)
+                        .aspectRatio(1.0, contentMode: .fit)
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(newColor)
+                        .aspectRatio(1.0, contentMode: .fit)
+                }
+                .padding(10)
+                Spacer()
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    HStack {
+                        NavigationLink(destination: OverView()) {
+                            Image("house.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("redstats")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("plus.app")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("square.and.pencil.circle.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image("person.crop.circle.fill")
+                                .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
     }
-    func signOut() { //not done yet
+    func logOut() {
         do {
             try Auth.auth().signOut()
+            //Auth.auth().currentUser == nil
+            signedIn = false
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
