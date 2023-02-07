@@ -13,7 +13,7 @@ class ApiShows : ObservableObject {
     @Published var showArray: [Returned] = []
         
     //search array for api
-    @Published var searchArray = [Returned]()
+    @Published var searchArray : [Returned] = []
                 
     struct Returned: Codable, Identifiable {
         var id : UUID?
@@ -27,20 +27,17 @@ class ApiShows : ObservableObject {
         var language: String
         var summary: String
         var image: Image?
-        // new info below
         var type: String
-        //var genres: [String]?
         var network: Network?
         var status: String
         var premiered: String
-        
+    
         enum CodingKeys: String, CodingKey {
             case name
             case language
             case summary
             case image
             case type
-            //case genres
             case network
             case status
             case premiered

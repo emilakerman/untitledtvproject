@@ -167,17 +167,17 @@ struct OverView : View {
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .wantToWatch)
                         }
-                    }
+                    }*/
                     Section(header: Text("Watching")) {
-                        ForEach(showList.lists[.watching]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
-                                RowView(show: show)
+                        ForEach(showList.lists[.watching]!) { returned in
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                RowTest(showTest: returned)
                             }
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .watching)
                         }
-                    }
+                    }/*
                     Section(header: Text("Completed")) {
                         ForEach(showList.lists[.completed]!) { show in
                             NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
@@ -251,6 +251,9 @@ struct OverView : View {
             .navigationBarBackButtonHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
         }
+        .onAppear() {
+            listenToFireStore()
+        }
     }
     var filteredMessages: [ApiShows.Returned] {
         if searchText.isEmpty {
@@ -260,6 +263,33 @@ struct OverView : View {
                 return singleItemList
             }
             return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    func listenToFireStore() {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        
+        db.collection("users").document(user.uid).collection("Watching").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.watching]?.removeAll()
+                for document in snapshot.documents {
+                    
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+        
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.watching]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
         }
     }
     func getData() {

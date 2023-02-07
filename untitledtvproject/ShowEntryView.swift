@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Firebase
+import FirebaseFirestoreSwift
 
 struct ShowEntryView : View {
     
@@ -18,12 +19,18 @@ struct ShowEntryView : View {
     @State var summary: String = ""
     
     @State var image: ApiShows.Image?
+    @State var type: String = ""
+    @State var network: ApiShows.Network?
+    @State var status: String = ""
+    @State var premiered: String = ""
     
     @State var scale = 0.1
+    
+    @State var showPopUp = false
+    
+    @State var listChoice = ""
             
     var body: some View {
-        let db = Firestore.firestore()
-        
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
                 .padding()
@@ -54,7 +61,7 @@ struct ShowEntryView : View {
                         }
                         Spacer()
                         Button(action: {
-                            
+                            showPopUp = true
                         }) {
                             Image("plus.app.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
@@ -75,6 +82,30 @@ struct ShowEntryView : View {
                     }
                 }
             }
+            .confirmationDialog("Add to what list?", isPresented: $showPopUp, actions: {
+                VStack {
+                    HStack {
+                        Button("Want to watch") {
+                            listChoice = "Want to watch"
+                            saveToFireStore()
+                        }
+                        Button("Watching") {
+                            listChoice = "Watching"
+                            saveToFireStore()
+                        }
+                    }
+                    HStack {
+                        Button("Completed") {
+                            listChoice = "Completed"
+                            saveToFireStore()
+                        }
+                        Button("Dropped") {
+                            listChoice = "Dropped"
+                            saveToFireStore()
+                        }
+                    }
+                }
+            })
             .navigationBarBackButtonHidden(true)
         }
         .onAppear() {
@@ -86,6 +117,15 @@ struct ShowEntryView : View {
             }
         }
     }
+    func saveToFireStore() {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        do {
+            _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
+        } catch {
+                print("Document successfully written!")
+            }
+        }
     func setContent() {
         
         summary = summary.replacingOccurrences(of: "<p>", with: "")

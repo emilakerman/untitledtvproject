@@ -17,38 +17,16 @@ enum Status {
 }
 class ShowList : ObservableObject {
     
-    @Published var lists = [Status : [ShowEntry]]()
+    @Published var lists = [Status : [ApiShows.Returned]]()
     
     init() {
-        lists[.shows] = [ShowEntry]()
-        lists[.wantToWatch] = [ShowEntry]()
-        lists[.watching] = [ShowEntry]()
-        lists[.dropped] = [ShowEntry]()
-        lists[.completed] = [ShowEntry]()
-        lists[.recentlyDeleted] = [ShowEntry]()
-        
-        addMockData()
+        lists[.shows] = [ApiShows.Returned]()
+        lists[.wantToWatch] = [ApiShows.Returned]()
+        lists[.watching] = [ApiShows.Returned]()
+        lists[.dropped] = [ApiShows.Returned]()
+        lists[.completed] = [ApiShows.Returned]()
+        lists[.recentlyDeleted] = [ApiShows.Returned]()
     }
-    func addMockData() {
-         lists[.shows]?.append(ShowEntry(name: "Farmen", language: "Swedish", summary: ""))
-         lists[.wantToWatch]?.append(ShowEntry(name: "Farmen", language: "Swedish", summary: ""))
-        
-         lists[.shows]?.append(ShowEntry(name: "Game of Thrones", language: "English",  summary: ""))
-         lists[.watching]?.append(ShowEntry(name: "Game of Thrones", language: "English", summary: ""))
-        
-         lists[.shows]?.append(ShowEntry(name: "Family Guy", language: "English", summary: ""))
-         lists[.watching]?.append(ShowEntry(name: "Family Guy", language: "English", summary: ""))
-         
-         lists[.shows]?.append(ShowEntry(name: "South Park", language: "English", summary: ""))
-         lists[.watching]?.append(ShowEntry(name: "South Park", language: "English", summary: ""))
-         
-         lists[.shows]?.append(ShowEntry(name: "Archer", language: "English", summary: ""))
-         lists[.completed]?.append(ShowEntry(name: "Archer", language: "English", summary: ""))
-         
-         lists[.shows]?.append(ShowEntry(name: "Chuck", language: "English", summary: ""))
-         lists[.dropped]?.append(ShowEntry(name: "Chuck", language: "English", summary: ""))
-    }
-    
     func delete(indexSet: IndexSet, status: Status) {
         for index in indexSet {
             if let item = lists[status]?[index] {

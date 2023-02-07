@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestoreSwift
 
 struct ShowEntryMoreView: View {
     
@@ -22,6 +24,10 @@ struct ShowEntryMoreView: View {
     @State var premiered: String = ""
     
     @State var scale = 0.1
+    
+    @State var showPopUp = false
+    
+    @State var listChoice = ""
     
     var body: some View {
     VStack {
@@ -56,7 +62,7 @@ struct ShowEntryMoreView: View {
                     }
                     Spacer()
                     Button(action: {
-                        
+                        showPopUp = true
                     }) {
                         Image("plus.app.fill")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
@@ -77,6 +83,30 @@ struct ShowEntryMoreView: View {
                 }
             }
         }
+        .confirmationDialog("Add to what list?", isPresented: $showPopUp, actions: {
+            VStack {
+                HStack {
+                    Button("Want to watch") {
+                        listChoice = "Want to watch"
+                        saveToFireStore()
+                    }
+                    Button("Watching") {
+                        listChoice = "Watching"
+                        saveToFireStore()
+                    }
+                }
+                HStack {
+                    Button("Completed") {
+                        listChoice = "Completed"
+                        saveToFireStore()
+                    }
+                    Button("Dropped") {
+                        listChoice = "Dropped"
+                        saveToFireStore()
+                    }
+                }
+            }
+        })
         .navigationBarBackButtonHidden(true)
     }
     .onAppear() {
@@ -88,6 +118,15 @@ struct ShowEntryMoreView: View {
         }
     }
 }
+    func saveToFireStore() {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        do {
+            _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
+        } catch {
+                print("Document successfully written!")
+            }
+        }
     func setContent() {
         summary = summary.replacingOccurrences(of: "<p>", with: "")
         summary = summary.replacingOccurrences(of: "</p>", with: "")
