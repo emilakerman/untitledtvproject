@@ -10,7 +10,7 @@ import Foundation
 class ApiShows : ObservableObject {
             
     //create empty array for the data
-    @Published var showArray: [Returned] = []
+    @Published var showArray : [Returned] = []
         
     //search array for api
     @Published var searchArray : [Returned] = []

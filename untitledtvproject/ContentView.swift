@@ -169,7 +169,7 @@ struct OverView : View {
                         }
                     }*/
                     Section(header: Text("Watching")) {
-                        ForEach(showList.lists[.watching]!) { returned in
+                        ForEach(showList.lists[.watching]!, id: \.show.name) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }
@@ -177,7 +177,11 @@ struct OverView : View {
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .watching)
                         }
-                    }/*
+                    }
+                    .onAppear() {
+                        listenToFireStore()
+                    }
+                    /*
                     Section(header: Text("Completed")) {
                         ForEach(showList.lists[.completed]!) { show in
                             NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
@@ -250,9 +254,6 @@ struct OverView : View {
             }
             .navigationBarBackButtonHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
-        }
-        .onAppear() {
-            listenToFireStore()
         }
     }
     var filteredMessages: [ApiShows.Returned] {
