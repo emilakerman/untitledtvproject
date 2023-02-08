@@ -128,7 +128,7 @@ struct SignUpView: View {
 }
 struct OverView : View {
     
-    @State var searchScope = ApiShows.SearchScope.name
+    //@State var searchScope = ApiShows.SearchScope.name
         
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
@@ -144,7 +144,8 @@ struct OverView : View {
                     Section {
                         ForEach(filteredMessages, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                //RowTest(showTest: returned)
+                                Text("\(returned.show.name), \(returned.show.premiered)")
                             }
                         }
                     }
@@ -155,7 +156,7 @@ struct OverView : View {
                        }
                    }*/
                    .onSubmit(of: .search, getData)
-                   .onChange(of: searchScope) { _ in getData()}
+                   //.onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
                     /*
                     Section(header: Text("Want to watch")) {
@@ -212,49 +213,49 @@ struct OverView : View {
                             }
                         }
                     }*/
-                    .toolbar {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            HStack {
-                                Button(action: {
-                                    //do nothing
-                                }) {
-                                    Image("house.fill")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                Button(action: {
-                                    
-                                }) {
-                                    Image("redstats")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                Button(action: {
-                                    
-                                }) {
-                                    Image("plus.app")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                Button(action: {
-                                    
-                                }) {
-                                    Image("square.and.pencil.circle.fill")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                NavigationLink(destination: ProfileView()) {
-                                    Image("person.crop.circle.fill")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        HStack {
+                            Button(action: {
+                                //do nothing
+                            }) {
+                                Image("house.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            Button(action: {
+                                
+                            }) {
+                                Image("redstats")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            Button(action: {
+                                
+                            }) {
+                                Image("plus.app")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            Button(action: {
+                                
+                            }) {
+                                Image("square.and.pencil.circle.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            NavigationLink(destination: ProfileView()) {
+                                Image("person.crop.circle.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
                         }
                     }
                 }
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationViewStyle(StackNavigationViewStyle())
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     var filteredMessages: [ApiShows.Returned] {
         searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
@@ -319,7 +320,6 @@ struct OverView : View {
             //deal with the data
             do {
                 apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
-                
             } catch {
                 print("catch: json error: \(error.localizedDescription)")
             }
