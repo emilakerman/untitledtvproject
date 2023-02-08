@@ -12,8 +12,7 @@ import FirebaseFirestoreSwift
 
 struct ShowEntryView : View {
     
-    var show2 : ApiShows.Returned
-    var show : ShowEntry? = nil
+    @State var show2 : ApiShows.Returned
     @State var name : String = ""
     @State var language : String = ""
     @State var summary: String = ""
@@ -29,7 +28,7 @@ struct ShowEntryView : View {
     @State var showPopUp = false
     
     @State var listChoice = ""
-            
+                
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))

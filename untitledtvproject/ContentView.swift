@@ -138,18 +138,17 @@ struct OverView : View {
     let db = Firestore.firestore()
 
     var body: some View {
-        VStack {
-            NavigationView {
+        NavigationView { //switched place vstack and navview test, vstack was on top at first
+             VStack {
                 Form {
                     Section {
                         ForEach(filteredMessages, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                //RowTest(showTest: returned)
-                                Text("\(returned.show.name), \(returned.show.premiered)")
+                                RowTest(showTest: returned)
                             }
                         }
                     }
-                   .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))/*
+                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))/*
                    .searchScopes($searchScope) {
                        ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
                            Text(scope.rawValue.capitalized)
@@ -158,17 +157,16 @@ struct OverView : View {
                    .onSubmit(of: .search, getData)
                    //.onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
-                    /*
                     Section(header: Text("Want to watch")) {
-                        ForEach(showList.lists[.wantToWatch]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
-                                RowView(show: show)
+                        ForEach(showList.lists[.wantToWatch]!, id: \.show.summary) { returned in
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                RowTest(showTest: returned)
                             }
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .wantToWatch)
                         }
-                    }*/
+                    }
                     Section(header: Text("Watching")) {
                         ForEach(showList.lists[.watching]!, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
@@ -182,11 +180,11 @@ struct OverView : View {
                     .onAppear() {
                         listenToFireStore()
                     }
-                    /*
+                    
                     Section(header: Text("Completed")) {
-                        ForEach(showList.lists[.completed]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
-                                RowView(show: show)
+                        ForEach(showList.lists[.completed]!, id: \.show.summary) { returned in
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                RowTest(showTest: returned)
                             }
                         }
                         .onDelete() { indexSet in
@@ -194,18 +192,16 @@ struct OverView : View {
                         }
                     }
                     Section(header: Text("Dropped")) {
-                        ForEach(showList.lists[.dropped]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
-                                RowView(show: show)
+                        ForEach(showList.lists[.dropped]!, id: \.show.summary) { returned in
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                RowTest(showTest: returned)
                             }
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .dropped)
                         }
                     }
-                    .onAppear() {
-                        apiShows.getData {}
-                    }
+                    /*
                     Section(header: Text("Recently deleted")) {
                         ForEach(showList.lists[.recentlyDeleted]!) { show in
                             NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
@@ -269,10 +265,10 @@ struct OverView : View {
             return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }*/
     }
-    func listenToFireStore() {
+    func listenToFireStore() { //make this shorter
 
         guard let user = Auth.auth().currentUser else {return}
-
+                
         db.collection("users").document(user.uid).collection("Watching").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
@@ -281,14 +277,72 @@ struct OverView : View {
             } else {
                 showList.lists[.watching]?.removeAll()
                 for document in snapshot.documents {
-                    
                     let result = Result {
                         try document.data(as: ApiShows.Returned.self)
                     }
-        
                     switch result  {
                     case .success(let show)  :
                         showList.lists[.watching]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("Completed").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.completed]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.completed]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("Dropped").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.dropped]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.dropped]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("Want to watch").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.wantToWatch]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.wantToWatch]?.append(show)
                     case .failure(let error) :
                         print("Error decoding item: \(error)")
                     }
@@ -303,7 +357,6 @@ struct OverView : View {
         
         print("trying to access the url \(urlString)")
         
-        //Create url
         guard let url = URL(string: urlString) else {
             print("Error could not create url from \(urlString)")
             return
@@ -312,7 +365,7 @@ struct OverView : View {
         
         //create urlsession
         let session = URLSession.shared
-        //get data with .dataTask method
+        //get data with .dataTask meth
         let task = session.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("error \(error.localizedDescription)")
@@ -333,7 +386,10 @@ struct RowTest : View {
     var body: some View {
         HStack {
             Text(showTest.show.name)
-        }
+        }/*
+        .font(.system(size: 17))
+        .foregroundColor(.black)
+        .frame(maxWidth: .infinity, alignment: .leading) */
     }
 }
 struct RowView : View {
