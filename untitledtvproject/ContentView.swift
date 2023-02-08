@@ -134,26 +134,26 @@ struct OverView : View {
     @StateObject var apiShows = ApiShows()
     
     @State var searchText = ""
-        
-    @State var singleItemList : [ApiShows.Returned] = []
+            
+    let db = Firestore.firestore()
 
     var body: some View {
         VStack {
             NavigationView {
                 Form {
                     Section {
-                        ForEach(filteredMessages) { returned in
+                        ForEach(filteredMessages, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }
                         }
                     }
-                   .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                   .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))/*
                    .searchScopes($searchScope) {
-                       ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in
+                       ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
                            Text(scope.rawValue.capitalized)
                        }
-                   }
+                   }*/
                    .onSubmit(of: .search, getData)
                    .onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
@@ -169,7 +169,7 @@ struct OverView : View {
                         }
                     }*/
                     Section(header: Text("Watching")) {
-                        ForEach(showList.lists[.watching]!, id: \.show.name) { returned in
+                        ForEach(showList.lists[.watching]!, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }
@@ -257,19 +257,21 @@ struct OverView : View {
         }
     }
     var filteredMessages: [ApiShows.Returned] {
+        searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
+        /*
         if searchText.isEmpty {
-            return singleItemList
+            return apiShows.searchArray
         } else {
-            if singleItemList.isEmpty {
-                return singleItemList
+            if apiShows.searchArray.isEmpty {
+                return apiShows.searchArray
             }
-            return singleItemList.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
-        }
+            return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
+        }*/
     }
     func listenToFireStore() {
-        let db = Firestore.firestore()
+
         guard let user = Auth.auth().currentUser else {return}
-        
+
         db.collection("users").document(user.uid).collection("Watching").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
@@ -317,8 +319,6 @@ struct OverView : View {
             //deal with the data
             do {
                 apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
-                singleItemList.removeAll()
-                singleItemList.append(apiShows.searchArray[0])
                 
             } catch {
                 print("catch: json error: \(error.localizedDescription)")
