@@ -69,7 +69,7 @@ struct ShowEntryMoreView: View {
             HStack {
                 Text("Average rating")
                 Spacer()
-                Text("\(rating.average, specifier: "%.1f")")
+                Text("\(rating.average ?? 0.0, specifier: "%.1f")")
             }
         }
         .background(.clear)
@@ -144,7 +144,6 @@ struct ShowEntryMoreView: View {
     }
     .background(Color(.systemGray6))
     .onAppear() {
-        setContent()
         _ = Animation.easeInOut(duration: 1)
 
         withAnimation {
@@ -162,14 +161,6 @@ struct ShowEntryMoreView: View {
                 print("error!")
             }
         }
-    func setContent() {
-        summary = summary.replacingOccurrences(of: "<p>", with: "")
-        summary = summary.replacingOccurrences(of: "</p>", with: "")
-        summary = summary.replacingOccurrences(of: "<b>", with: "")
-        summary = summary.replacingOccurrences(of: "</b>", with: "")
-        summary = summary.replacingOccurrences(of: "<i>", with: "")
-        summary = summary.replacingOccurrences(of: "</i>", with: "")
-    }
 }
 /*
 struct ShowEntryMoreView_Previews: PreviewProvider {
