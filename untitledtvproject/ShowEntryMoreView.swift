@@ -34,7 +34,7 @@ struct ShowEntryMoreView: View {
 
     var body: some View {
     VStack {
-            AsyncImage(url: URL(string: image?.medium ?? ""))
+            AsyncImage(url: URL(string: image?.medium ?? "https://i.imgur.com/e3AEk4W.png"))
             .padding(.top, 100)
             .padding(.bottom, -140)
             .ignoresSafeArea()
@@ -151,16 +151,16 @@ struct ShowEntryMoreView: View {
         }
     }
 }
-    func saveToFireStore() {
-        let db = Firestore.firestore()
-        guard let user = Auth.auth().currentUser else {return}
-        do {
-            _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
-            showingAlert = true
-        } catch {
-                print("error!")
-            }
+func saveToFireStore() {
+    let db = Firestore.firestore()
+    guard let user = Auth.auth().currentUser else {return}
+    do {
+        _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
+        showingAlert = true
+    } catch {
+            print("error!")
         }
+    }
 }
 /*
 struct ShowEntryMoreView_Previews: PreviewProvider {

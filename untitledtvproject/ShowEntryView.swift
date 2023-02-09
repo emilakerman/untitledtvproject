@@ -33,7 +33,7 @@ struct ShowEntryView : View {
     
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: image?.medium ?? ""))
+            AsyncImage(url: URL(string: image?.medium ?? "https://i.imgur.com/e3AEk4W.png"))
                 .padding(.top, 100)
                 .padding(.bottom, -140)
                 .ignoresSafeArea()
