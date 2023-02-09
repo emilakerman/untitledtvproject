@@ -29,6 +29,8 @@ struct ShowEntryMoreView: View {
     
     @State var listChoice = ""
     
+    @State var showingAlert = false
+    
     var body: some View {
     VStack {
         HStack {

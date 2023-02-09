@@ -158,7 +158,7 @@ struct OverView : View {
                    //.onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
                     Section(header: Text("Want to watch")) {
-                        ForEach(showList.lists[.wantToWatch]!, id: \.show.summary) { returned in
+                        ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }
@@ -168,7 +168,7 @@ struct OverView : View {
                         }
                     }
                     Section(header: Text("Watching")) {
-                        ForEach(showList.lists[.watching]!, id: \.show.summary) { returned in
+                        ForEach(showList.lists[.watching]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }
@@ -182,7 +182,7 @@ struct OverView : View {
                     }
                     
                     Section(header: Text("Completed")) {
-                        ForEach(showList.lists[.completed]!, id: \.show.summary) { returned in
+                        ForEach(showList.lists[.completed]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }
@@ -192,7 +192,7 @@ struct OverView : View {
                         }
                     }
                     Section(header: Text("Dropped")) {
-                        ForEach(showList.lists[.dropped]!, id: \.show.summary) { returned in
+                        ForEach(showList.lists[.dropped]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowTest(showTest: returned)
                             }

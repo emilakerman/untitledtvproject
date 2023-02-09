@@ -28,7 +28,9 @@ struct ShowEntryView : View {
     @State var showPopUp = false
     
     @State var listChoice = ""
-                
+    
+    @State var showingAlert = false
+    
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
@@ -105,6 +107,9 @@ struct ShowEntryView : View {
                     }
                 }
             })
+            .alert("Show added!", isPresented: $showingAlert) {
+                Button("Go it!", role: .cancel) { }
+            }
             .navigationBarBackButtonHidden(true)
         }
         .onAppear() {
@@ -121,8 +126,9 @@ struct ShowEntryView : View {
         guard let user = Auth.auth().currentUser else {return}
         do {
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
+            showingAlert = true
         } catch {
-                print("Document successfully written!")
+            print("error!")
             }
         }
     func setContent() {
