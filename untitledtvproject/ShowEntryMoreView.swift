@@ -22,6 +22,7 @@ struct ShowEntryMoreView: View {
     @State var network: ApiShows.Network?
     @State var status: String = ""
     @State var premiered: String = ""
+    @State var rating: ApiShows.Rating
     
     @State var scale = 0.1
     
@@ -30,23 +31,50 @@ struct ShowEntryMoreView: View {
     @State var listChoice = ""
     
     @State var showingAlert = false
-    
+
     var body: some View {
     VStack {
-        HStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
-            VStack {
-                Text("\(name)")
+            .padding(.top, 100)
+            .padding(.bottom, -140)
+            .ignoresSafeArea()
+            Text("\(name)")
+                .font(.largeTitle)
+        List {
+            HStack {
+                Text("Language")
+                Spacer()
                 Text("\(language)")
+            }
+            HStack {
+                Text("Type")
+                Spacer()
                 Text("\(type)")
-                //Text("\(genres)")
+            }
+            HStack {
+                Text("Network")
+                Spacer()
                 Text("\(network?.name ?? "")")
+            }
+            HStack {
+                Text("Status")
+                Spacer()
                 Text("\(status)")
+            }
+            HStack {
+                Text("Premiered")
+                Spacer()
                 Text("\(premiered)")
             }
+            HStack {
+                Text("Average rating")
+                Spacer()
+                Text("\(rating.average, specifier: "%.1f")")
+            }
         }
-        Text("\(summary)")
-            .padding(10)
+        .background(.clear)
+        .scrollContentBackground(.hidden)
+        .padding(.top, -30)
         Spacer()
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -109,8 +137,12 @@ struct ShowEntryMoreView: View {
                 }
             }
         })
-        .navigationBarBackButtonHidden(true)
+        .alert("Show added!", isPresented: $showingAlert) {
+            Button("Go it!", role: .cancel) { }
+        }
+        .navigationBarBackButtonHidden(false)
     }
+    .background(Color(.systemGray6))
     .onAppear() {
         setContent()
         _ = Animation.easeInOut(duration: 1)
@@ -125,8 +157,9 @@ struct ShowEntryMoreView: View {
         guard let user = Auth.auth().currentUser else {return}
         do {
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
+            showingAlert = true
         } catch {
-                print("Document successfully written!")
+                print("error!")
             }
         }
     func setContent() {

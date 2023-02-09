@@ -34,14 +34,16 @@ struct ShowEntryView : View {
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: image?.medium ?? ""))
-                .padding()
-            Text("Title: \(name)")
-            Text("Language: \(language)")
-                .padding()
+                .padding(.top, 100)
+                .padding(.bottom, -140)
+                .ignoresSafeArea()
+            Text("\(name)")
+                .font(.largeTitle)
             Text("Summary: \(summary)")
+                .padding(.top, -10)
                 .padding(10)
                 NavigationLink {
-                    ShowEntryMoreView(show2: show2, name: show2.show.name, language: show2.show.language, summary: show2.show.summary, image: show2.show.image, type: show2.show.type, network: show2.show.network, status: show2.show.status, premiered: show2.show.premiered)
+                    ShowEntryMoreView(show2: show2, name: show2.show.name, language: show2.show.language, summary: show2.show.summary, image: show2.show.image, type: show2.show.type, network: show2.show.network, status: show2.show.status, premiered: show2.show.premiered, rating: show2.show.rating)
                 } label: {
                     Text("Show more information")
                 }
@@ -110,8 +112,9 @@ struct ShowEntryView : View {
             .alert("Show added!", isPresented: $showingAlert) {
                 Button("Go it!", role: .cancel) { }
             }
-            .navigationBarBackButtonHidden(true)
+            .navigationBarBackButtonHidden(false)
         }
+        .background(Color(.systemGray6))
         .onAppear() {
             setContent()
             _ = Animation.easeInOut(duration: 1)
