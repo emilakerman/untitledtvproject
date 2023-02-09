@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import FirebaseCore
+import FirebaseAuth
+import Firebase
 
 enum Status {
     case shows

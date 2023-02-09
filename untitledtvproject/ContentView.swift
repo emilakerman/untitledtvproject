@@ -134,8 +134,11 @@ struct OverView : View {
     @StateObject var apiShows = ApiShows()
     
     @State var searchText = ""
-            
+                
     let db = Firestore.firestore()
+    
+    @State var showingAlert = false
+
 
     var body: some View {
         NavigationView { //switched place vstack and navview test, vstack was on top at first
@@ -144,7 +147,7 @@ struct OverView : View {
                     Section {
                         ForEach(filteredMessages, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                    RowTest(showTest: returned)
                             }
                         }
                     }
@@ -160,7 +163,7 @@ struct OverView : View {
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                    RowTest(showTest: returned)
                             }
                         }
                         .onDelete() { indexSet in
@@ -382,16 +385,50 @@ struct OverView : View {
 }
 struct RowTest : View {
     var showTest : ApiShows.Returned
+    @State var showingAlert = false
+    @State var listChoice = ""
     
     var body: some View {
         HStack {
+            Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
+                .onTapGesture {
+                    showingAlert = true
+                }
             Text(showTest.show.name)
-        }/*
-        .font(.system(size: 17))
-        .foregroundColor(.black)
-        .frame(maxWidth: .infinity, alignment: .leading) */
+        }
+        .alert("Move to what list?", isPresented: $showingAlert) {
+            VStack {
+                Button("Want to watch") {
+                    listChoice = "Want to watch"
+                    changeListFireStore()
+                }
+                Button("Watching") {
+                    listChoice = "Watching"
+                    changeListFireStore()
+                }
+                Button("Completed") {
+                    listChoice = "Completed"
+                    changeListFireStore()
+                }
+                Button("Dropped") {
+                    listChoice = "Dropped"
+                    changeListFireStore()
+                }
+                Button("Cancel", role: .cancel) { }
+            }
+        }
     }
-}
+    func changeListFireStore() {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        
+        do {
+            _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showTest)
+        } catch {
+            print("error!")
+            }
+        }
+    }
 struct RowView : View {
     var show : ShowEntry
     
