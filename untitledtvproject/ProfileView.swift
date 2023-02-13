@@ -36,6 +36,10 @@ struct ProfileView: View {
     @State var comedyList : [ApiShows.Returned] = []
     @State var scifiList : [ApiShows.Returned] = []
     @State var horrorList : [ApiShows.Returned] = []
+    @State var crimeList : [ApiShows.Returned] = []
+    @State var adventureList : [ApiShows.Returned] = []
+
+
 
 
         
@@ -81,28 +85,28 @@ struct ProfileView: View {
                             .fill(newColor)
                             .aspectRatio(1.0, contentMode: .fit)
                         Canvas { context, size in
-                            var slices: [(Double, Color, String)] = [(Double(englishList.count), .red, "English"),
-                                                             (Double(swedishList.count), .blue, "Swedish"),
-                                                             (Double(koreanList.count), .green, "Korean"),
-                                                             (Double(thaiList.count), .purple, "Thai"),
-                                                             (Double(chineseList.count), .yellow, "Chinese"),
-                                                             (Double(japaneseList.count), .black, "Japanese"),
-                                                             (Double(danishList.count), .pink, "Danish"),
-                                                             (Double(norwegianList.count), .cyan, "Norwegian"),
-                                                             (Double(germanList.count), .orange, "German"),
-                                                             (Double(frenchList.count), .teal, "French"),
-                                                             (Double(dutchList.count), .white, "Dutch"),
-                                                             (Double(polishList.count), .mint, "Polish"),
-                                                             (Double(spanishList.count), .indigo, "Spanish"),
-                                                             (Double(turkishList.count), .gray, "Turkish"),
-                                                             (Double(greekList.count), .brown, "Greek")]
+                            var slices: [(Double, Color)] = [(Double(englishList.count), .red),
+                                                             (Double(swedishList.count), .blue),
+                                                             (Double(koreanList.count), .green),
+                                                             (Double(thaiList.count), .purple),
+                                                             (Double(chineseList.count), .yellow),
+                                                             (Double(japaneseList.count), .black),
+                                                             (Double(danishList.count), .pink),
+                                                             (Double(norwegianList.count), .cyan),
+                                                             (Double(germanList.count), .orange),
+                                                             (Double(frenchList.count), .teal),
+                                                             (Double(dutchList.count), .white),
+                                                             (Double(polishList.count), .mint),
+                                                             (Double(spanishList.count), .indigo),
+                                                             (Double(turkishList.count), .gray),
+                                                             (Double(greekList.count), .brown)]
                             let total = slices.reduce(0) { $0 + $1.0 }
                             context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
                             var pieContext = context
                             pieContext.rotate(by: .degrees(-90))
                             let radius = min(size.width, size.height) * 0.48
                             var startAngle = Angle.zero
-                            for (value, color, text) in slices {
+                            for (value, color) in slices {
                                 let angle = Angle(degrees: 360 * (value / total))
                                 let endAngle = startAngle + angle
                                 let path = Path { p in
@@ -139,7 +143,10 @@ struct ProfileView: View {
                             var slices: [(Double, Color)] = [(Double(comedyList.count), .red),
                                                              (Double(dramaList.count), .blue),
                                                              (Double(horrorList.count), .green),
-                                                             (Double(scifiList.count), .purple)]
+                                                             (Double(scifiList.count), .purple),
+                                                             (Double(crimeList.count), .teal),
+                                                             (Double(horrorList.count), .mint),
+                                                             (Double(adventureList.count), .gray)]
                             let total = slices.reduce(0) { $0 + $1.0 }
                             context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
                             var pieContext = context
@@ -164,12 +171,14 @@ struct ProfileView: View {
                             showingGenreWindow = true
                         }
                         .foregroundColor(.white)
-                        .alert("Percentage split", isPresented: $showingGenreWindow) { //not correct for genres
+                        .alert("Percentage split", isPresented: $showingGenreWindow) { //not correct for genres?
                             VStack {
                                 Button("Comedy: \(Double(comedyList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
                                 Button("Drama: \(Double(dramaList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
                                 Button("Horror: \(Double(horrorList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
                                 Button("Science-Fiction: \(Double(scifiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Crime: \(Double(crimeList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Adventure: \(Double(adventureList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
                                 Button("Cancel", role: .cancel) { }
                             }
                         }
@@ -308,7 +317,7 @@ struct ProfileView: View {
                             if show.show.language == "Greek" {
                                 greekList.append(show)
                             }
-                            if ((show.show.genres?.contains("Comedy")) != nil) {
+                            if (show.show.genres?.contains("Comedy") != nil) {
                                 comedyList.append(show)
                             }
                             if ((show.show.genres?.contains("Drama")) != nil) {
@@ -319,6 +328,12 @@ struct ProfileView: View {
                             }
                             if ((show.show.genres?.contains("Science-Fiction")) != nil) {
                                 scifiList.append(show)
+                            }
+                            if ((show.show.genres?.contains("Crime")) != nil) {
+                                crimeList.append(show)
+                            }
+                            if ((show.show.genres?.contains("Adventure")) != nil) {
+                                adventureList.append(show)
                             }
                         }
                     case .failure(let error) :
