@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
 class ApiShows : ObservableObject {
             
@@ -22,7 +23,8 @@ class ApiShows : ObservableObject {
     enum SearchScope: String, CaseIterable {
         case name
     }
-    struct Show: Codable {
+    struct Show: Codable, Identifiable {
+        @DocumentID var id: String? = UUID().uuidString
         var name: String
         var language: String
         var summary: String
