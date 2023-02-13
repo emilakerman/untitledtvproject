@@ -42,8 +42,7 @@ struct ProfileView: View {
     @State var wantToSignUp = false
     @State var createdAccount = false
     
-    //@State var slices: [(Double, Color)]
-
+    @State var showingLangWindow = false
         
     var body: some View {
         if !signedIn {
@@ -76,28 +75,28 @@ struct ProfileView: View {
                             .fill(newColor)
                             .aspectRatio(1.0, contentMode: .fit)
                         Canvas { context, size in
-                            var slices: [(Double, Color)] = [(Double(englishList.count), .red),
-                                                             (Double(swedishList.count), .blue),
-                                                             (Double(koreanList.count), .green),
-                                                             (Double(thaiList.count), .purple),
-                                                             (Double(chineseList.count), .yellow),
-                                                             (Double(japaneseList.count), .black),
-                                                             (Double(danishList.count), .pink),
-                                                             (Double(norwegianList.count), .cyan),
-                                                             (Double(germanList.count), .orange),
-                                                             (Double(frenchList.count), .teal),
-                                                             (Double(dutchList.count), .white),
-                                                             (Double(polishList.count), .mint),
-                                                             (Double(spanishList.count), .indigo),
-                                                             (Double(turkishList.count), .gray),
-                                                             (Double(greekList.count), .brown)]
+                            var slices: [(Double, Color, String)] = [(Double(englishList.count), .red, "English"),
+                                                             (Double(swedishList.count), .blue, "Swedish"),
+                                                             (Double(koreanList.count), .green, "Korean"),
+                                                             (Double(thaiList.count), .purple, "Thai"),
+                                                             (Double(chineseList.count), .yellow, "Chinese"),
+                                                             (Double(japaneseList.count), .black, "Japanese"),
+                                                             (Double(danishList.count), .pink, "Danish"),
+                                                             (Double(norwegianList.count), .cyan, "Norwegian"),
+                                                             (Double(germanList.count), .orange, "German"),
+                                                             (Double(frenchList.count), .teal, "French"),
+                                                             (Double(dutchList.count), .white, "Dutch"),
+                                                             (Double(polishList.count), .mint, "Polish"),
+                                                             (Double(spanishList.count), .indigo, "Spanish"),
+                                                             (Double(turkishList.count), .gray, "Turkish"),
+                                                             (Double(greekList.count), .brown, "Greek")]
                             let total = slices.reduce(0) { $0 + $1.0 }
                             context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
                             var pieContext = context
                             pieContext.rotate(by: .degrees(-90))
                             let radius = min(size.width, size.height) * 0.48
                             var startAngle = Angle.zero
-                            for (value, color) in slices {
+                            for (value, color, text) in slices {
                                 let angle = Angle(degrees: 360 * (value / total))
                                 let endAngle = startAngle + angle
                                 let path = Path { p in
@@ -111,29 +110,20 @@ struct ProfileView: View {
                             }
                         }
                         .aspectRatio(1, contentMode: .fit)
-                            .task {
-                                DispatchQueue.main.async {
-                                    listenToFireStore()
-                                }
+                        Button("Languages") {
+                            showingLangWindow = true
+                        }
+                        .foregroundColor(.white)
+                        .alert("Percentage split", isPresented: $showingLangWindow) { //change so it doesnt show empty language lists
+                            VStack {
+                                Button("English: \(Double(englishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Swedish: \(Double(swedishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Korean: \(Double(koreanList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Thai: \(Double(thaiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Chinese: \(Double(chineseList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Cancel", role: .cancel) { }
                             }
-                        /*
-                        Pie(slices: [
-                            (Double(englishList.count), .red),
-                            (Double(swedishList.count), .blue),
-                            (Double(koreanList.count), .green),
-                            (Double(thaiList.count), .purple),
-                            (Double(chineseList.count), .yellow),
-                            (Double(japaneseList.count), .black),
-                            (Double(danishList.count), .pink),
-                            (Double(norwegianList.count), .cyan),
-                            (Double(germanList.count), .orange),
-                            (Double(frenchList.count), .teal),
-                            (Double(dutchList.count), .white),
-                            (Double(polishList.count), .mint),
-                            (Double(spanishList.count), .indigo),
-                            (Double(turkishList.count), .gray),
-                            (Double(greekList.count), .brown)
-                        ])*/
+                        }
                     }
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
@@ -163,6 +153,11 @@ struct ProfileView: View {
                 }
                 .padding(10)
                 Spacer()
+            }
+            .task {
+                DispatchQueue.main.async {
+                    listenToFireStore()
+                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -201,9 +196,6 @@ struct ProfileView: View {
                         }
                     }
                 }
-            }
-            .onAppear() {
-                //listenToFireStore()
             }
             .navigationBarBackButtonHidden(true)
         }
