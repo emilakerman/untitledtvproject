@@ -30,8 +30,13 @@ struct ProfileView: View {
     @State var spanishList : [ApiShows.Returned] = []
     @State var turkishList : [ApiShows.Returned] = []
     @State var greekList : [ApiShows.Returned] = []
-    
     @State var allLanguages : [ApiShows.Returned] = []
+    //genre lists
+    @State var dramaList : [ApiShows.Returned] = []
+    @State var comedyList : [ApiShows.Returned] = []
+    @State var scifiList : [ApiShows.Returned] = []
+    @State var horrorList : [ApiShows.Returned] = []
+
 
         
     var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
@@ -43,6 +48,7 @@ struct ProfileView: View {
     @State var createdAccount = false
     
     @State var showingLangWindow = false
+    @State var showingGenreWindow = false
         
     var body: some View {
         if !signedIn {
@@ -129,6 +135,44 @@ struct ProfileView: View {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(newColor)
                             .aspectRatio(1.0, contentMode: .fit)
+                        Canvas { context, size in
+                            var slices: [(Double, Color)] = [(Double(comedyList.count), .red),
+                                                             (Double(dramaList.count), .blue),
+                                                             (Double(horrorList.count), .green),
+                                                             (Double(scifiList.count), .purple)]
+                            let total = slices.reduce(0) { $0 + $1.0 }
+                            context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
+                            var pieContext = context
+                            pieContext.rotate(by: .degrees(-90))
+                            let radius = min(size.width, size.height) * 0.48
+                            var startAngle = Angle.zero
+                            for (value, color) in slices {
+                                let angle = Angle(degrees: 360 * (value / total))
+                                let endAngle = startAngle + angle
+                                let path = Path { p in
+                                    p.move(to: .zero)
+                                    p.addArc(center: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
+                                    p.closeSubpath()
+                                }
+                                pieContext.fill(path, with: .color(color))
+
+                                startAngle = endAngle
+                            }
+                        }
+                        .aspectRatio(1, contentMode: .fit)
+                        Button("Genres") {
+                            showingGenreWindow = true
+                        }
+                        .foregroundColor(.white)
+                        .alert("Percentage split", isPresented: $showingGenreWindow) { //not correct for genres
+                            VStack {
+                                Button("Comedy: \(Double(comedyList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Drama: \(Double(dramaList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Horror: \(Double(horrorList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Science-Fiction: \(Double(scifiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Cancel", role: .cancel) { }
+                            }
+                        }
                     }
                 }
                 .padding(10)
@@ -264,6 +308,18 @@ struct ProfileView: View {
                             if show.show.language == "Greek" {
                                 greekList.append(show)
                             }
+                            if ((show.show.genres?.contains("Comedy")) != nil) {
+                                comedyList.append(show)
+                            }
+                            if ((show.show.genres?.contains("Drama")) != nil) {
+                                dramaList.append(show)
+                            }
+                            if ((show.show.genres?.contains("Horror")) != nil) {
+                                horrorList.append(show)
+                            }
+                            if ((show.show.genres?.contains("Science-Fiction")) != nil) {
+                                scifiList.append(show)
+                            }
                         }
                     case .failure(let error) :
                         print("Error decoding item: \(error)")
@@ -288,6 +344,11 @@ struct ProfileView: View {
         spanishList.removeAll()
         turkishList.removeAll()
         greekList.removeAll()
+        
+        dramaList.removeAll()
+        comedyList.removeAll()
+        horrorList.removeAll()
+        scifiList.removeAll()
     }
     func logOut() {
         do {

@@ -34,6 +34,7 @@ class ApiShows : ObservableObject {
         var status: String
         var premiered: String
         var rating: Rating?
+        var genres: [String]?
     
         enum CodingKeys: String, CodingKey {
             case name
@@ -45,6 +46,7 @@ class ApiShows : ObservableObject {
             case status
             case premiered
             case rating
+            case genres
         }
     }
     struct Rating: Codable {
