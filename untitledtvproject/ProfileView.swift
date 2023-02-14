@@ -7,15 +7,14 @@
 
 import SwiftUI
 import FirebaseCore
+import FirebaseFirestore
 import FirebaseAuth
 import Firebase
+import FirebaseStorage
 
 struct ProfileView: View {
-    @StateObject var showList = ShowList()
     let db = Firestore.firestore()
     @State var image: ApiShows.Image?
-    @State var nameList : [String] = []
-
     
     //language lists
     @State var englishList : [ApiShows.Returned] = []
@@ -41,10 +40,10 @@ struct ProfileView: View {
     @State var horrorList : [ApiShows.Returned] = []
     @State var crimeList : [ApiShows.Returned] = []
     @State var adventureList : [ApiShows.Returned] = []
-    
-    var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
-    
+        
     var user = Auth.auth().currentUser
+    let storage = Storage.storage() //storage for user selected profile picture
+    
     
     @State var signedIn = true
     @State var wantToSignUp = false
@@ -56,6 +55,9 @@ struct ProfileView: View {
     @State var showingSettingsAlert = false
     @State var selectedUserName : String
     @State var userName : String?
+    
+    @State private var profileImage = UIImage()
+    @State private var showSheet = false
         
     var body: some View {
         if !signedIn {
@@ -63,11 +65,19 @@ struct ProfileView: View {
         } else {
             VStack {
                 HStack {
-                    Image("defaultprofilepic") //will be user image + (if no profile pic, then use this default one) --- >>>user.photoURL<<<
+                    Image(uiImage: profileImage)
                         .resizable()
                         .frame(width: 50, height: 50)
+                        .background(Color.black.opacity(0.2))
+                        .clipShape(Circle())
                         .padding(10)
                         .padding(.top, 10)
+                        .onTapGesture() {
+                            showSheet = true
+                        }
+                        .sheet(isPresented: $showSheet) {
+                                ImagePicker(sourceType: .photoLibrary, selectedImage: self.$profileImage)
+                        }
                     Text((userName) ?? "")
                     Spacer()
                     Button(action: {
@@ -262,6 +272,34 @@ struct ProfileView: View {
             .navigationBarBackButtonHidden(true)
             .background(Color(.systemGray6))
         }
+    }
+    func uploadImage() {
+        let storageRef = storage.reference()
+
+        // File located on disk
+        let localFile = URL(string: "path/to/image")!
+
+        // Create a reference to the file you want to upload
+        let riversRef = storageRef.child("images/profilePic.jpg")
+
+        // Upload the file to the path "images/rivers.jpg"
+        let uploadTask = riversRef.putFile(from: localFile, metadata: nil) { metadata, error in
+          guard let metadata = metadata else {
+            // Uh-oh, an error occurred!
+            return
+          }
+          // Metadata contains file metadata such as size, content-type.
+          let size = metadata.size
+          // You can also access to download URL after upload.
+          /*
+           riversRef.downloadURL { (url, error) in
+            guard let downloadURL = url else {
+              print("Uh-oh, an error occurred!")
+              return
+            }
+          }*/
+        }
+
     }
     func listenToSettingsFireStore() {
         let db = Firestore.firestore()

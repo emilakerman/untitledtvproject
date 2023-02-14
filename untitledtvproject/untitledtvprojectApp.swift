@@ -12,6 +12,7 @@ import Firebase
 @main
 struct untitledtvprojectApp: App {
     
+    
     init() {
         FirebaseApp.configure()
     }
