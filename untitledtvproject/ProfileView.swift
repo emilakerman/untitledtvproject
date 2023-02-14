@@ -38,11 +38,7 @@ struct ProfileView: View {
     @State var horrorList : [ApiShows.Returned] = []
     @State var crimeList : [ApiShows.Returned] = []
     @State var adventureList : [ApiShows.Returned] = []
-
-
-
-
-        
+    
     var newColor = Color(red: 243 / 255, green: 246 / 255, blue: 255 / 255)
     
     var user = Auth.auth().currentUser
@@ -171,14 +167,14 @@ struct ProfileView: View {
                             showingGenreWindow = true
                         }
                         .foregroundColor(.white)
-                        .alert("Percentage split", isPresented: $showingGenreWindow) { //not correct for genres?
+                        .alert(/*"Percentage split"*/"Individual split", isPresented: $showingGenreWindow) { //showing counts instead of percentage for genres
                             VStack {
-                                Button("Comedy: \(Double(comedyList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                                Button("Drama: \(Double(dramaList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                                Button("Horror: \(Double(horrorList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                                Button("Science-Fiction: \(Double(scifiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                                Button("Crime: \(Double(crimeList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                                Button("Adventure: \(Double(adventureList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                                Button("Comedy: \(Double(comedyList.count))") {}
+                                Button("Drama: \(Double(dramaList.count))") {}
+                                Button("Horror: \(Double(horrorList.count))") {}
+                                Button("Science-Fiction: \(Double(scifiList.count))") {}
+                                Button("Crime: \(Double(crimeList.count))") {}
+                                Button("Adventure: \(Double(adventureList.count))") {}
                                 Button("Cancel", role: .cancel) { }
                             }
                         }
@@ -207,7 +203,7 @@ struct ProfileView: View {
                 .padding(10)
                 Spacer()
             }
-            .task {
+            .task { //read data from firestore to graphs
                 DispatchQueue.main.async {
                     listenToFireStore()
                 }
@@ -263,6 +259,7 @@ struct ProfileView: View {
                 print("Error getting document \(err)")
             } else {
                 allLanguages.removeAll()
+                clearLists()
                 for document in snapshot.documents {
                     let result = Result {
                         try document.data(as: ApiShows.Returned.self)
@@ -317,22 +314,22 @@ struct ProfileView: View {
                             if show.show.language == "Greek" {
                                 greekList.append(show)
                             }
-                            if (show.show.genres?.contains("Comedy") != nil) {
+                            if show.show.genres!.contains("Comedy") {
                                 comedyList.append(show)
                             }
-                            if ((show.show.genres?.contains("Drama")) != nil) {
+                            if show.show.genres!.contains("Drama") {
                                 dramaList.append(show)
                             }
-                            if ((show.show.genres?.contains("Horror")) != nil) {
+                            if show.show.genres!.contains("Horror") {
                                 horrorList.append(show)
                             }
-                            if ((show.show.genres?.contains("Science-Fiction")) != nil) {
+                            if show.show.genres!.contains("Science-Fiction") {
                                 scifiList.append(show)
                             }
-                            if ((show.show.genres?.contains("Crime")) != nil) {
+                            if show.show.genres!.contains("Crime") {
                                 crimeList.append(show)
                             }
-                            if ((show.show.genres?.contains("Adventure")) != nil) {
+                            if show.show.genres!.contains("Adventure") {
                                 adventureList.append(show)
                             }
                         }
