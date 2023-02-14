@@ -68,8 +68,10 @@ struct ProfileView: View {
                     Button(action: {
                         logOut()
                     }) {
-                        Image("door.left.hand.open")
+                        Image("logout.b")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            .resizable()
+                            .frame(width: 30, height: 30)
                     }
                     .padding(10)
                     .padding(.top, 10)
