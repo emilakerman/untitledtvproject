@@ -56,8 +56,10 @@ struct ProfileView: View {
     @State var selectedUserName : String
     @State var userName : String?
     
-    @State private var profileImage = UIImage()
+    @State var profileImage = UIImage()
     @State private var showSheet = false
+    
+    var storageManager = StorageManager()
         
     var body: some View {
         if !signedIn {
@@ -72,6 +74,20 @@ struct ProfileView: View {
                         .clipShape(Circle())
                         .padding(10)
                         .padding(.top, 10)
+                        .onAppear() { //reading and setting profile picture from firebase storage
+                            let storageRef = storage.reference().child("images/image.jpg")
+
+                            storageRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+                                if error != nil {
+                                print("error downloading image from storage")
+                              } else {
+                                  self.profileImage = UIImage(data: data!)!
+                              }
+                            }
+                        }
+                        .onChange(of: profileImage, perform: { image in
+                                storageManager.upload(image: image)
+                        })
                         .onTapGesture() {
                             showSheet = true
                         }
@@ -220,6 +236,8 @@ struct ProfileView: View {
                 DispatchQueue.main.async {
                     listenToFireStore()
                     listenToSettingsFireStore()
+                    //storageManager.downloadItem()
+                    //profileImage = storageManager.profileImage
                 }
             }
             .toolbar {
@@ -273,11 +291,12 @@ struct ProfileView: View {
             .background(Color(.systemGray6))
         }
     }
-    func uploadImage() {
+    func uploadImage(profileImage: UIImage) {
         let storageRef = storage.reference()
 
         // File located on disk
         let localFile = URL(string: "path/to/image")!
+        //let localFile = profileImage
 
         // Create a reference to the file you want to upload
         let riversRef = storageRef.child("images/profilePic.jpg")
@@ -299,7 +318,6 @@ struct ProfileView: View {
             }
           }*/
         }
-
     }
     func listenToSettingsFireStore() {
         let db = Firestore.firestore()
