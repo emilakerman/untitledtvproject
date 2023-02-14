@@ -44,7 +44,6 @@ struct ProfileView: View {
     var user = Auth.auth().currentUser
     let storage = Storage.storage() //storage for user selected profile picture
     
-    
     @State var signedIn = true
     @State var wantToSignUp = false
     @State var createdAccount = false
@@ -86,7 +85,7 @@ struct ProfileView: View {
                             }
                         }
                         .onChange(of: profileImage, perform: { image in
-                                storageManager.upload(image: image)
+                                storageManager.upload(image: image) //uploads selected profile picture to firebase storage
                         })
                         .onTapGesture() {
                             showSheet = true
@@ -236,8 +235,6 @@ struct ProfileView: View {
                 DispatchQueue.main.async {
                     listenToFireStore()
                     listenToSettingsFireStore()
-                    //storageManager.downloadItem()
-                    //profileImage = storageManager.profileImage
                 }
             }
             .toolbar {

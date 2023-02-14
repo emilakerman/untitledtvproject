@@ -25,7 +25,6 @@
 		207FB563299BBBE000F5935B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 207FB562299BBBE000F5935B /* FirebaseStorage */; };
 		207FB567299BC35200F5935B /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207FB566299BC35200F5935B /* ImagePicker.swift */; };
 		207FB569299BCDEE00F5935B /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207FB568299BCDEE00F5935B /* StorageManager.swift */; };
-		20D4AF8C2980027100620EB8 /* ApiShowEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */; };
 		20FD49DC2988284700208727 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FD49DB2988284700208727 /* ProfileView.swift */; };
 		20FD4A1E2991650200208727 /* ShowEntryMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FD4A1D2991650200208727 /* ShowEntryMoreView.swift */; };
 /* End PBXBuildFile section */
@@ -65,7 +64,6 @@
 		2002C6472976ED6100A01C88 /* ApiShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShows.swift; sourceTree = "<group>"; };
 		207FB566299BC35200F5935B /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		207FB568299BCDEE00F5935B /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiShowEntryView.swift; sourceTree = "<group>"; };
 		20FD49DB2988284700208727 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		20FD4A1D2991650200208727 /* ShowEntryMoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowEntryMoreView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,7 +130,6 @@
 				2002C58C296D8F5400A01C88 /* ShowList.swift */,
 				2002C60129704F7A00A01C88 /* GoogleService-Info.plist */,
 				2002C6472976ED6100A01C88 /* ApiShows.swift */,
-				20D4AF8B2980027100620EB8 /* ApiShowEntryView.swift */,
 				20FD49DB2988284700208727 /* ProfileView.swift */,
 				20FD4A1D2991650200208727 /* ShowEntryMoreView.swift */,
 				207FB566299BC35200F5935B /* ImagePicker.swift */,
@@ -314,7 +311,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				20FD49DC2988284700208727 /* ProfileView.swift in Sources */,
-				20D4AF8C2980027100620EB8 /* ApiShowEntryView.swift in Sources */,
 				207FB569299BCDEE00F5935B /* StorageManager.swift in Sources */,
 				2002C58B296D8E5800A01C88 /* ShowEntryView.swift in Sources */,
 				2002C589296D8E3A00A01C88 /* ShowEntry.swift in Sources */,
