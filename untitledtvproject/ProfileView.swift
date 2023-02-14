@@ -13,6 +13,8 @@ import Firebase
 struct ProfileView: View {
     @StateObject var showList = ShowList()
     let db = Firestore.firestore()
+    @State var image: ApiShows.Image?
+
     
     //language lists
     @State var englishList : [ApiShows.Returned] = []
@@ -72,13 +74,16 @@ struct ProfileView: View {
                     .padding(10)
                     .padding(.top, 10)
                 }
+                Divider()
+                 .frame(height: 1)
+                 .padding(.horizontal, 30)
                 Spacer()
                 Text("Another way of seeing your data")
                 Spacer()
                 HStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(newColor)
+                            .fill(Color(.systemGray6))
                             .aspectRatio(1.0, contentMode: .fit)
                         Canvas { context, size in
                             var slices: [(Double, Color)] = [(Double(englishList.count), .red),
@@ -133,7 +138,7 @@ struct ProfileView: View {
                     }
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(newColor)
+                            .fill(Color(.systemGray6))
                             .aspectRatio(1.0, contentMode: .fit)
                         Canvas { context, size in
                             var slices: [(Double, Color)] = [(Double(comedyList.count), .red),
@@ -169,38 +174,29 @@ struct ProfileView: View {
                         .foregroundColor(.white)
                         .alert(/*"Percentage split"*/"Individual split", isPresented: $showingGenreWindow) { //showing counts instead of percentage for genres
                             VStack {
-                                Button("Comedy: \(Double(comedyList.count))") {}
-                                Button("Drama: \(Double(dramaList.count))") {}
-                                Button("Horror: \(Double(horrorList.count))") {}
-                                Button("Science-Fiction: \(Double(scifiList.count))") {}
-                                Button("Crime: \(Double(crimeList.count))") {}
-                                Button("Adventure: \(Double(adventureList.count))") {}
+                                Button("Comedy: \(comedyList.count)") {}
+                                Button("Drama: \(dramaList.count)") {}
+                                Button("Horror: \(horrorList.count)") {}
+                                Button("Science-Fiction: \(scifiList.count)") {}
+                                Button("Crime: \(crimeList.count)") {}
+                                Button("Adventure: \(adventureList.count)") {}
                                 Button("Cancel", role: .cancel) { }
                             }
                         }
                     }
                 }
+                Text("Your completed shows")
                 .padding(10)
-                .padding(.bottom, -20)
                 HStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(newColor)
-                        .aspectRatio(1.0, contentMode: .fit)
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(newColor)
-                        .aspectRatio(1.0, contentMode: .fit)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 20) {
+                            ForEach(allLanguages, id: \.show.summary.hashValue) { show in
+                                AsyncImage(url: URL(string: show.show.image?.medium ?? "https://i.imgur.com/e3AEk4W.png"))
+                                    .frame(width: 250, height: 300)
+                            }
+                        }
+                    }
                 }
-                .padding(10)
-                .padding(.bottom, -20)
-                HStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(newColor)
-                        .aspectRatio(1.0, contentMode: .fit)
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(newColor)
-                        .aspectRatio(1.0, contentMode: .fit)
-                }
-                .padding(10)
                 Spacer()
             }
             .task { //read data from firestore to graphs
@@ -247,6 +243,7 @@ struct ProfileView: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
+            .background(Color(.systemGray6))
         }
     }
     func listenToFireStore() {

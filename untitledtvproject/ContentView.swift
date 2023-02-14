@@ -140,6 +140,8 @@ struct OverView : View {
     let db = Firestore.firestore()
     
     @State var showingAlert = false
+    
+    @State var showingSettingsAlert = false
 
 
     var body: some View {
@@ -240,10 +242,21 @@ struct OverView : View {
                             }
                             Spacer()
                             Button(action: {
-                                
+                                showingSettingsAlert = true
                             }) {
                                 Image("square.and.pencil.circle.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            .alert("Settings", isPresented: $showingSettingsAlert) {
+                                VStack {
+                                    Button("Row background color") {
+                                        
+                                    }
+                                    Button("Row text color") {
+                                        //textColor = Color.blue
+                                    }
+                                    Button("Cancel", role: .cancel) { }
+                                }
                             }
                             Spacer()
                             NavigationLink(destination: ProfileView()) {
@@ -387,6 +400,7 @@ struct OverView : View {
 }
 struct RowTest : View {
     var showTest : ApiShows.Returned
+    @State var textColor = Color.black
     @State var showingAlert = false
     @State var listChoice = ""
     
@@ -397,6 +411,7 @@ struct RowTest : View {
                     showingAlert = true
                 }
             Text(showTest.show.name)
+                .foregroundColor(textColor)
         }
         .alert("Move to what list?", isPresented: $showingAlert) {
             VStack {
