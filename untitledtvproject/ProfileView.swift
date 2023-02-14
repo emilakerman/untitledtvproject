@@ -68,7 +68,7 @@ struct ProfileView: View {
                     Button(action: {
                         logOut()
                     }) {
-                        Image("info.circle")
+                        Image("door.left.hand.open")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
                     .padding(10)
