@@ -106,7 +106,7 @@ struct ShowEntryMoreView: View {
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
                     Spacer()
-                    NavigationLink(destination: ProfileView()) {
+                    NavigationLink(destination: ProfileView(selectedUserName: "", userName: "")) {
                         Image("person.crop.circle.fill")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }

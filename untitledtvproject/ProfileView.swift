@@ -14,6 +14,7 @@ struct ProfileView: View {
     @StateObject var showList = ShowList()
     let db = Firestore.firestore()
     @State var image: ApiShows.Image?
+    @State var nameList : [String] = []
 
     
     //language lists
@@ -51,6 +52,10 @@ struct ProfileView: View {
     
     @State var showingLangWindow = false
     @State var showingGenreWindow = false
+    
+    @State var showingSettingsAlert = false
+    @State var selectedUserName : String
+    @State var userName : String?
         
     var body: some View {
         if !signedIn {
@@ -63,7 +68,7 @@ struct ProfileView: View {
                         .frame(width: 50, height: 50)
                         .padding(10)
                         .padding(.top, 10)
-                    Text(user?.email ?? "") //maybe change to username
+                    Text((userName) ?? "")
                     Spacer()
                     Button(action: {
                         logOut()
@@ -204,6 +209,7 @@ struct ProfileView: View {
             .task { //read data from firestore to graphs
                 DispatchQueue.main.async {
                     listenToFireStore()
+                    listenToSettingsFireStore()
                 }
             }
             .toolbar {
@@ -229,10 +235,19 @@ struct ProfileView: View {
                         }
                         Spacer()
                         Button(action: {
-                            
+                            showingSettingsAlert = true
                         }) {
                             Image("square.and.pencil.circle.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                        }
+                        .alert("Settings", isPresented: $showingSettingsAlert) {
+                            VStack {
+                                TextField("Enter desired username", text: $selectedUserName)
+                                Button("Save") {
+                                    saveSettingsToFireStore(selectedUserName: selectedUserName)
+                                }
+                                Button("Cancel", role: .cancel) { }
+                            }
                         }
                         Spacer()
                         Button(action: {
@@ -248,6 +263,39 @@ struct ProfileView: View {
             .background(Color(.systemGray6))
         }
     }
+    func listenToSettingsFireStore() {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        
+        db.collection("users").document(user.uid).collection("Settings").document("ProfileSettings").addSnapshotListener { documentSnapshot, err in
+            
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(err!)")
+                return
+            }
+            guard let data = document.data() else {
+                userName = user.email
+                return
+            }
+            userName = data["name"] as? String ?? ""
+        }
+    }
+    func saveSettingsToFireStore(selectedUserName: String) {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        db.collection("users").document(user.uid).collection("Settings").document("ProfileSettings").setData([
+                "name": selectedUserName,
+                //"something": "123",
+                //"something2": "1234"
+                ])
+            { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                }
+            }
+        }
     func listenToFireStore() {
         guard let user = Auth.auth().currentUser else {return}
         
