@@ -18,8 +18,8 @@ struct untitledtvprojectApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            ContentView()
-            //LoginView(signedIn: false)
+            //ContentView()
+            SplashScreenView()
         }
     }
 }
