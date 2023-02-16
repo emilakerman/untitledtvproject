@@ -208,14 +208,13 @@ struct OverView : View {
                             showList.delete(indexSet: indexSet, status: .dropped)
                         }
                     }
-                    /*
-                    Section(header: Text("Recently deleted")) {
-                        ForEach(showList.lists[.recentlyDeleted]!) { show in
-                            NavigationLink(destination: ShowEntryView(name: show.name, language: show.language, summary: show.summary)) {
-                                RowView(show: show)
+                    Section(header: Text("Recently deleted")) { //fixa så detta finns på Firestore
+                        ForEach(showList.lists[.recentlyDeleted]!, id: \.show.summary.hashValue) { returned in
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                RowTest(showTest: returned)
                             }
                         }
-                    }*/
+                    }
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
@@ -367,6 +366,26 @@ struct OverView : View {
                 }
             }
         }
+        db.collection("users").document(user.uid).collection("recentlyDeleted").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.recentlyDeleted]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.recentlyDeleted]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
     }
     func getData() {
         
@@ -403,13 +422,15 @@ struct RowTest : View {
     @State var textColor = Color.black
     @State var showingAlert = false
     @State var listChoice = ""
-    //@State var listClicked = ""
+    @State var collectionPath = "" //conditional deletes - not sure where to assign
+
     
     var body: some View {
         HStack {
             Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
                 .onTapGesture {
                     showingAlert = true
+                    //collectionPath = self.
                 }
             Text(showTest.show.name)
                 .foregroundColor(textColor)
@@ -436,10 +457,12 @@ struct RowTest : View {
             }
         }
     }
-    func changeListFireStore() {
+    func changeListFireStore(/*collectionPath: */) {
+
         var deleteList : [ApiShows.Returned] = []
         let db = Firestore.firestore()
         guard let user = Auth.auth().currentUser else {return}
+        //var collectionPath : String
 
         do {
             //move

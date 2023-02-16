@@ -58,6 +58,12 @@ class ShowList : ObservableObject {
                                 for show in self.deleteList {
                                     if show.show.name == item.show.name {
                                         db.collection("users").document(user.uid).collection("\(status)").document(document.documentID).delete()
+                                        do {
+                                            var showEntryView = ShowEntryView(show2: show)
+                                            _ = try db.collection("users").document(user.uid).collection("recentlyDeleted").addDocument(from: showEntryView.show2)
+                                        } catch {
+                                            print("error!")
+                                        }
                                     }
                                 }
                             case .failure(let error) :
@@ -69,14 +75,4 @@ class ShowList : ObservableObject {
             }
         }
     }
-    /*
-    func unDelete(indexSet: IndexSet, status: Status) {
-        for index in indexSet {
-            if let item = lists[status]?[index] {
-                lists[status]?.remove(atOffsets: indexSet)
-                lists[.recentlyDeleted]?.append(item)
-            }
-        }
-    }
-    */
 }
