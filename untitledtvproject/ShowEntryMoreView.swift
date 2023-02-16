@@ -117,21 +117,21 @@ struct ShowEntryMoreView: View {
             VStack {
                 HStack {
                     Button("Want to watch") {
-                        listChoice = "Want to watch"
+                        listChoice = "wantToWatch"
                         saveToFireStore()
                     }
                     Button("Watching") {
-                        listChoice = "Watching"
+                        listChoice = "watching"
                         saveToFireStore()
                     }
                 }
                 HStack {
                     Button("Completed") {
-                        listChoice = "Completed"
+                        listChoice = "completed"
                         saveToFireStore()
                     }
                     Button("Dropped") {
-                        listChoice = "Dropped"
+                        listChoice = "dropped"
                         saveToFireStore()
                     }
                 }

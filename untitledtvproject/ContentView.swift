@@ -287,7 +287,7 @@ struct OverView : View {
 
         guard let user = Auth.auth().currentUser else {return}
                 
-        db.collection("users").document(user.uid).collection("Watching").addSnapshotListener { snapshot, err in
+        db.collection("users").document(user.uid).collection("watching").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
@@ -307,7 +307,7 @@ struct OverView : View {
                 }
             }
         }
-        db.collection("users").document(user.uid).collection("Completed").addSnapshotListener { snapshot, err in
+        db.collection("users").document(user.uid).collection("completed").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
@@ -327,7 +327,7 @@ struct OverView : View {
                 }
             }
         }
-        db.collection("users").document(user.uid).collection("Dropped").addSnapshotListener { snapshot, err in
+        db.collection("users").document(user.uid).collection("dropped").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
@@ -347,7 +347,7 @@ struct OverView : View {
                 }
             }
         }
-        db.collection("users").document(user.uid).collection("Want to watch").addSnapshotListener { snapshot, err in
+        db.collection("users").document(user.uid).collection("wantToWatch").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
@@ -403,6 +403,7 @@ struct RowTest : View {
     @State var textColor = Color.black
     @State var showingAlert = false
     @State var listChoice = ""
+    //@State var listClicked = ""
     
     var body: some View {
         HStack {
@@ -416,19 +417,19 @@ struct RowTest : View {
         .alert("Move to what list?", isPresented: $showingAlert) {
             VStack {
                 Button("Want to watch") {
-                    listChoice = "Want to watch"
+                    listChoice = "wantToWatch"
                     changeListFireStore()
                 }
                 Button("Watching") {
-                    listChoice = "Watching"
+                    listChoice = "watching"
                     changeListFireStore()
                 }
                 Button("Completed") {
-                    listChoice = "Completed"
+                    listChoice = "completed"
                     changeListFireStore()
                 }
                 Button("Dropped") {
-                    listChoice = "Dropped"
+                    listChoice = "dropped"
                     changeListFireStore()
                 }
                 Button("Cancel", role: .cancel) { }
@@ -436,59 +437,40 @@ struct RowTest : View {
         }
     }
     func changeListFireStore() {
+        var deleteList : [ApiShows.Returned] = []
         let db = Firestore.firestore()
         guard let user = Auth.auth().currentUser else {return}
 
         do {
             //move
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showTest)
-            //print(addedDoc.documentID) //prints the destination new docID
             //remove
-            /*
-            db.collection("users").document(user.uid).collection("Want to watch").getDocuments() { (querySnapshot, err) in
+            db.collection("users").document(user.uid).collection("wantToWatch").getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
                     for document in querySnapshot!.documents {
-                        //db.collection("users").document(user.uid).collection("Want to watch").document(addedDoc.documentID).delete()
-                        print("\(document.documentID)") // Gets all documentIDs, so almost there
+                        let result = Result {
+                            try document.data(as: ApiShows.Returned.self)
+                        }
+                        switch result  {
+                        case .success(let show)  :
+                            deleteList.removeAll()
+                            deleteList.append(show)
+                            for show in deleteList {
+                                if show.show.name == showTest.show.name {
+                                    db.collection("users").document(user.uid).collection("wantToWatch").document(document.documentID).delete()
+                                }
+                            }
+                        case .failure(let error) :
+                            print("Error decoding item: \(error)")
+                        }
                     }
                 }
-            }*/
+            }
         } catch {
             print("catch error!")
-            }/*
-        func newFetch() {
-            db.collection("users").document(user.uid).collection("Want to watch").addSnapshotListener { (querySnapshot, error) in
-                guard let documents = querySnapshot?.documents else {
-                    print("no docs")
-                    return
-                }
-                documents.compactMap { (queryDocumentSnapshot) -> ApiShows.Returned? in
-                    return try? queryDocumentSnapshot.data(as: ApiShows.Returned.self)
-                }
-            }
         }
-        func fetchDocID(documentId: String) {
-            let docRef = db.collection("users").document(user.uid).collection("Want to watch").document(showTest.show.id ?? "")
-
-          docRef.getDocument { document, error in
-            if let error = error as NSError? {
-            print("Error getting document: \(error.localizedDescription)")
-            }
-            else {
-              if let document = document {
-                let id = document.documentID
-                db.collection("users").document(user.uid).collection("Want to watch").document(id).delete()
-                let data = document.data()
-                let title = data?["title"] as? String ?? ""
-                let numberOfPages = data?["numberOfPages"] as? Int ?? 0
-                let author = data?["author"] as? String ?? ""
-                //self.book = Book(id:id, title: title, numberOfPages: numberOfPages, author: author)
-              }
-            }
-          }
-        }*/
       }
     }
 struct RowView : View {
