@@ -102,7 +102,7 @@ struct ShowEntryMoreView: View {
                     Button(action: {
                         
                     }) {
-                        Image("square.and.pencil.circle.fill")
+                        Image("square.and.pencil.circle.fill_grey")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
                     Spacer()

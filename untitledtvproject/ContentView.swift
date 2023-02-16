@@ -149,6 +149,8 @@ struct OverView : View {
     @State private var textColor = Color.black
     @State var selectedRowBgColor : String
     @State var selectedTextColor : String
+    
+    @State var isDarkMode = false
 
 
     var body: some View {
@@ -234,6 +236,7 @@ struct OverView : View {
                         }
                     }
                 }
+                .preferredColorScheme(isDarkMode ? .light : .dark)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
@@ -271,6 +274,13 @@ struct OverView : View {
                                     }
                                     Button("Row text color") {
                                         showRowTextColorAlert = true
+                                    }
+                                    Button("Toggle Dark mode") {
+                                        if isDarkMode == false {
+                                            isDarkMode = true
+                                        } else {
+                                            isDarkMode = false
+                                        }
                                     }
                                     Button("Cancel", role: .cancel) { }
                                 }
@@ -392,12 +402,11 @@ struct OverView : View {
                 return
             }
             guard let data = document.data() else {
-                //userName = user.email
                 return
             }
             //Sets the text color and row color from saved settings in firestore
-            var returnedRowColor = ("\(Color(data["rowBgColor"] as! CGColor))")
-            var returnedTextColor = ("\(Color(data["textColor"] as! CGColor))")
+            let returnedRowColor = ("\(Color(data["rowBgColor"] as! CGColor))")
+            let returnedTextColor = ("\(Color(data["textColor"] as! CGColor))")
 
             switch returnedRowColor {
             case let str where str.contains("purple"):
