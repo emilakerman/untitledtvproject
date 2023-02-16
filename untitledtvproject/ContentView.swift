@@ -142,6 +142,8 @@ struct OverView : View {
     @State var showingAlert = false
     
     @State var showingSettingsAlert = false
+    
+    @State private var rowColor = Color.white
 
 
     var body: some View {
@@ -213,6 +215,7 @@ struct OverView : View {
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowView(showView: returned)
                             }
+                            .listRowBackground(rowColor) //Change this with a variable connected to firestore, white is default
                         }
                     }
                 }
@@ -249,7 +252,7 @@ struct OverView : View {
                             .alert("Settings", isPresented: $showingSettingsAlert) {
                                 VStack {
                                     Button("Row background color") {
-                                        
+                                        //bg color
                                     }
                                     Button("Row text color") {
                                         //textColor = Color.blue
@@ -282,7 +285,7 @@ struct OverView : View {
             return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }*/
     }
-    func listenToFireStore() { //make this shorter
+    func listenToFireStore() { //should probably make this shorter
 
         guard let user = Auth.auth().currentUser else {return}
                 
@@ -465,7 +468,7 @@ struct RowView : View {
         do {
             //move
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showView)
-            //remove
+            //remove, right now it only deleted from a static collection, in this case its wantToWatch, needs to be conditional/contextual
             db.collection("users").document(user.uid).collection("wantToWatch").getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
@@ -483,9 +486,7 @@ struct RowView : View {
                                     db.collection("users").document(user.uid).collection("wantToWatch").document(document.documentID).delete()
                                 }
                             }
-                        case .failure(let error) :
-                            print("Error decoding item: \(error)")
-                        }
+                        case .failure(let error) : print("Error decoding item: \(error)") }
                     }
                 }
             }

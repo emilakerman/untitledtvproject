@@ -59,11 +59,9 @@ class ShowList : ObservableObject {
                                     if show.show.name == item.show.name {
                                         db.collection("users").document(user.uid).collection("\(status)").document(document.documentID).delete()
                                         do {
-                                            var showEntryView = ShowEntryView(show2: show)
+                                            let showEntryView = ShowEntryView(show2: show)
                                             _ = try db.collection("users").document(user.uid).collection("recentlyDeleted").addDocument(from: showEntryView.show2)
-                                        } catch {
-                                            print("error!")
-                                        }
+                                        } catch {print("error!") }
                                     }
                                 }
                             case .failure(let error) :

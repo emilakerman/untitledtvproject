@@ -178,7 +178,6 @@ struct ProfileView: View {
                                                              (Double(horrorList.count), .green),
                                                              (Double(scifiList.count), .purple),
                                                              (Double(crimeList.count), .teal),
-                                                             (Double(horrorList.count), .mint),
                                                              (Double(adventureList.count), .gray)]
                             let total = slices.reduce(0) { $0 + $1.0 }
                             context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
@@ -352,7 +351,7 @@ struct ProfileView: View {
     func listenToFireStore() {
         guard let user = Auth.auth().currentUser else {return}
         
-        db.collection("users").document(user.uid).collection("Completed").addSnapshotListener { snapshot, err in
+        db.collection("users").document(user.uid).collection("completed").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
             if let err = err {
@@ -461,6 +460,8 @@ struct ProfileView: View {
         comedyList.removeAll()
         horrorList.removeAll()
         scifiList.removeAll()
+        crimeList.removeAll()
+        adventureList.removeAll()
     }
     func logOut() {
         do {
