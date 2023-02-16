@@ -118,7 +118,7 @@ struct ProfileView: View {
                             .fill(Color(.systemGray6))
                             .aspectRatio(1.0, contentMode: .fit)
                         Canvas { context, size in
-                            var slices: [(Double, Color)] = [(Double(englishList.count), .red),
+                            let slices: [(Double, Color)] = [(Double(englishList.count), .red),
                                                              (Double(swedishList.count), .blue),
                                                              (Double(koreanList.count), .green),
                                                              (Double(thaiList.count), .purple),
@@ -173,7 +173,7 @@ struct ProfileView: View {
                             .fill(Color(.systemGray6))
                             .aspectRatio(1.0, contentMode: .fit)
                         Canvas { context, size in
-                            var slices: [(Double, Color)] = [(Double(comedyList.count), .red),
+                            let slices: [(Double, Color)] = [(Double(comedyList.count), .red),
                                                              (Double(dramaList.count), .blue),
                                                              (Double(horrorList.count), .green),
                                                              (Double(scifiList.count), .purple),
@@ -239,7 +239,7 @@ struct ProfileView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     HStack {
-                        NavigationLink(destination: OverView()) {
+                        NavigationLink(destination: OverView(selectedRowBgColor: "", selectedTextColor: "")) {
                             Image("house.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }

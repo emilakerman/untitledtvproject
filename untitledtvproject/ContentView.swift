@@ -22,7 +22,7 @@ struct ContentView: View {
     
     var body: some View {
         if Auth.auth().currentUser != nil || signedIn {
-            OverView()
+            OverView(selectedRowBgColor: "", selectedTextColor: "")
         }
         if Auth.auth().currentUser == nil && !wantToSignUp {
             LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)
@@ -142,8 +142,13 @@ struct OverView : View {
     @State var showingAlert = false
     
     @State var showingSettingsAlert = false
+    @State var showRowBgColorAlert = false
+    @State var showRowTextColorAlert = false
     
     @State private var rowColor = Color.white
+    @State private var textColor = Color.black
+    @State var selectedRowBgColor : String
+    @State var selectedTextColor : String
 
 
     var body: some View {
@@ -171,6 +176,8 @@ struct OverView : View {
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                     RowView(showView: returned)
                             }
+                            .listRowBackground(rowColor)
+                            .foregroundColor(textColor)
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .wantToWatch)
@@ -181,6 +188,8 @@ struct OverView : View {
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowView(showView: returned)
                             }
+                            .listRowBackground(rowColor)
+                            .foregroundColor(textColor)
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .watching)
@@ -188,6 +197,7 @@ struct OverView : View {
                     }
                     .onAppear() {
                         listenToFireStore()
+                        listenToSettingsFireStore()
                     }
                     
                     Section(header: Text("Completed")) {
@@ -195,6 +205,8 @@ struct OverView : View {
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowView(showView: returned)
                             }
+                            .listRowBackground(rowColor)
+                            .foregroundColor(textColor)
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .completed)
@@ -205,6 +217,8 @@ struct OverView : View {
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowView(showView: returned)
                             }
+                            .listRowBackground(rowColor)
+                            .foregroundColor(textColor)
                         }
                         .onDelete() { indexSet in
                             showList.delete(indexSet: indexSet, status: .dropped)
@@ -215,7 +229,8 @@ struct OverView : View {
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowView(showView: returned)
                             }
-                            .listRowBackground(rowColor) //Change this with a variable connected to firestore, white is default
+                            .listRowBackground(rowColor)
+                            .foregroundColor(textColor)
                         }
                     }
                 }
@@ -252,10 +267,76 @@ struct OverView : View {
                             .alert("Settings", isPresented: $showingSettingsAlert) {
                                 VStack {
                                     Button("Row background color") {
-                                        //bg color
+                                        showRowBgColorAlert = true
                                     }
                                     Button("Row text color") {
-                                        //textColor = Color.blue
+                                        showRowTextColorAlert = true
+                                    }
+                                    Button("Cancel", role: .cancel) { }
+                                }
+                            }
+                            .alert("Select row background color", isPresented: $showRowBgColorAlert) {
+                                VStack {
+                                    Button("Red") {
+                                        rowColor = Color.red
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Blue") {
+                                        rowColor = Color.blue
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Black") {
+                                        rowColor = Color.black
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Green") {
+                                        rowColor = Color.green
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("White") {
+                                        rowColor = Color.white
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Orange") {
+                                        rowColor = Color.orange
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Purple") {
+                                        rowColor = Color.purple
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Cancel", role: .cancel) { }
+                                }
+                            }
+                            .alert("Select row text color", isPresented: $showRowTextColorAlert) {
+                                VStack {
+                                    Button("Black") {
+                                        textColor = Color.black
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("White") {
+                                        textColor = Color.white
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Blue") {
+                                        textColor = Color.blue
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Red") {
+                                        textColor = Color.red
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Purple") {
+                                        textColor = Color.purple
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Green") {
+                                        textColor = Color.green
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+                                    }
+                                    Button("Orange") {
+                                        textColor = Color.orange
+                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
                                     }
                                     Button("Cancel", role: .cancel) { }
                                 }
@@ -284,6 +365,77 @@ struct OverView : View {
             }
             return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
         }*/
+    }
+    func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
+                "textColor": selectedTextColor,
+                "rowBgColor": selectedRowBgColor,
+                ])
+            { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    //
+                }
+            }
+        }
+    func listenToSettingsFireStore() {
+        let db = Firestore.firestore()
+        guard let user = Auth.auth().currentUser else {return}
+        
+        db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").addSnapshotListener { documentSnapshot, err in
+            
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(err!)")
+                return
+            }
+            guard let data = document.data() else {
+                //userName = user.email
+                return
+            }
+            //Sets the text color and row color from saved settings in firestore
+            var returnedRowColor = ("\(Color(data["rowBgColor"] as! CGColor))")
+            var returnedTextColor = ("\(Color(data["textColor"] as! CGColor))")
+
+            switch returnedRowColor {
+            case let str where str.contains("purple"):
+                rowColor = Color.purple
+            case let str where str.contains("green"):
+                rowColor = Color.green
+            case let str where str.contains("blue"):
+                rowColor = Color.blue
+            case let str where str.contains("red"):
+                rowColor = Color.red
+            case let str where str.contains("orange"):
+                rowColor = Color.orange
+            case let str where str.contains("white"):
+                rowColor = Color.white
+            case let str where str.contains("black"):
+                rowColor = Color.black
+            default:
+                break
+            }
+            switch returnedTextColor {
+            case let str where str.contains("purple"):
+                textColor = Color.purple
+            case let str where str.contains("green"):
+                textColor = Color.green
+            case let str where str.contains("blue"):
+                textColor = Color.blue
+            case let str where str.contains("red"):
+                textColor = Color.red
+            case let str where str.contains("orange"):
+                textColor = Color.orange
+            case let str where str.contains("white"):
+                textColor = Color.white
+            case let str where str.contains("black"):
+                textColor = Color.black
+            default:
+                break
+            }
+        }
     }
     func listenToFireStore() { //should probably make this shorter
 
@@ -422,7 +574,6 @@ struct OverView : View {
 }
 struct RowView : View {
     var showView : ApiShows.Returned
-    @State var textColor = Color.black
     @State var showingAlert = false
     @State var listChoice = ""
     @State var collectionPath = "" //conditional deletes - not sure where to assign
@@ -435,7 +586,6 @@ struct RowView : View {
                     //collectionPath = self.
                 }
             Text(showView.show.name)
-                .foregroundColor(textColor)
         }
         .alert("Move to what list?", isPresented: $showingAlert) {
             VStack {

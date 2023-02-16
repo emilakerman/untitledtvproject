@@ -51,7 +51,7 @@ struct ShowEntryView : View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     HStack {
-                        NavigationLink(destination: OverView()) {
+                        NavigationLink(destination: OverView(selectedRowBgColor: "", selectedTextColor: "")) {
                             Image("house.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
