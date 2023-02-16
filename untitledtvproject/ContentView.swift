@@ -151,7 +151,7 @@ struct OverView : View {
                     Section {
                         ForEach(filteredMessages, id: \.show.summary) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                    RowTest(showTest: returned)
+                                    RowView(showView: returned)
                             }
                         }
                     }
@@ -167,7 +167,7 @@ struct OverView : View {
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                    RowTest(showTest: returned)
+                                    RowView(showView: returned)
                             }
                         }
                         .onDelete() { indexSet in
@@ -177,7 +177,7 @@ struct OverView : View {
                     Section(header: Text("Watching")) {
                         ForEach(showList.lists[.watching]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                RowView(showView: returned)
                             }
                         }
                         .onDelete() { indexSet in
@@ -191,7 +191,7 @@ struct OverView : View {
                     Section(header: Text("Completed")) {
                         ForEach(showList.lists[.completed]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                RowView(showView: returned)
                             }
                         }
                         .onDelete() { indexSet in
@@ -201,7 +201,7 @@ struct OverView : View {
                     Section(header: Text("Dropped")) {
                         ForEach(showList.lists[.dropped]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                RowView(showView: returned)
                             }
                         }
                         .onDelete() { indexSet in
@@ -211,7 +211,7 @@ struct OverView : View {
                     Section(header: Text("Recently deleted")) { //fixa så detta finns på Firestore
                         ForEach(showList.lists[.recentlyDeleted]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowTest(showTest: returned)
+                                RowView(showView: returned)
                             }
                         }
                     }
@@ -417,13 +417,12 @@ struct OverView : View {
         task.resume()
     }
 }
-struct RowTest : View {
-    var showTest : ApiShows.Returned
+struct RowView : View {
+    var showView : ApiShows.Returned
     @State var textColor = Color.black
     @State var showingAlert = false
     @State var listChoice = ""
     @State var collectionPath = "" //conditional deletes - not sure where to assign
-
     
     var body: some View {
         HStack {
@@ -432,7 +431,7 @@ struct RowTest : View {
                     showingAlert = true
                     //collectionPath = self.
                 }
-            Text(showTest.show.name)
+            Text(showView.show.name)
                 .foregroundColor(textColor)
         }
         .alert("Move to what list?", isPresented: $showingAlert) {
@@ -457,16 +456,15 @@ struct RowTest : View {
             }
         }
     }
-    func changeListFireStore(/*collectionPath: */) {
+    func changeListFireStore(/*collectionPath: */) { //make this deletion conditional, collectionPath = list name through context
 
-        var deleteList : [ApiShows.Returned] = []
+        var deleteList : [ApiShows.Returned] = [] //temporary list to deal with deleted documents from firestore
         let db = Firestore.firestore()
         guard let user = Auth.auth().currentUser else {return}
-        //var collectionPath : String
 
         do {
             //move
-            _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showTest)
+            _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showView)
             //remove
             db.collection("users").document(user.uid).collection("wantToWatch").getDocuments() { (querySnapshot, err) in
                 if let err = err {
@@ -481,7 +479,7 @@ struct RowTest : View {
                             deleteList.removeAll()
                             deleteList.append(show)
                             for show in deleteList {
-                                if show.show.name == showTest.show.name {
+                                if show.show.name == showView.show.name {
                                     db.collection("users").document(user.uid).collection("wantToWatch").document(document.documentID).delete()
                                 }
                             }
@@ -491,20 +489,9 @@ struct RowTest : View {
                     }
                 }
             }
-        } catch {
-            print("catch error!")
-        }
+        } catch { print("catch error!") }
       }
     }
-struct RowView : View {
-    var show : ShowEntry
-    
-    var body: some View {
-        HStack {
-            Text(show.name)
-        }
-    }
-}
 /*
  struct ContentView_Previews: PreviewProvider {
  static var previews: some View {
