@@ -152,9 +152,8 @@ struct OverView : View {
     
     @State var isDarkMode = false
 
-
     var body: some View {
-        NavigationView { //switched place vstack and navview test, vstack was on top at first
+        NavigationView {
              VStack {
                 Form {
                     Section {
@@ -236,7 +235,7 @@ struct OverView : View {
                         }
                     }
                 }
-                .preferredColorScheme(isDarkMode ? .light : .dark)
+                .preferredColorScheme(isDarkMode ? .dark : .light)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
@@ -377,7 +376,6 @@ struct OverView : View {
         }*/
     }
     func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
-        let db = Firestore.firestore()
         guard let user = Auth.auth().currentUser else {return}
         db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
                 "textColor": selectedTextColor,
@@ -392,7 +390,6 @@ struct OverView : View {
             }
         }
     func listenToSettingsFireStore() {
-        let db = Firestore.firestore()
         guard let user = Auth.auth().currentUser else {return}
         
         db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").addSnapshotListener { documentSnapshot, err in
@@ -586,6 +583,7 @@ struct RowView : View {
     @State var showingAlert = false
     @State var listChoice = ""
     @State var collectionPath = "" //conditional deletes - not sure where to assign
+    let db = Firestore.firestore()
     
     var body: some View {
         HStack {
@@ -621,7 +619,6 @@ struct RowView : View {
     func changeListFireStore(/*collectionPath: */) { //make this deletion conditional, collectionPath = list name through context
 
         var deleteList : [ApiShows.Returned] = [] //temporary list to deal with deleted documents from firestore
-        let db = Firestore.firestore()
         guard let user = Auth.auth().currentUser else {return}
 
         do {
