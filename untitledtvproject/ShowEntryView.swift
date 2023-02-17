@@ -29,7 +29,7 @@ struct ShowEntryView : View {
     
     @State var listChoice = ""
     
-    @State var showingAlert = false
+    @State var showingAlertPopUp = false
     
     var body: some View {
         VStack {
@@ -109,7 +109,7 @@ struct ShowEntryView : View {
                     }
                 }
             })
-            .alert("Show added!", isPresented: $showingAlert) {
+            .alert("Show added!", isPresented: $showingAlertPopUp) {
                 Button("Go it!", role: .cancel) { }
             }
             .navigationBarBackButtonHidden(false)
@@ -129,7 +129,7 @@ struct ShowEntryView : View {
         guard let user = Auth.auth().currentUser else {return}
         do {
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: show2)
-            showingAlert = true
+            showingAlertPopUp = true
         } catch {
             print("error!")
             }

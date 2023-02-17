@@ -253,12 +253,12 @@ struct SignUpView: View {
 }
 struct OverView : View {
     
-    //@State var searchScope = ApiShows.SearchScope.name
+    @State private var searchScope = ApiShows.SearchScope.name
         
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
     
-    @State var searchText = ""
+    @State private var searchText = ""
                 
     let db = Firestore.firestore()
     
@@ -280,20 +280,22 @@ struct OverView : View {
              VStack {
                 Form {
                     Section {
-                        ForEach(filteredMessages, id: \.show.summary) { returned in
+                        ForEach(filteredMessages, id: \.show.id) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                     RowView(showView: returned)
                             }
+                            //.isDetailLink(false)
                         }
                     }
-                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))/*
+                   .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                    .searchScopes($searchScope) {
                        ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
                            Text(scope.rawValue.capitalized)
                        }
-                   }*/
+                   }
+                   .onAppear(perform: getData)
                    .onSubmit(of: .search, getData)
-                   //.onChange(of: searchScope) { _ in getData()}
+                   .onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
@@ -487,8 +489,9 @@ struct OverView : View {
         .navigationViewStyle(StackNavigationViewStyle())
     }
     var filteredMessages: [ApiShows.Returned] {
-        searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
-        /*
+        //searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
+        
+        
         if searchText.isEmpty {
             return apiShows.searchArray
         } else {
@@ -496,7 +499,7 @@ struct OverView : View {
                 return apiShows.searchArray
             }
             return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
-        }*/
+        }
     }
     func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
         guard let user = Auth.auth().currentUser else {return}

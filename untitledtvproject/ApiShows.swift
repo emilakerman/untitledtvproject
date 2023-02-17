@@ -15,6 +15,9 @@ class ApiShows : ObservableObject {
         
     //search array for api
     @Published var searchArray : [Returned] = []
+    init() {
+        searchArray = [Returned]()
+    }
                     
     struct Returned: Codable, Identifiable {
         var id : UUID?
