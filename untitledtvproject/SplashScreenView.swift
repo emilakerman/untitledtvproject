@@ -21,9 +21,9 @@ struct SplashScreenView: View {
                     .ignoresSafeArea()
                 VStack {
                     VStack {
-                        Image(systemName: "tv.fill")
+                        Image(systemName: "play.tv")
                             .font(.system(size: 80))
-                            .foregroundColor(.purple)
+                            .foregroundColor(.gray)
                         Text("TV Tracker")
                             .font(Font.custom("Baskerville-Bold", size: 26))
                             .foregroundColor(.white.opacity(0.80))
