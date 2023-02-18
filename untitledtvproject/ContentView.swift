@@ -293,7 +293,6 @@ struct OverView : View {
                            Text(scope.rawValue.capitalized)
                        }
                    }
-                   .onAppear(perform: getData)
                    .onSubmit(of: .search, getData)
                    .onChange(of: searchScope) { _ in getData()}
                    .disableAutocorrection(true)
@@ -511,7 +510,7 @@ struct OverView : View {
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
-                    //
+                    //success
                 }
             }
         }
@@ -704,12 +703,16 @@ struct OverView : View {
         task.resume()
     }
 }
+class SharedEnv: ObservableObject { //testing, not used yet
+    @Published var collectionPath = ""
+}
 struct RowView : View {
     var showView : ApiShows.Returned
     @State var showingAlert = false
     @State var listChoice = ""
-    @State var collectionPath = "" //conditional deletes - not sure where to assign
     let db = Firestore.firestore()
+    
+    @EnvironmentObject var observed: SharedEnv //testing, not used yet
     
     var body: some View {
         HStack {
