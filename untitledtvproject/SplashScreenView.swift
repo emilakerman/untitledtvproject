@@ -12,6 +12,10 @@ struct SplashScreenView: View {
     @State private var size = 0.8
     @State private var opacity = 0.5
     
+    //progress bar
+    @State private var downloadAmount = 0.0
+    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         if isActive {
             ContentView()
@@ -36,6 +40,13 @@ struct SplashScreenView: View {
                             self.opacity = 1.0
                         }
                     }
+                    /*
+                    ProgressView("Downloading…", value: downloadAmount, total: 100)
+                        .onReceive(timer) { _ in
+                            if downloadAmount < 100 {
+                                downloadAmount += 2
+                            }
+                        }*/
                 }
             }
             .onAppear() {

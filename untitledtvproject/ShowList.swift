@@ -19,6 +19,7 @@ enum Status {
     case completed
     case dropped
     case recentlyDeleted
+    case searchList
 }
 class ShowList : ObservableObject {
     
@@ -33,6 +34,7 @@ class ShowList : ObservableObject {
         lists[.dropped] = [ApiShows.Returned]()
         lists[.completed] = [ApiShows.Returned]()
         lists[.recentlyDeleted] = [ApiShows.Returned]()
+        lists[.searchList] = [ApiShows.Returned]()
     }
     func delete(indexSet: IndexSet, status: Status) {
         for index in indexSet {

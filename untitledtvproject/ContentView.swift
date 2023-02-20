@@ -283,21 +283,28 @@ struct OverView : View {
                 Form {
                     if cellAppear {
                         Section {
+                            Text("Searching for: \(searchText)")
                             ForEach(filteredMessages, id: \.show.id) { returned in
                                 NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                     RowView(showView: returned)
                                 }
                             }
+
                         }
-                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                        .searchScopes($searchScope) {
+                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
+                        /*.searchScopes($searchScope) {
                             ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
                                 Text(scope.rawValue.capitalized)
                             }
-                        }
+                        }*/
                         .onSubmit(of: .search, getData)
-                        .onChange(of: searchScope) { _ in getData()}
+                        //.onChange(of: searchScope) { _ in getData()}
                         .disableAutocorrection(true)
+                        .overlay { //to fix an issue with a white row always appearing under search
+                            if searchText.isEmpty {
+                                EmptyView()
+                            }
+                        }
                     }
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
@@ -382,7 +389,9 @@ struct OverView : View {
                             }
                             Spacer()
                             Button(action: {
-                                self.cellAppear.toggle() //toggle to show search menu
+                                withAnimation {
+                                    self.cellAppear.toggle() //toggle to show search menu
+                                }
                             }) {
                                 Image("plus.app.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
@@ -493,7 +502,7 @@ struct OverView : View {
     }
     var filteredMessages: [ApiShows.Returned] {
         //searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
-        return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
+        return (showList.lists[.searchList]?.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) })!
     }
     /*
     func checkDateClearRecentlyDeleted() {
@@ -700,7 +709,7 @@ struct OverView : View {
             }
             //deal with the data
             do {
-                apiShows.searchArray = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
+                showList.lists[.searchList]? = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
             } catch {
                 print("catch: json error: \(error.localizedDescription)")
             }

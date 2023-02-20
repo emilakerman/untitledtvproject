@@ -267,6 +267,7 @@ struct ProfileView: View {
                         .alert("Settings", isPresented: $showingSettingsAlert) {
                             VStack {
                                 TextField("Enter desired username", text: $selectedUserName)
+                                    .disableAutocorrection(true)
                                 Button("Save") {
                                     saveSettingsToFireStore(selectedUserName: selectedUserName)
                                 }
