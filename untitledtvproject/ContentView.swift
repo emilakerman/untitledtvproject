@@ -253,6 +253,67 @@ struct SignUpView: View {
         }
     }
 }
+struct SearchView : View {
+    
+    @StateObject var showList = ShowList()
+    @State private var searchText = ""
+    
+    var filteredMessages: [ApiShows.Returned] {
+        //searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
+        return (showList.lists[.searchList]?.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) })!
+    }
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                    List { //search list outside of form
+                        Text("Searching for: \(searchText)")
+                        ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
+                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                RowView(showView: returned)
+                            }
+                            .isDetailLink(false)
+                        }
+                    }
+                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
+                    .onSubmit(of: .search, getData)
+                    .disableAutocorrection(true)
+            }
+        }
+        .navigationViewStyle(.stack)
+    }
+    func getData() {
+        
+        searchText = searchText.replacingOccurrences(of: " ", with: "%20")
+        var urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
+        
+        print("trying to access the url \(urlString)")
+        
+        guard let url = URL(string: urlString) else {
+            print("Error could not create url from \(urlString)")
+            return
+        }
+        searchText = searchText.replacingOccurrences(of: "%20", with: " ") //problem med house of the dragon "-" "-" something
+        
+        showList.lists[.searchList]?.removeAll()
+        
+        //create urlsession
+        let session = URLSession.shared
+        //get data with .dataTask
+        let task = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("error \(error.localizedDescription)")
+            }
+            //deal with the data
+            do {
+                showList.lists[.searchList]? = try JSONDecoder().decode([ApiShows.Returned].self, from: data!)
+            } catch {
+                print("catch: json error: \(error.localizedDescription)")
+            }
+        }
+        task.resume()
+    }
+}
 struct OverView : View {
     
     @State private var searchScope = ApiShows.SearchScope.name
@@ -277,13 +338,32 @@ struct OverView : View {
     
     @State var isDarkMode = false
     
-    @State private var cellAppear = false //hiding the search as default
-
+    @State private var searchAppear = false //hiding the search as default
+        
     var body: some View {
         NavigationStack {
              VStack {
-                Form {
-                    if cellAppear {
+                 if searchAppear {
+                     List { //search list outside of form
+                         Text("Searching for: \(searchText)")
+                         ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
+                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                                 RowView(showView: returned)
+                             }
+                             .isDetailLink(false)
+                         }
+                     }
+                     .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
+                     .onSubmit(of: .search, getData)
+                     .disableAutocorrection(true)
+                     .overlay { //to fix an issue with a white row always appearing under search
+                         if searchText.isEmpty {
+                             EmptyView()
+                         }
+                     }
+                 }
+                Form {/*
+                    if searchAppear {
                         Section {
                             Text("Searching for: \(searchText)")
                             ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
@@ -307,7 +387,7 @@ struct OverView : View {
                                 EmptyView()
                             }
                         }
-                    }
+                    }*/
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
@@ -390,11 +470,8 @@ struct OverView : View {
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
                             Spacer()
-                            Button(action: {
-                                withAnimation {
-                                    self.cellAppear.toggle() //toggle to show search menu
-                                }
-                            }) {
+                            NavigationLink(destination: SearchView()) {
+                        
                                 Image("plus.app.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
@@ -501,7 +578,7 @@ struct OverView : View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationViewStyle(.stack)
     }
     var filteredMessages: [ApiShows.Returned] {
         //searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}

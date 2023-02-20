@@ -22,21 +22,17 @@ struct EmptyView: View {
     var body: some View {
         ZStack {
             ForEach(emptyListFix, id:\.hashValue) { cell in
-                Text("dummy string")
+                Text("")
             }
             if colorScheme == .light {
                 gray1
-                    .frame(width: 550, height: 50)
+                    .frame(width: 550, height: 1000)
             } else {
                 black
-                    .frame(width: 550, height: 50)
+                    .frame(width: 550, height: 1000)
             }
         }
+        .ignoresSafeArea()
     }
 }
 
-struct EmptyView_Previews: PreviewProvider {
-    static var previews: some View {
-        EmptyView()
-    }
-}
