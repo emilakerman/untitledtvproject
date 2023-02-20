@@ -58,6 +58,7 @@ struct ShowEntryView : View {
                             Image("house.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
+                        .isDetailLink(false)
                         Spacer()
                         Button(action: {
                             
@@ -85,6 +86,7 @@ struct ShowEntryView : View {
                             Image("person.crop.circle.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
+                        .isDetailLink(false)
                     }
                 }
             }

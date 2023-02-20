@@ -243,6 +243,7 @@ struct ProfileView: View {
                             Image("house.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
+                        .isDetailLink(false)
                         Spacer()
                         Button(action: {
                             

@@ -125,6 +125,7 @@ struct LoginView: View {
                     NavigationLink(destination: SignUpView(wantToSignUp: $wantToSignUp, createdAccount: $createdAccount, signedIn: $signedIn)) {
                         Text("No account? Create account here")
                     }
+                    .isDetailLink(false)
                 }
             }
         }
@@ -235,6 +236,7 @@ struct SignUpView: View {
                     NavigationLink(destination: LoginView(signedIn: $signedIn, wantToSignUp: $wantToSignUp, createdAccount: $createdAccount)) {
                         Text("Already got an account? Sign in!")
                     }
+                    .isDetailLink(false)
                 }
             }
         }
@@ -278,18 +280,18 @@ struct OverView : View {
     @State private var cellAppear = false //hiding the search as default
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
              VStack {
                 Form {
                     if cellAppear {
                         Section {
                             Text("Searching for: \(searchText)")
-                            ForEach(filteredMessages, id: \.show.id) { returned in
+                            ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
                                 NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                     RowView(showView: returned)
                                 }
+                                .isDetailLink(false)
                             }
-
                         }
                         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
                         /*.searchScopes($searchScope) {
@@ -492,6 +494,7 @@ struct OverView : View {
                                 Image("person.crop.circle.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
+                            .isDetailLink(false)
                         }
                     }
                 }
@@ -690,7 +693,7 @@ struct OverView : View {
     func getData() {
         
         searchText = searchText.replacingOccurrences(of: " ", with: "%20")
-        let urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
+        var urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
         
         print("trying to access the url \(urlString)")
         
@@ -699,6 +702,8 @@ struct OverView : View {
             return
         }
         searchText = searchText.replacingOccurrences(of: "%20", with: " ") //problem med house of the dragon "-" "-" something
+        
+        showList.lists[.searchList]?.removeAll()
         
         //create urlsession
         let session = URLSession.shared
