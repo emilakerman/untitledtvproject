@@ -98,7 +98,7 @@ struct ShowEntryMoreView: View {
                     Button(action: {
                         showPopUp = true
                     }) {
-                        Image("plus.app.fill")
+                        Image("plus.app.fill 1")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             .scaleEffect(scale)
                     }

@@ -254,7 +254,7 @@ struct ProfileView: View {
                         Spacer()
                         NavigationLink(destination: SearchView()) {
                     
-                            Image("magnifyingglass.circle")
+                            Image("magnifyingglass.circle.fill")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
                         Spacer()
