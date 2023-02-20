@@ -362,32 +362,7 @@ struct OverView : View {
                          }
                      }
                  }
-                Form {/*
-                    if searchAppear {
-                        Section {
-                            Text("Searching for: \(searchText)")
-                            ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
-                                NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                    RowView(showView: returned)
-                                }
-                                .isDetailLink(false)
-                            }
-                        }
-                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
-                        /*.searchScopes($searchScope) {
-                            ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
-                                Text(scope.rawValue.capitalized)
-                            }
-                        }*/
-                        .onSubmit(of: .search, getData)
-                        //.onChange(of: searchScope) { _ in getData()}
-                        .disableAutocorrection(true)
-                        .overlay { //to fix an issue with a white row always appearing under search
-                            if searchText.isEmpty {
-                                EmptyView()
-                            }
-                        }
-                    }*/
+                Form {
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
@@ -472,7 +447,7 @@ struct OverView : View {
                             Spacer()
                             NavigationLink(destination: SearchView()) {
                         
-                                Image("plus.app.fill")
+                                Image("magnifyingglass.circle")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
                             Spacer()

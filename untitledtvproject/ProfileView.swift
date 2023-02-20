@@ -252,10 +252,9 @@ struct ProfileView: View {
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
                         Spacer()
-                        Button(action: {
-                            
-                        }) {
-                            Image("plus.app")
+                        NavigationLink(destination: SearchView()) {
+                    
+                            Image("magnifyingglass.circle")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }
                         Spacer()
