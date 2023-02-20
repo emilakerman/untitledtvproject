@@ -274,28 +274,31 @@ struct OverView : View {
     @State var selectedTextColor : String
     
     @State var isDarkMode = false
+    
+    @State private var cellAppear = false //hiding the search as default
 
     var body: some View {
         NavigationView {
              VStack {
                 Form {
-                    Section {
-                        ForEach(filteredMessages, id: \.show.id) { returned in
-                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                    if cellAppear {
+                        Section {
+                            ForEach(filteredMessages, id: \.show.id) { returned in
+                                NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                     RowView(showView: returned)
+                                }
                             }
-                            //.isDetailLink(false)
                         }
+                        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                        .searchScopes($searchScope) {
+                            ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
+                                Text(scope.rawValue.capitalized)
+                            }
+                        }
+                        .onSubmit(of: .search, getData)
+                        .onChange(of: searchScope) { _ in getData()}
+                        .disableAutocorrection(true)
                     }
-                   .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                   .searchScopes($searchScope) {
-                       ForEach(ApiShows.SearchScope.allCases, id: \.self) { scope in //replace the .self with something else
-                           Text(scope.rawValue.capitalized)
-                       }
-                   }
-                   .onSubmit(of: .search, getData)
-                   .onChange(of: searchScope) { _ in getData()}
-                   .disableAutocorrection(true)
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
@@ -323,6 +326,7 @@ struct OverView : View {
                     .onAppear() {
                         listenToFireStore()
                         listenToSettingsFireStore()
+                        //checkDateClearRecentlyDeleted()
                     }
                     
                     Section(header: Text("Completed")) {
@@ -371,16 +375,16 @@ struct OverView : View {
                             }
                             Spacer()
                             Button(action: {
-                                
+                                //not used yet, might remove or have a separate stats view, if time allows it
                             }) {
                                 Image("redstats")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
                             Spacer()
                             Button(action: {
-                                
+                                self.cellAppear.toggle() //toggle to show search menu
                             }) {
-                                Image("plus.app")
+                                Image("plus.app.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
                             Spacer()
@@ -489,17 +493,18 @@ struct OverView : View {
     }
     var filteredMessages: [ApiShows.Returned] {
         //searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
-        
-        
-        if searchText.isEmpty {
-            return apiShows.searchArray
-        } else {
-            if apiShows.searchArray.isEmpty {
-                return apiShows.searchArray
-            }
-            return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
-        }
+        return apiShows.searchArray.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) }
     }
+    /*
+    func checkDateClearRecentlyDeleted() {
+        let date = Date()
+        print(date)
+        let calendar = Calendar(identifier: .gregorian)
+        
+        guard let interval = calendar.dateInterval(of: .month, for: Date()) else { return }
+        print(interval.start)
+
+    }*/
     func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
         guard let user = Auth.auth().currentUser else {return}
         db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
@@ -688,7 +693,7 @@ struct OverView : View {
         
         //create urlsession
         let session = URLSession.shared
-        //get data with .dataTask meth
+        //get data with .dataTask
         let task = session.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("error \(error.localizedDescription)")

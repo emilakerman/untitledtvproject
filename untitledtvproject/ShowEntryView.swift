@@ -7,8 +7,11 @@
 
 import Foundation
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 struct ShowEntryView : View {
     
@@ -33,9 +36,9 @@ struct ShowEntryView : View {
     
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: image?.medium ?? "https://i.imgur.com/e3AEk4W.png"))
+            AsyncImage(url: URL(string: image?.medium ?? "https://i.imgur.com/e3AEk4W.png")) //gets an imgur image as default if no image exists
                 .padding(.top, 100)
-                .padding(.bottom, -140)
+                .padding(.bottom, -90)
                 .ignoresSafeArea()
             Text("\(name)")
                 .font(.largeTitle)

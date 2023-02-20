@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseAuth
 import Firebase
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 struct ShowEntryMoreView: View {
     
@@ -36,7 +39,7 @@ struct ShowEntryMoreView: View {
     VStack {
             AsyncImage(url: URL(string: image?.medium ?? "https://i.imgur.com/e3AEk4W.png"))
             .padding(.top, 100)
-            .padding(.bottom, -140)
+            .padding(.bottom, -90)
             .ignoresSafeArea()
             Text("\(name)")
                 .font(.largeTitle)
