@@ -268,7 +268,7 @@ struct SearchView : View {
                 List {
                     ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
                         NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                            RowView(showView: returned)
+                            Text(returned.show.name)
                         }
                     }
                 }
@@ -750,9 +750,6 @@ struct OverView : View {
         }
     }
 }
-class SharedEnv: ObservableObject { //testing, not used yet
-    @Published var collectionPath = ""
-}
 struct RowView : View {
     var showView : ApiShows.Returned
     @State var showingAlert = false
@@ -921,17 +918,21 @@ struct RowView : View {
                     collectionPath = "dropped"
                 }
             }
-            print("this collectionpath: \(collectionPath)")
+        for item in showList.lists[.recentlyDeleted]! {
+            if item.show.name == showView.show.name {
+                collectionPath = "recentlyDeleted"
+            }
         }
-    func changeListFireStore(/*collectionPath: */) { //make this deletion conditional, collectionPath = list name through context
+        }
+    func changeListFireStore() {
         detectTappedList()
         var deleteList : [ApiShows.Returned] = [] //temporary list to deal with deleted documents from firestore
         guard let user = Auth.auth().currentUser else {return}
         
         do {
-            //move
+            //move document to other collection in firestore
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showView)
-            //remove, right now it only deleted from a static collection, in this case its wantToWatch, needs to be conditional/contextual
+            //delete tapped document from firestore
             db.collection("users").document(user.uid).collection(collectionPath).getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
