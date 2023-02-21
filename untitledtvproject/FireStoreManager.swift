@@ -15,7 +15,7 @@ import FirebaseFirestore
 
 class FireStoreManager : ObservableObject {
     
-    @Published var showList = ShowList()
+    var showList = ShowList()
     let db = Firestore.firestore()
     
     func listenToFireStore() {

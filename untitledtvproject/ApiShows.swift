@@ -18,7 +18,6 @@ class ApiShows : ObservableObject {
     init() {
         searchArray = [Returned]()
     }
-                    
     struct Returned: Codable, Identifiable {
         var id : UUID?
         var show: Show

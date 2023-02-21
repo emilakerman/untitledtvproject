@@ -32,7 +32,7 @@ struct ContentView: View {
         }
     }
 }
-struct LoginView: View {
+struct LoginView : View {
     
     @Binding var signedIn : Bool
     @Binding var wantToSignUp : Bool
@@ -143,7 +143,7 @@ struct LoginView: View {
         }
     }
 }
-struct SignUpView: View {
+struct SignUpView : View {
     
     @Binding var wantToSignUp : Bool
     @Binding var createdAccount : Bool
@@ -369,6 +369,12 @@ struct OverView : View {
     
     @State var isDarkMode = false
     
+    //@EnvironmentObject var fireStoreManager : FireStoreManager
+
+    //@StateObject var fireStoreManager = FireStoreManager()
+    
+    //@ObservedObject var fireStoreManager = FireStoreManager()
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -399,6 +405,7 @@ struct OverView : View {
                     }
                     .onAppear() {
                         listenToFireStore()
+                        //fireStoreManager.listenToFireStore()
                         listenToSettingsFireStore()
                         //checkDateClearRecentlyDeleted()
                     }
@@ -448,9 +455,8 @@ struct OverView : View {
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
                             Spacer()
-                            Button(action: {
-                                //not used yet, might remove or have a separate stats view, if time allows it
-                            }) {
+                            NavigationLink(destination: StatsView()) {
+                                
                                 Image("redstats")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
@@ -563,6 +569,7 @@ struct OverView : View {
                 }
             }
         }
+        //.environmentObject(fireStoreManager)
         .navigationBarBackButtonHidden(true)
         .navigationViewStyle(.stack)
     }
@@ -758,7 +765,8 @@ struct RowView : View {
     
     let db = Firestore.firestore()
     @StateObject var showList = ShowList()
-        
+    
+    //@StateObject var fireStoreManager = FireStoreManager()
     
     var body: some View {
         HStack {
@@ -766,6 +774,7 @@ struct RowView : View {
                 .onTapGesture {
                     showingAlert = true
                     listenToFireStore()
+                    //fireStoreManager.listenToFireStore()
                 }
             Text(showView.show.name)
         }
@@ -794,7 +803,6 @@ struct RowView : View {
     func listenToFireStore() { //should probably make this shorter
         
         guard let user = Auth.auth().currentUser else {return}
-        
         
         db.collection("users").document(user.uid).collection("watching").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
@@ -923,14 +931,14 @@ struct RowView : View {
                 collectionPath = "recentlyDeleted"
             }
         }
-        }
+    }
     func changeListFireStore() {
         detectTappedList()
         var deleteList : [ApiShows.Returned] = [] //temporary list to deal with deleted documents from firestore
         guard let user = Auth.auth().currentUser else {return}
         
         do {
-            //move document to other collection in firestore
+            //move document to selected collection in firestore
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showView)
             //delete tapped document from firestore
             db.collection("users").document(user.uid).collection(collectionPath).getDocuments() { (querySnapshot, err) in
@@ -955,6 +963,12 @@ struct RowView : View {
                 }
             }
         } catch { print("catch error!") }
+    }
+}
+extension Sequence where Element: Hashable {
+    func uniqued() -> [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
     }
 }
 /*

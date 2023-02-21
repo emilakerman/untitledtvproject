@@ -245,9 +245,8 @@ struct ProfileView: View {
                         }
                         .isDetailLink(false)
                         Spacer()
-                        Button(action: {
+                        NavigationLink(destination: StatsView()) {
                             
-                        }) {
                             Image("redstats")
                                 .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                         }

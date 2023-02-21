@@ -20,6 +20,7 @@ struct untitledtvprojectApp: App {
         WindowGroup {
             //ContentView()
             SplashScreenView()
+            //StatsView()
         }
     }
 }
