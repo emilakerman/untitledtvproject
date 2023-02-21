@@ -259,25 +259,60 @@ struct SearchView : View {
     @State private var searchText = ""
     
     var filteredMessages: [ApiShows.Returned] {
-        //searchText.isEmpty ? [] : apiShows.searchArray.filter{$0.show.name.localizedCaseInsensitiveContains(searchText)}
         return (showList.lists[.searchList]?.filter { $0.show.name.localizedCaseInsensitiveContains(searchText) })!
     }
     
     var body: some View {
         NavigationStack {
             VStack {
-                    List { //search list outside of form
-                        Text("Searching for: \(searchText)")
+                    List {
                         ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
                                 RowView(showView: returned)
                             }
-                            .isDetailLink(false)
                         }
                     }
                     .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
                     .onSubmit(of: .search, getData)
                     .disableAutocorrection(true)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            HStack {
+                                NavigationLink(destination: OverView(selectedRowBgColor: "", selectedTextColor: "")) {
+                                    Image("house.fill")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                .isDetailLink(false)
+                                Spacer()
+                                Button(action: {
+                                    //not used yet, might remove or have a separate stats view, if time allows it
+                                }) {
+                                    Image("redstats")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                Button(action: {
+                                    
+                                }) {
+                                    Image("magnifyingglass.circle.fill")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                Button(action: {
+                                    
+                                }) {
+                                    Image("square.and.pencil.circle.fill_grey")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                Spacer()
+                                NavigationLink(destination: ProfileView(selectedUserName: "", userName: "")) {
+                                    Image("person.crop.circle.fill")
+                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                                }
+                                .isDetailLink(false)
+                            }
+                        }
+                    }
             }
         }
         .navigationViewStyle(.stack)
@@ -285,7 +320,7 @@ struct SearchView : View {
     func getData() {
         
         searchText = searchText.replacingOccurrences(of: " ", with: "%20")
-        var urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
+        let urlString = "https://api.tvmaze.com/search/shows?q=\(searchText)"
         
         print("trying to access the url \(urlString)")
         
@@ -425,6 +460,7 @@ struct OverView : View {
                                 Image("magnifyingglass.circle.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
+                            .isDetailLink(false)
                             Spacer()
                             Button(action: {
                                 showingSettingsAlert = true
