@@ -265,54 +265,54 @@ struct SearchView : View {
     var body: some View {
         NavigationStack {
             VStack {
-                    List {
-                        ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
-                            NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowView(showView: returned)
-                            }
+                List {
+                    ForEach(filteredMessages, id: \.show.summary.hashValue) { returned in
+                        NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
+                            RowView(showView: returned)
                         }
                     }
-                    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
-                    .onSubmit(of: .search, getData)
-                    .disableAutocorrection(true)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            HStack {
-                                NavigationLink(destination: OverView(selectedRowBgColor: "", selectedTextColor: "")) {
-                                    Image("house.fill")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                .isDetailLink(false)
-                                Spacer()
-                                Button(action: {
-                                    //not used yet, might remove or have a separate stats view, if time allows it
-                                }) {
-                                    Image("redstats")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                Button(action: {
-                                    
-                                }) {
-                                    Image("magnifyingglass.circle.fill")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                Button(action: {
-                                    
-                                }) {
-                                    Image("square.and.pencil.circle.fill_grey")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                Spacer()
-                                NavigationLink(destination: ProfileView(selectedUserName: "", userName: "")) {
-                                    Image("person.crop.circle.fill")
-                                        .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
-                                }
-                                .isDetailLink(false)
+                }
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for a show")
+                .onSubmit(of: .search, getData)
+                .disableAutocorrection(true)
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        HStack {
+                            NavigationLink(destination: OverView(selectedRowBgColor: "", selectedTextColor: "")) {
+                                Image("house.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
+                            .isDetailLink(false)
+                            Spacer()
+                            Button(action: {
+                                //not used yet, might remove or have a separate stats view, if time allows it
+                            }) {
+                                Image("redstats")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            Button(action: {
+                                
+                            }) {
+                                Image("magnifyingglass.circle.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            Button(action: {
+                                
+                            }) {
+                                Image("square.and.pencil.circle.fill_grey")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            Spacer()
+                            NavigationLink(destination: ProfileView(selectedUserName: "", userName: "")) {
+                                Image("person.crop.circle.fill")
+                                    .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
+                            }
+                            .isDetailLink(false)
                         }
                     }
+                }
             }
         }
         .navigationViewStyle(.stack)
@@ -350,10 +350,10 @@ struct SearchView : View {
     }
 }
 struct OverView : View {
-            
+    
     @StateObject var showList = ShowList()
     @StateObject var apiShows = ApiShows()
-                    
+    
     let db = Firestore.firestore()
     
     @State var showingAlert = false
@@ -368,15 +368,15 @@ struct OverView : View {
     @State var selectedTextColor : String
     
     @State var isDarkMode = false
-            
+    
     var body: some View {
         NavigationStack {
-             VStack {
+            VStack {
                 Form {
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                    RowView(showView: returned)
+                                RowView(showView: returned)
                             }
                             .listRowBackground(rowColor)
                             .foregroundColor(textColor)
@@ -456,7 +456,7 @@ struct OverView : View {
                             }
                             Spacer()
                             NavigationLink(destination: SearchView()) {
-                        
+                                
                                 Image("magnifyingglass.circle.fill")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }
@@ -567,29 +567,29 @@ struct OverView : View {
         .navigationViewStyle(.stack)
     }
     /*
-    func checkDateClearRecentlyDeleted() {
-        let date = Date()
-        print(date)
-        let calendar = Calendar(identifier: .gregorian)
-        
-        guard let interval = calendar.dateInterval(of: .month, for: Date()) else { return }
-        print(interval.start)
-
-    }*/
+     func checkDateClearRecentlyDeleted() {
+     let date = Date()
+     print(date)
+     let calendar = Calendar(identifier: .gregorian)
+     
+     guard let interval = calendar.dateInterval(of: .month, for: Date()) else { return }
+     print(interval.start)
+     
+     }*/
     func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
         guard let user = Auth.auth().currentUser else {return}
         db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
-                "textColor": selectedTextColor,
-                "rowBgColor": selectedRowBgColor,
-                ])
-            { err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    //success
-                }
+            "textColor": selectedTextColor,
+            "rowBgColor": selectedRowBgColor,
+        ])
+        { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                //success
             }
         }
+    }
     func listenToSettingsFireStore() {
         guard let user = Auth.auth().currentUser else {return}
         
@@ -605,7 +605,7 @@ struct OverView : View {
             //Sets the text color and row color from saved settings in firestore
             let returnedRowColor = ("\(Color(data["rowBgColor"] as! CGColor))")
             let returnedTextColor = ("\(Color(data["textColor"] as! CGColor))")
-
+            
             switch returnedRowColor {
             case let str where str.contains("purple"):
                 rowColor = Color.purple
@@ -645,9 +645,9 @@ struct OverView : View {
         }
     }
     func listenToFireStore() { //should probably make this shorter
-
+        
         guard let user = Auth.auth().currentUser else {return}
-                
+        
         db.collection("users").document(user.uid).collection("watching").addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else {return}
             
@@ -757,16 +757,18 @@ struct RowView : View {
     var showView : ApiShows.Returned
     @State var showingAlert = false
     @State var listChoice = ""
-    let db = Firestore.firestore()
+    @State var collectionPath = ""
     
-    @EnvironmentObject var observed: SharedEnv //testing, not used yet
+    let db = Firestore.firestore()
+    @StateObject var showList = ShowList()
+        
     
     var body: some View {
         HStack {
             Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
                 .onTapGesture {
                     showingAlert = true
-                    //collectionPath = self.
+                    listenToFireStore()
                 }
             Text(showView.show.name)
         }
@@ -792,16 +794,145 @@ struct RowView : View {
             }
         }
     }
+    func listenToFireStore() { //should probably make this shorter
+        
+        guard let user = Auth.auth().currentUser else {return}
+        
+        
+        db.collection("users").document(user.uid).collection("watching").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.watching]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.watching]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("completed").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.completed]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.completed]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("dropped").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.dropped]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.dropped]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("wantToWatch").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.wantToWatch]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.wantToWatch]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+        db.collection("users").document(user.uid).collection("recentlyDeleted").addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                showList.lists[.recentlyDeleted]?.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: ApiShows.Returned.self)
+                    }
+                    switch result  {
+                    case .success(let show)  :
+                        showList.lists[.recentlyDeleted]?.append(show)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    func detectTappedList() { //Detects what list has been tapped and sets the collectionpath to what firestore document should be deleted
+            for item in showList.lists[.wantToWatch]! {
+                if item.show.name == showView.show.name {
+                    collectionPath = "wantToWatch"
+                }
+            }
+            for item in showList.lists[.watching]! {
+                if item.show.name == showView.show.name {
+                    collectionPath = "watching"
+                }
+            }
+            for item in showList.lists[.completed]! {
+                if item.show.name == showView.show.name {
+                    collectionPath = "completed"
+                }
+            }
+            for item in showList.lists[.dropped]! {
+                if item.show.name == showView.show.name {
+                    collectionPath = "dropped"
+                }
+            }
+            print("this collectionpath: \(collectionPath)")
+        }
     func changeListFireStore(/*collectionPath: */) { //make this deletion conditional, collectionPath = list name through context
-
+        detectTappedList()
         var deleteList : [ApiShows.Returned] = [] //temporary list to deal with deleted documents from firestore
         guard let user = Auth.auth().currentUser else {return}
-
+        
         do {
             //move
             _ = try db.collection("users").document(user.uid).collection(listChoice).addDocument(from: showView)
             //remove, right now it only deleted from a static collection, in this case its wantToWatch, needs to be conditional/contextual
-            db.collection("users").document(user.uid).collection("wantToWatch").getDocuments() { (querySnapshot, err) in
+            db.collection("users").document(user.uid).collection(collectionPath).getDocuments() { (querySnapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
@@ -815,16 +946,16 @@ struct RowView : View {
                             deleteList.append(show)
                             for show in deleteList {
                                 if show.show.name == showView.show.name {
-                                    db.collection("users").document(user.uid).collection("wantToWatch").document(document.documentID).delete()
+                                    db.collection("users").document(user.uid).collection(collectionPath).document(document.documentID).delete()
                                 }
                             }
-                        case .failure(let error) : print("Error decoding item: \(error)") }
+                            case .failure(let error) : print("Error decoding item: \(error)") }
                     }
                 }
             }
         } catch { print("catch error!") }
-      }
     }
+}
 /*
  struct ContentView_Previews: PreviewProvider {
  static var previews: some View {
