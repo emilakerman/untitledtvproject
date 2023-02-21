@@ -519,7 +519,7 @@ struct StatsView: View {
                     Spacer()
                     NavigationLink(destination: SearchView()) {
                         
-                        Image("square.and.pencil.circle.fill_grey")
+                        Image("magnifyingglass.circle.fill")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
                     .isDetailLink(false)
@@ -527,7 +527,7 @@ struct StatsView: View {
                     Button(action: {
                         
                     }) {
-                        Image("square.and.pencil.circle.fill")
+                        Image("square.and.pencil.circle.fill_grey")
                             .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                     }
                     Spacer()
