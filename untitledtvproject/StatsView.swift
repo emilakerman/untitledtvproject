@@ -14,7 +14,6 @@ import FirebaseStorage
 
 struct StatsView: View {
     let db = Firestore.firestore()
-    @State var image: ApiShows.Image?
     
     //language lists
     @State var englishList : [ApiShows.Returned] = []
@@ -48,27 +47,16 @@ struct StatsView: View {
     @State var comedyCentralList : [ApiShows.Returned] = []
     @State var abcList : [ApiShows.Returned] = []
     @State var bbcList : [ApiShows.Returned] = []
-
-    
-    
-    
-    var user = Auth.auth().currentUser
-    let storage = Storage.storage() //storage for user selected profile picture
-    
     
     @State var showingLangWindow = false
     @State var showingGenreWindow = false
     @State var showingNetworkWindow1 = false
     @State var showingNetworkWindow2 = false
-
-    
-    @State var showingSettingsAlert = false
-    
-    @State private var showSheet = false
     
     var body: some View {
         VStack {
-            HStack {
+            Text("Statistics for Completed Shows")
+            HStack { //languages graphs
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color(.systemGray6))
@@ -129,12 +117,26 @@ struct StatsView: View {
                         .fill(Color(.systemGray6))
                         .aspectRatio(1.0, contentMode: .fit)
                     Canvas { context, size in
-                        let slices: [(Double, Color)] = [(Double(comedyList.count), .red),
-                                                         (Double(dramaList.count), .blue),
-                                                         (Double(horrorList.count), .green),
-                                                         (Double(scifiList.count), .purple),
-                                                         (Double(crimeList.count), .teal),
-                                                         (Double(adventureList.count), .gray)]
+                        let donut = Path { p in
+                            p.addEllipse(in: CGRect(origin: .zero, size: size))
+                            p.addEllipse(in: CGRect(x: size.width * 0.25, y: size.height * 0.25, width: size.width * 0.5, height: size.height * 0.5))
+                        }
+                        context.clip(to: donut, style: .init(eoFill: true))
+                        let slices: [(Double, Color)] = [(Double(englishList.count), .red),
+                                                         (Double(swedishList.count), .blue),
+                                                         (Double(koreanList.count), .green),
+                                                         (Double(thaiList.count), .purple),
+                                                         (Double(chineseList.count), .yellow),
+                                                         (Double(japaneseList.count), .black),
+                                                         (Double(danishList.count), .pink),
+                                                         (Double(norwegianList.count), .cyan),
+                                                         (Double(germanList.count), .orange),
+                                                         (Double(frenchList.count), .teal),
+                                                         (Double(dutchList.count), .white),
+                                                         (Double(polishList.count), .mint),
+                                                         (Double(spanishList.count), .indigo),
+                                                         (Double(turkishList.count), .gray),
+                                                         (Double(greekList.count), .brown)]
                         let total = slices.reduce(0) { $0 + $1.0 }
                         context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
                         var pieContext = context
@@ -155,50 +157,35 @@ struct StatsView: View {
                         }
                     }
                     .aspectRatio(1, contentMode: .fit)
-                    Button("Genres") {
-                        showingGenreWindow = true
+                    Button("Languages") {
+                        showingLangWindow = true
                     }
                     .foregroundColor(.black)
-                    .alert("Individual split", isPresented: $showingGenreWindow) { //showing counts instead of percentage for genres
+                    .alert("Individual split", isPresented: $showingLangWindow) { //showing counts instead of percentage for genres
                         VStack {
-                            Button("Comedy: \(comedyList.count)") {}
-                            Button("Drama: \(dramaList.count)") {}
-                            Button("Horror: \(horrorList.count)") {}
-                            Button("Science-Fiction: \(scifiList.count)") {}
-                            Button("Crime: \(crimeList.count)") {}
-                            Button("Adventure: \(adventureList.count)") {}
+                            Button("English: \(Double(englishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                            Button("Swedish: \(Double(swedishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                            Button("Korean: \(Double(koreanList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                            Button("Thai: \(Double(thaiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                            Button("Chinese: \(Double(chineseList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
                             Button("Cancel", role: .cancel) { }
                         }
                     }
                 }
             }
         }
-        HStack { //second HStack - this one displaying Donut graphs
+        HStack { //second HStack - genres
             ZStack {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(.systemGray6))
                     .aspectRatio(1.0, contentMode: .fit)
                 Canvas { context, size in
-                    let donut = Path { p in
-                        p.addEllipse(in: CGRect(origin: .zero, size: size))
-                        p.addEllipse(in: CGRect(x: size.width * 0.25, y: size.height * 0.25, width: size.width * 0.5, height: size.height * 0.5))
-                    }
-                    context.clip(to: donut, style: .init(eoFill: true))
-                    let slices: [(Double, Color)] = [(Double(englishList.count), .red),
-                                                     (Double(swedishList.count), .blue),
-                                                     (Double(koreanList.count), .green),
-                                                     (Double(thaiList.count), .purple),
-                                                     (Double(chineseList.count), .yellow),
-                                                     (Double(japaneseList.count), .black),
-                                                     (Double(danishList.count), .pink),
-                                                     (Double(norwegianList.count), .cyan),
-                                                     (Double(germanList.count), .orange),
-                                                     (Double(frenchList.count), .teal),
-                                                     (Double(dutchList.count), .white),
-                                                     (Double(polishList.count), .mint),
-                                                     (Double(spanishList.count), .indigo),
-                                                     (Double(turkishList.count), .gray),
-                                                     (Double(greekList.count), .brown)]
+                    let slices: [(Double, Color)] = [(Double(comedyList.count), .red),
+                                                     (Double(dramaList.count), .blue),
+                                                     (Double(horrorList.count), .green),
+                                                     (Double(scifiList.count), .purple),
+                                                     (Double(crimeList.count), .teal),
+                                                     (Double(adventureList.count), .gray)]
                     let total = slices.reduce(0) { $0 + $1.0 }
                     context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
                     var pieContext = context
@@ -219,17 +206,18 @@ struct StatsView: View {
                     }
                 }
                 .aspectRatio(1, contentMode: .fit)
-                Button("Languages") {
-                    showingLangWindow = true
+                Button("Genres") {
+                    showingGenreWindow = true
                 }
                 .foregroundColor(.black)
-                .alert("Percentage split", isPresented: $showingLangWindow) { //change so it doesnt show empty language lists
+                .alert("Individual split", isPresented: $showingGenreWindow) { //change so it doesnt show empty language lists
                     VStack {
-                        Button("English: \(Double(englishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                        Button("Swedish: \(Double(swedishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                        Button("Korean: \(Double(koreanList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                        Button("Thai: \(Double(thaiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                        Button("Chinese: \(Double(chineseList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
+                        Button("Comedy: \(comedyList.count)") {}
+                        Button("Drama: \(dramaList.count)") {}
+                        Button("Horror: \(horrorList.count)") {}
+                        Button("Science-Fiction: \(scifiList.count)") {}
+                        Button("Crime: \(crimeList.count)") {}
+                        Button("Adventure: \(adventureList.count)") {}
                         Button("Cancel", role: .cancel) { }
                     }
                 }
@@ -291,122 +279,13 @@ struct StatsView: View {
             DispatchQueue.main.async {
                 listenToFireStore()
             }
-            HStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(.systemGray6))
-                        .aspectRatio(1.0, contentMode: .fit)
-                    Canvas { context, size in
-                        let slices: [(Double, Color)] = [(Double(englishList.count), .red),
-                                                         (Double(swedishList.count), .blue),
-                                                         (Double(koreanList.count), .green),
-                                                         (Double(thaiList.count), .purple),
-                                                         (Double(chineseList.count), .yellow),
-                                                         (Double(japaneseList.count), .black),
-                                                         (Double(danishList.count), .pink),
-                                                         (Double(norwegianList.count), .cyan),
-                                                         (Double(germanList.count), .orange),
-                                                         (Double(frenchList.count), .teal),
-                                                         (Double(dutchList.count), .white),
-                                                         (Double(polishList.count), .mint),
-                                                         (Double(spanishList.count), .indigo),
-                                                         (Double(turkishList.count), .gray),
-                                                         (Double(greekList.count), .brown)]
-                        let total = slices.reduce(0) { $0 + $1.0 }
-                        context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
-                        var pieContext = context
-                        pieContext.rotate(by: .degrees(-90))
-                        let radius = min(size.width, size.height) * 0.48
-                        var startAngle = Angle.zero
-                        for (value, color) in slices {
-                            let angle = Angle(degrees: 360 * (value / total))
-                            let endAngle = startAngle + angle
-                            let path = Path { p in
-                                p.move(to: .zero)
-                                p.addArc(center: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
-                                p.closeSubpath()
-                            }
-                            pieContext.fill(path, with: .color(color))
-                            
-                            startAngle = endAngle
-                        }
-                    }
-                    .aspectRatio(1, contentMode: .fit)
-                    Button("Networks") {
-                        showingLangWindow = true
-                    }
-                    .foregroundColor(.black)
-                    .alert("Percentage split", isPresented: $showingLangWindow) { //change so it doesnt show empty language lists
-                        VStack {
-                            Button("English: \(Double(englishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                            Button("Swedish: \(Double(swedishList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                            Button("Korean: \(Double(koreanList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                            Button("Thai: \(Double(thaiList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                            Button("Chinese: \(Double(chineseList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
-                            Button("Cancel", role: .cancel) { }
-                        }
-                    }
-                }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(.systemGray6))
-                        .aspectRatio(1.0, contentMode: .fit)
-                    Canvas { context, size in
-                        let slices: [(Double, Color)] = [(Double(comedyList.count), .red),
-                                                         (Double(dramaList.count), .blue),
-                                                         (Double(horrorList.count), .green),
-                                                         (Double(scifiList.count), .purple),
-                                                         (Double(crimeList.count), .teal),
-                                                         (Double(adventureList.count), .gray)]
-                        let total = slices.reduce(0) { $0 + $1.0 }
-                        context.translateBy(x: size.width * 0.5, y: size.height * 0.5)
-                        var pieContext = context
-                        pieContext.rotate(by: .degrees(-90))
-                        let radius = min(size.width, size.height) * 0.48
-                        var startAngle = Angle.zero
-                        for (value, color) in slices {
-                            let angle = Angle(degrees: 360 * (value / total))
-                            let endAngle = startAngle + angle
-                            let path = Path { p in
-                                p.move(to: .zero)
-                                p.addArc(center: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
-                                p.closeSubpath()
-                            }
-                            pieContext.fill(path, with: .color(color))
-                            
-                            startAngle = endAngle
-                        }
-                    }
-                    .aspectRatio(1, contentMode: .fit)
-                    Button("Genres") {
-                        showingGenreWindow = true
-                    }
-                    .foregroundColor(.black)
-                    .alert("Individual split", isPresented: $showingGenreWindow) { //showing counts instead of percentage for genres
-                        VStack {
-                            Button("Comedy: \(comedyList.count)") {}
-                            Button("Drama: \(dramaList.count)") {}
-                            Button("Horror: \(horrorList.count)") {}
-                            Button("Science-Fiction: \(scifiList.count)") {}
-                            Button("Crime: \(crimeList.count)") {}
-                            Button("Adventure: \(adventureList.count)") {}
-                            Button("Cancel", role: .cancel) { }
-                        }
-                    }
-                }
-            }
         }
-        HStack { //second HStack - this one displaying Donut graphs
+        HStack { //networks
             ZStack {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(.systemGray6))
                     .aspectRatio(1.0, contentMode: .fit)
                 Canvas { context, size in
-                    let donut = Path { p in
-                        p.addEllipse(in: CGRect(origin: .zero, size: size))
-                        p.addEllipse(in: CGRect(x: size.width * 0.25, y: size.height * 0.25, width: size.width * 0.5, height: size.height * 0.5))
-                    }
-                    context.clip(to: donut, style: .init(eoFill: true))
                     let slices: [(Double, Color)] = [(Double(syfyList.count), .red),
                                                      (Double(hboList.count), .blue),
                                                      (Double(foxList.count), .green),
@@ -438,7 +317,7 @@ struct StatsView: View {
                     showingNetworkWindow2 = true
                 }
                 .foregroundColor(.black)
-                .alert("Percentage split", isPresented: $showingNetworkWindow2) { //change so it doesnt show empty language lists
+                .alert("Percentage split", isPresented: $showingNetworkWindow2) {
                     VStack {
                         Button("Syfy: \(Double(syfyList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
                         Button("HBO: \(Double(hboList.count) / Double(allLanguages.count) * 100, specifier: "%.0f")%") {}
@@ -456,6 +335,11 @@ struct StatsView: View {
                     .fill(Color(.systemGray6))
                     .aspectRatio(1.0, contentMode: .fit)
                 Canvas { context, size in
+                    let donut = Path { p in
+                        p.addEllipse(in: CGRect(origin: .zero, size: size))
+                        p.addEllipse(in: CGRect(x: size.width * 0.25, y: size.height * 0.25, width: size.width * 0.5, height: size.height * 0.5))
+                    }
+                    context.clip(to: donut, style: .init(eoFill: true))
                     let slices: [(Double, Color)] = [(Double(syfyList.count), .red),
                                                      (Double(hboList.count), .blue),
                                                      (Double(foxList.count), .green),
@@ -537,11 +421,6 @@ struct StatsView: View {
                     }
                     .isDetailLink(false)
                 }
-            }
-        }
-        .task { //read data from firestore to graphs
-            DispatchQueue.main.async {
-                listenToFireStore()
             }
         }
     }
