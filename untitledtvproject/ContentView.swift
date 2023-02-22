@@ -276,6 +276,9 @@ struct SearchView : View {
                 .onSubmit(of: .search, getData)
                 .disableAutocorrection(true)
                 .toolbar {
+                    NavigationLink(destination: ExploreView()) { Text("Explore") }
+                }
+                .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
                             NavigationLink(destination: OverView(selectedRowBgColor: "", selectedTextColor: "")) {
@@ -284,9 +287,8 @@ struct SearchView : View {
                             }
                             .isDetailLink(false)
                             Spacer()
-                            Button(action: {
-                                //not used yet, might remove or have a separate stats view, if time allows it
-                            }) {
+                            NavigationLink(destination: StatsView()) {
+                                
                                 Image("redstats")
                                     .renderingMode(Image.TemplateRenderingMode?.init(Image.TemplateRenderingMode.original))
                             }

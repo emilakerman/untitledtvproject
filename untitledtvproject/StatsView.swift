@@ -91,6 +91,7 @@ struct StatsView: View {
                                 p.addArc(center: .zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
                                 p.closeSubpath()
                             }
+                            
                             pieContext.fill(path, with: .color(color))
                             
                             startAngle = endAngle

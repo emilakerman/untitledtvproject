@@ -26,7 +26,7 @@ class ShowList : ObservableObject {
     @Published var lists = [Status : [ApiShows.Returned]]()
     
     var deleteList : [ApiShows.Returned] = []
-
+    
     init() {
         lists[.shows] = [ApiShows.Returned]()
         lists[.wantToWatch] = [ApiShows.Returned]()
