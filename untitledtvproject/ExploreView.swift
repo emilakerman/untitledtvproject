@@ -134,7 +134,7 @@ struct ExploreView: View {
         
         let urlStringAll = "https://api.tvmaze.com/shows"
         
-        print("trying to access the url \(urlStringAll)")
+        //print("trying to access the url \(urlStringAll)")
         
         guard let url = URL(string: urlStringAll) else {
             print("Error could not create url from \(urlStringAll)")
