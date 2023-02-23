@@ -371,12 +371,6 @@ struct OverView : View {
     
     @State var isDarkMode = false
     
-    //@EnvironmentObject var fireStoreManager : FireStoreManager
-
-    //@StateObject var fireStoreManager = FireStoreManager()
-    
-    //@ObservedObject var fireStoreManager = FireStoreManager()
-    
     var body: some View {
         NavigationStack {
             VStack {
@@ -407,11 +401,8 @@ struct OverView : View {
                     }
                     .onAppear() {
                         listenToFireStore()
-                        //fireStoreManager.listenToFireStore()
                         listenToSettingsFireStore()
-                        //checkDateClearRecentlyDeleted()
                     }
-                    
                     Section(header: Text("Completed")) {
                         ForEach(showList.lists[.completed]!, id: \.show.summary.hashValue) { returned in
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
@@ -571,20 +562,9 @@ struct OverView : View {
                 }
             }
         }
-        //.environmentObject(fireStoreManager)
         .navigationBarBackButtonHidden(true)
         .navigationViewStyle(.stack)
     }
-    /*
-     func checkDateClearRecentlyDeleted() {
-     let date = Date()
-     print(date)
-     let calendar = Calendar(identifier: .gregorian)
-     
-     guard let interval = calendar.dateInterval(of: .month, for: Date()) else { return }
-     print(interval.start)
-     
-     }*/
     func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
         guard let user = Auth.auth().currentUser else {return}
         db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
@@ -768,8 +748,6 @@ struct RowView : View {
     let db = Firestore.firestore()
     @StateObject var showList = ShowList()
     
-    //@StateObject var fireStoreManager = FireStoreManager()
-    
     var body: some View {
         HStack {
             Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
@@ -908,33 +886,33 @@ struct RowView : View {
         }
     }
     func detectTappedList() { //Detects what list has been tapped and sets the collectionpath to what firestore document should be deleted
-            for item in showList.lists[.wantToWatch]! {
-                if item.show.name == showView.show.name {
-                    collectionPath = "wantToWatch"
-                }
+        for item in showList.lists[.wantToWatch]! {
+            if item.show.name == showView.show.name {
+                collectionPath = "wantToWatch"
             }
-            for item in showList.lists[.watching]! {
-                if item.show.name == showView.show.name {
-                    collectionPath = "watching"
-                }
+        }
+        for item in showList.lists[.watching]! {
+            if item.show.name == showView.show.name {
+                collectionPath = "watching"
             }
-            for item in showList.lists[.completed]! {
-                if item.show.name == showView.show.name {
-                    collectionPath = "completed"
-                }
+        }
+        for item in showList.lists[.completed]! {
+            if item.show.name == showView.show.name {
+                collectionPath = "completed"
             }
-            for item in showList.lists[.dropped]! {
-                if item.show.name == showView.show.name {
-                    collectionPath = "dropped"
-                }
+        }
+        for item in showList.lists[.dropped]! {
+            if item.show.name == showView.show.name {
+                collectionPath = "dropped"
             }
+        }
         for item in showList.lists[.recentlyDeleted]! {
             if item.show.name == showView.show.name {
                 collectionPath = "recentlyDeleted"
             }
         }
     }
-    func changeListFireStore() {
+    func changeListFireStore() { //moves document to other collection + deletes the one in the previous list
         detectTappedList()
         var deleteList : [ApiShows.Returned] = [] //temporary list to deal with deleted documents from firestore
         guard let user = Auth.auth().currentUser else {return}
@@ -967,16 +945,3 @@ struct RowView : View {
         } catch { print("catch error!") }
     }
 }
-extension Sequence where Element: Hashable {
-    func uniqued() -> [Element] {
-        var set = Set<Element>()
-        return filter { set.insert($0).inserted }
-    }
-}
-/*
- struct ContentView_Previews: PreviewProvider {
- static var previews: some View {
- ContentView()
- }
- }
- */

@@ -130,12 +130,10 @@ struct ExploreView: View {
             getData()
         }
     }
-    func getData() {
+    func getData() { //get data for all shows in the api. For some reason these objects could not look the same as everything else (eg. apishows.returned, so these are instead apishows.show. Which works to display the images I want to display but I cant make them become contextual navigationlinks that shows the show inside the showentryview. so these images are more like a library.
         
         let urlStringAll = "https://api.tvmaze.com/shows"
-        
-        //print("trying to access the url \(urlStringAll)")
-        
+                
         guard let url = URL(string: urlStringAll) else {
             print("Error could not create url from \(urlStringAll)")
             return
