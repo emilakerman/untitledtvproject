@@ -12,9 +12,9 @@ import Firebase
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-struct ShowEntryMoreView: View {
+struct EntryDetailsView: View {
     
-    var show2 : ApiShows.Returned
+    var show2 : ApiShows.ShowReturned
     var show : ShowEntry? = nil
     @State var name : String = ""
     @State var language : String = ""

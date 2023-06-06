@@ -11,20 +11,24 @@ import FirebaseFirestoreSwift
 class ApiShows : ObservableObject {
             
     //create empty array for the data
-    @Published var showArray : [Returned] = []
-        
+    //returned what? shows?
+    @Published var showArray : [ShowReturned] = []
     //search array for api
-    @Published var searchArray : [Returned] = []
+    @Published var searchArray : [ShowReturned] = []
+    
     init() {
-        searchArray = [Returned]()
+        searchArray = [ShowReturned]()
     }
-    struct Returned: Codable, Identifiable {
+    
+    struct ShowReturned: Codable, Identifiable {
         var id : UUID?
         var show: Show
     }
+    //JOJO: is this used?
     enum SearchScope: String, CaseIterable {
         case name
     }
+    
     struct Show: Codable, Identifiable {
         @DocumentID var id: String? = UUID().uuidString
         var name: String

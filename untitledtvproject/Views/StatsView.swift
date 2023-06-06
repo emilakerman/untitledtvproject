@@ -16,37 +16,37 @@ struct StatsView: View {
     let db = Firestore.firestore()
     
     //language lists
-    @State var englishList : [ApiShows.Returned] = []
-    @State var swedishList : [ApiShows.Returned] = []
-    @State var koreanList : [ApiShows.Returned] = []
-    @State var thaiList : [ApiShows.Returned] = []
-    @State var chineseList : [ApiShows.Returned] = []
-    @State var japaneseList : [ApiShows.Returned] = []
-    @State var danishList : [ApiShows.Returned] = []
-    @State var norwegianList : [ApiShows.Returned] = []
-    @State var germanList : [ApiShows.Returned] = []
-    @State var frenchList : [ApiShows.Returned] = []
-    @State var dutchList : [ApiShows.Returned] = []
-    @State var polishList : [ApiShows.Returned] = []
-    @State var spanishList : [ApiShows.Returned] = []
-    @State var turkishList : [ApiShows.Returned] = []
-    @State var greekList : [ApiShows.Returned] = []
-    @State var allLanguages : [ApiShows.Returned] = []
+    @State var englishList : [ApiShows.ShowReturned] = []
+    @State var swedishList : [ApiShows.ShowReturned] = []
+    @State var koreanList : [ApiShows.ShowReturned] = []
+    @State var thaiList : [ApiShows.ShowReturned] = []
+    @State var chineseList : [ApiShows.ShowReturned] = []
+    @State var japaneseList : [ApiShows.ShowReturned] = []
+    @State var danishList : [ApiShows.ShowReturned] = []
+    @State var norwegianList : [ApiShows.ShowReturned] = []
+    @State var germanList : [ApiShows.ShowReturned] = []
+    @State var frenchList : [ApiShows.ShowReturned] = []
+    @State var dutchList : [ApiShows.ShowReturned] = []
+    @State var polishList : [ApiShows.ShowReturned] = []
+    @State var spanishList : [ApiShows.ShowReturned] = []
+    @State var turkishList : [ApiShows.ShowReturned] = []
+    @State var greekList : [ApiShows.ShowReturned] = []
+    @State var allLanguages : [ApiShows.ShowReturned] = []
     //genre lists
-    @State var dramaList : [ApiShows.Returned] = []
-    @State var comedyList : [ApiShows.Returned] = []
-    @State var scifiList : [ApiShows.Returned] = []
-    @State var horrorList : [ApiShows.Returned] = []
-    @State var crimeList : [ApiShows.Returned] = []
-    @State var adventureList : [ApiShows.Returned] = []
+    @State var dramaList : [ApiShows.ShowReturned] = []
+    @State var comedyList : [ApiShows.ShowReturned] = []
+    @State var scifiList : [ApiShows.ShowReturned] = []
+    @State var horrorList : [ApiShows.ShowReturned] = []
+    @State var crimeList : [ApiShows.ShowReturned] = []
+    @State var adventureList : [ApiShows.ShowReturned] = []
     //network lists
-    @State var syfyList : [ApiShows.Returned] = []
-    @State var hboList : [ApiShows.Returned] = []
-    @State var foxList : [ApiShows.Returned] = []
-    @State var cbsList : [ApiShows.Returned] = []
-    @State var comedyCentralList : [ApiShows.Returned] = []
-    @State var abcList : [ApiShows.Returned] = []
-    @State var bbcList : [ApiShows.Returned] = []
+    @State var syfyList : [ApiShows.ShowReturned] = []
+    @State var hboList : [ApiShows.ShowReturned] = []
+    @State var foxList : [ApiShows.ShowReturned] = []
+    @State var cbsList : [ApiShows.ShowReturned] = []
+    @State var comedyCentralList : [ApiShows.ShowReturned] = []
+    @State var abcList : [ApiShows.ShowReturned] = []
+    @State var bbcList : [ApiShows.ShowReturned] = []
     
     @State var showingLangWindow = false
     @State var showingGenreWindow = false
@@ -438,7 +438,7 @@ struct StatsView: View {
                 clearLists()
                 for document in snapshot.documents {
                     let result = Result {
-                        try document.data(as: ApiShows.Returned.self)
+                        try document.data(as: ApiShows.ShowReturned.self)
                     }
                     switch result  {
                     case .success(let show)  :

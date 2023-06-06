@@ -23,18 +23,18 @@ enum Status {
 }
 class ShowList : ObservableObject {
     
-    @Published var lists = [Status : [ApiShows.Returned]]()
+    @Published var lists = [Status : [ApiShows.ShowReturned]]()
     
-    var deleteList : [ApiShows.Returned] = []
+    var deleteList : [ApiShows.ShowReturned] = []
     
     init() {
-        lists[.shows] = [ApiShows.Returned]()
-        lists[.wantToWatch] = [ApiShows.Returned]()
-        lists[.watching] = [ApiShows.Returned]()
-        lists[.dropped] = [ApiShows.Returned]()
-        lists[.completed] = [ApiShows.Returned]()
-        lists[.recentlyDeleted] = [ApiShows.Returned]()
-        lists[.searchList] = [ApiShows.Returned]()
+        lists[.shows] = [ApiShows.ShowReturned]()
+        lists[.wantToWatch] = [ApiShows.ShowReturned]()
+        lists[.watching] = [ApiShows.ShowReturned]()
+        lists[.dropped] = [ApiShows.ShowReturned]()
+        lists[.completed] = [ApiShows.ShowReturned]()
+        lists[.recentlyDeleted] = [ApiShows.ShowReturned]()
+        lists[.searchList] = [ApiShows.ShowReturned]()
     }
     func delete(indexSet: IndexSet, status: Status) {
         for index in indexSet {
@@ -51,7 +51,7 @@ class ShowList : ObservableObject {
                     } else {
                         for document in querySnapshot!.documents {
                             let result = Result {
-                                try document.data(as: ApiShows.Returned.self)
+                                try document.data(as: ApiShows.ShowReturned.self)
                             }
                             switch result  {
                             case .success(let show)  :
