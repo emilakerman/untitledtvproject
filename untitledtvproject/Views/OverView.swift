@@ -41,7 +41,7 @@ struct OverView : View {
                     Section(header: Text("Want to watch")) {
                         ForEach(showList.lists[.wantToWatch]!, id: \.show.summary.hashValue) { returned in //show.summary.hashValue istället för ett unikt ID, summary är alltid unikt
                             NavigationLink(destination: ShowEntryView(show2: returned, name: returned.show.name, language: returned.show.language, summary: returned.show.summary, image: returned.show.image)) {
-                                RowView(showView: returned)
+                                RowView(showView: returned).background(Color.red)
                             }
                             .listRowBackground(rowColor)
                             .foregroundColor(textColor)
@@ -149,70 +149,10 @@ struct OverView : View {
                                 }
                             }
                             .alert("Select row background color", isPresented: $showRowBgColorAlert) {
-                                VStack {
-                                    Button("Red") {
-                                        rowColor = Color.red
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Blue") {
-                                        rowColor = Color.blue
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Black") {
-                                        rowColor = Color.black
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Green") {
-                                        rowColor = Color.green
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("White") {
-                                        rowColor = Color.white
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Orange") {
-                                        rowColor = Color.orange
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Purple") {
-                                        rowColor = Color.purple
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Cancel", role: .cancel) { }
-                                }
+                                AlertButtonsView(rowColor: $rowColor, textColor: $textColor)
                             }
                             .alert("Select row text color", isPresented: $showRowTextColorAlert) {
-                                VStack {
-                                    Button("Black") {
-                                        textColor = Color.black
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("White") {
-                                        textColor = Color.white
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Blue") {
-                                        textColor = Color.blue
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Red") {
-                                        textColor = Color.red
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Purple") {
-                                        textColor = Color.purple
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Green") {
-                                        textColor = Color.green
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Orange") {
-                                        textColor = Color.orange
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Cancel", role: .cancel) { }
-                                }
+                                AlertButtonsView(rowColor: $rowColor, textColor: $textColor)
                             }
                             Spacer()
                             NavigationLink(destination: ProfileView(selectedUserName: "", userName: "")) {
@@ -306,6 +246,7 @@ struct OverView : View {
             if let err = err {
                 print("Error getting document \(err)")
             } else {
+                
                 showList.lists[.watching]?.removeAll()
                 for document in snapshot.documents {
                     let result = Result {

@@ -10,8 +10,6 @@ import SwiftUI
 
 import FirebaseCore
 import FirebaseAuth
-import Firebase
-import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 struct LoginView : View {

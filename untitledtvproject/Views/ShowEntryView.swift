@@ -15,6 +15,7 @@ import FirebaseFirestore
 
 struct ShowEntryView : View {
     
+    //isnt it better shows?
     @State var show2 : ApiShows.ShowReturned
     @State var name : String = ""
     @State var language : String = ""
