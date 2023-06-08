@@ -12,7 +12,8 @@ import Firebase
 @main
 struct untitledtvprojectApp: App {
     
-    
+//    private var rowColor = Color.white
+//    private var textColor = Color.black
     init() {
         FirebaseApp.configure()
     }
@@ -20,6 +21,8 @@ struct untitledtvprojectApp: App {
         WindowGroup {
             //ContentView()
             SplashScreenView()
+//                .environmentObject(rowColor)
+//                .environmentObject(textColor)
             //StatsView()
         }
     }

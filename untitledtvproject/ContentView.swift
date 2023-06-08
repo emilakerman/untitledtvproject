@@ -12,6 +12,8 @@ import Firebase
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
+let db = Firestore.firestore()
+
 struct ContentView: View {
     
     @State var signedIn = false
@@ -364,11 +366,11 @@ struct OverView : View {
     @State var showRowBgColorAlert = false
     @State var showRowTextColorAlert = false
     
-    @State private var rowColor = Color.white
-    @State private var textColor = Color.black
+  
     @State var selectedRowBgColor : String
     @State var selectedTextColor : String
-    
+    @State private var rowColor = Color.white
+    @State private var textColor = Color.black
     @State var isDarkMode = false
     
     var body: some View {
@@ -486,70 +488,11 @@ struct OverView : View {
                                 }
                             }
                             .alert("Select row background color", isPresented: $showRowBgColorAlert) {
-                                VStack {
-                                    Button("Red") {
-                                        rowColor = Color.red
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Blue") {
-                                        rowColor = Color.blue
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Black") {
-                                        rowColor = Color.black
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Green") {
-                                        rowColor = Color.green
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("White") {
-                                        rowColor = Color.white
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Orange") {
-                                        rowColor = Color.orange
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Purple") {
-                                        rowColor = Color.purple
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Cancel", role: .cancel) { }
-                                }
+                                //
+                                selsectBackgroundBtns()
                             }
                             .alert("Select row text color", isPresented: $showRowTextColorAlert) {
-                                VStack {
-                                    Button("Black") {
-                                        textColor = Color.black
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("White") {
-                                        textColor = Color.white
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Blue") {
-                                        textColor = Color.blue
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Red") {
-                                        textColor = Color.red
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Purple") {
-                                        textColor = Color.purple
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Green") {
-                                        textColor = Color.green
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Orange") {
-                                        textColor = Color.orange
-                                        saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
-                                    }
-                                    Button("Cancel", role: .cancel) { }
-                                }
+                                selectRowbtns()
                             }
                             Spacer()
                             NavigationLink(destination: ProfileView(selectedUserName: "", userName: "")) {
@@ -565,21 +508,10 @@ struct OverView : View {
         .navigationBarBackButtonHidden(true)
         .navigationViewStyle(.stack)
     }
-    func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
-        guard let user = Auth.auth().currentUser else {return}
-        db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
-            "textColor": selectedTextColor,
-            "rowBgColor": selectedRowBgColor,
-        ])
-        { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                //success
-            }
-        }
-    }
+ 
     func listenToSettingsFireStore() {
+        @State var rowColor = Color.white
+        @State var textColor = Color.black
         guard let user = Auth.auth().currentUser else {return}
         
         db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").addSnapshotListener { documentSnapshot, err in
@@ -885,6 +817,7 @@ struct RowView : View {
             }
         }
     }
+    
     func detectTappedList() { //Detects what list has been tapped and sets the collectionpath to what firestore document should be deleted
         for item in showList.lists[.wantToWatch]! {
             if item.show.name == showView.show.name {
@@ -943,5 +876,95 @@ struct RowView : View {
                 }
             }
         } catch { print("catch error!") }
+    }
+}
+
+struct selsectBackgroundBtns: View {
+    @State private var rowColor = Color.white
+    @State private var textColor = Color.black
+    var body: some View {
+        VStack {
+            Button("Red") {
+                //lägga func
+                rowColor = Color.red
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Blue") {
+                rowColor = Color.blue
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Black") {
+                rowColor = Color.black
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Green") {
+                rowColor = Color.green
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("White") {
+                rowColor = Color.white
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Orange") {
+                rowColor = Color.orange
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Purple") {
+                rowColor = Color.purple
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Cancel", role: .cancel) { }
+        }
+    }
+}
+func saveSettingsToFireStore(selectedTextColor: String, selectedRowBgColor: String) {
+    guard let user = Auth.auth().currentUser else {return}
+    db.collection("users").document(user.uid).collection("Settings").document("OverviewSettings").setData([
+        "textColor": selectedTextColor,
+        "rowBgColor": selectedRowBgColor,
+    ])
+    { err in
+        if let err = err {
+            print("Error writing document: \(err)")
+        } else {
+            //success
+        }
+    }
+}
+struct selectRowbtns: View {
+    @State private var rowColor = Color.white
+    @State private var textColor = Color.black
+    var body: some View {
+        VStack {
+            Button("Black") {
+                textColor = Color.black
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("White") {
+                textColor = Color.white
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Blue") {
+                textColor = Color.blue
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Red") {
+                textColor = Color.red
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Purple") {
+                textColor = Color.purple
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Green") {
+                textColor = Color.green
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Orange") {
+                textColor = Color.orange
+                saveSettingsToFireStore(selectedTextColor: "\(textColor)", selectedRowBgColor: "\(rowColor)")
+            }
+            Button("Cancel", role: .cancel) { }
+        }
     }
 }

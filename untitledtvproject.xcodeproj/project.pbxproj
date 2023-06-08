@@ -31,6 +31,7 @@
 		207FB569299BCDEE00F5935B /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207FB568299BCDEE00F5935B /* StorageManager.swift */; };
 		20FD49DC2988284700208727 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FD49DB2988284700208727 /* ProfileView.swift */; };
 		20FD4A1E2991650200208727 /* ShowEntryMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FD4A1D2991650200208727 /* ShowEntryMoreView.swift */; };
+		6164CC8E2A31C47F003DC63D /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6164CC8D2A31C47F003DC63D /* FirebaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		207FB568299BCDEE00F5935B /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		20FD49DB2988284700208727 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		20FD4A1D2991650200208727 /* ShowEntryMoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowEntryMoreView.swift; sourceTree = "<group>"; };
+		6164CC8D2A31C47F003DC63D /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				20361FE4299CF5610029AAAA /* SplashScreenView.swift */,
 				20FD4A1D2991650200208727 /* ShowEntryMoreView.swift */,
 				207FB566299BC35200F5935B /* ImagePicker.swift */,
+				6164CC8D2A31C47F003DC63D /* FirebaseManager.swift */,
 				207FB568299BCDEE00F5935B /* StorageManager.swift */,
 				20361FE629A3C0F80029AAAA /* EmptyView.swift */,
 				20361FEA29A4F6D40029AAAA /* StatsView.swift */,
@@ -334,6 +337,7 @@
 				2002C58D296D8F5500A01C88 /* ShowList.swift in Sources */,
 				207FB567299BC35200F5935B /* ImagePicker.swift in Sources */,
 				2002C55D296D863000A01C88 /* untitledtvprojectApp.swift in Sources */,
+				6164CC8E2A31C47F003DC63D /* FirebaseManager.swift in Sources */,
 				20361FEB29A4F6D40029AAAA /* StatsView.swift in Sources */,
 				20FD4A1E2991650200208727 /* ShowEntryMoreView.swift in Sources */,
 			);
